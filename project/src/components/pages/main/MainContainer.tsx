@@ -1,8 +1,9 @@
 "use client";
 
 import { mixinContainer, mixinFlex } from "@/styles/mixins";
-import { styled, Box } from "@mui/material";
+import { styled, Box, Button, Typography, Stack } from "@mui/material";
 import InstallPWA from "@/components/common/InstallPWA";
+import { AddBoxRounded, DashboardRounded } from "@mui/icons-material";
 
 //////////////////////////////////////// Component ////////////////////////////////////////
 
@@ -12,7 +13,14 @@ const MainContainer = () => {
   return (
     <Container>
       <InstallPWA />
-      프로젝트 초기화
+      <ButtonWrapper>
+        <MakePageButton href="/templates/make" variant="outlined" endIcon={<AddBoxRounded />}>
+          <ButtonText variant="h6">페이지 만들기</ButtonText>
+        </MakePageButton>
+        <StartWithTemplateButton href="/templates" variant="contained" endIcon={<DashboardRounded />}>
+          <ButtonText variant="h6">템플릿으로 시작하기</ButtonText>
+        </StartWithTemplateButton>
+      </ButtonWrapper>
     </Container>
   );
 };
@@ -26,6 +34,27 @@ const Container = styled(Box)`
   ${mixinContainer()};
   ${mixinFlex("column")};
   align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+`;
+
+const ButtonWrapper = styled(Stack)`
+  row-gap: 16px;
+`;
+const StartWithTemplateButton = styled(Button)`
+  width: 300px;
+  height: 150px;
+  border-radius: 16px;
+  color: ${({ theme }) => theme.palette.text.white};
+
+  & .MuiSvgIcon-root {
+    font-size: 32px !important;
+  }
+`;
+
+const ButtonText = styled(Typography)`
+  font-weight: bold;
+`;
+
+const MakePageButton = styled(StartWithTemplateButton)`
+  border: 2px solid ${({ theme }) => theme.palette.primary.main};
+  color: ${({ theme }) => theme.palette.primary.main};
 `;
