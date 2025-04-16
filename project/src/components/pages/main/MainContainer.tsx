@@ -45,6 +45,10 @@ const StartWithTemplateButton = styled(Button)`
   border-radius: 16px;
   color: ${({ theme }) => theme.palette.text.white};
 
+  &:hover {
+    color: ${({ theme }) => theme.palette.text.white};
+  }
+
   & .MuiSvgIcon-root {
     font-size: 32px !important;
   }
@@ -57,4 +61,8 @@ const ButtonText = styled(Typography)`
 const MakePageButton = styled(StartWithTemplateButton)`
   border: 2px solid ${({ theme }) => theme.palette.primary.main};
   color: ${({ theme }) => theme.palette.primary.main};
+
+  &:hover {
+    color: ${({ theme }) => theme.palette.primary.main};
+  }
 `;
