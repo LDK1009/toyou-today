@@ -8,7 +8,7 @@ import { styled } from "@mui/material";
 import AddBlockDrawer from "./drawer/AddBlockDrawer";
 import { useAddBlockDrawerStore } from "@/store";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
-import TextBlock from "./block/TextBlock";
+import TextBlock from "../block/TextBlock";
 import React from "react";
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store

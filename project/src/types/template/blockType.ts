@@ -3,17 +3,17 @@ export type BlockType =
   | { variant: "calendar"; content: CalendarBlockType }
   | { variant: "image"; content: ImageBlockType }
   | { variant: "video"; content: VideoBlockType }
-  | { variant: "link"; content: LinkBlockType }
+  | { variant: "link"; content: LinkBlockType };
 
 export type BlockVariantType = "text" | "calendar" | "image" | "video" | "link" | "button";
 
 export type TextBlockType = {
-  text: string;
-  fontSize: 1 | 2 | 3 | 4 | 5;
-  color: string;
-  fontWeight: "normal" | "bold";
-  animation: "none" | "fadeIn" | "fadeInUp" | "fadeInDown" | "fadeInLeft" | "fadeInRight";
   textAlign: "left" | "center" | "right";
+  fontSize: 1 | 2 | 3 | 4 | 5;
+  fontWeight: "normal" | "bold";
+  animation: "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate" | "typing";
+  color: string;
+  text: string;
 };
 
 // 다른 블록 타입들도 정의해야 합니다
@@ -42,4 +42,3 @@ export type LinkBlockType = {
   url: string;
   text: string;
 };
-
