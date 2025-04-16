@@ -1,4 +1,5 @@
 import { TextBlockType } from "@/types/template/blockType";
+import { AnimationBlock } from "./AnimationBlock";
 import { Box, Typography } from "@mui/material";
 
 const TextBlock = ({ blockData }: { blockData: TextBlockType }) => {
@@ -9,9 +10,11 @@ const TextBlock = ({ blockData }: { blockData: TextBlockType }) => {
 
   return (
     <Box>
-      <Typography variant={variant} fontWeight={fontWeight} color={color} align={textAlign} whiteSpace="pre-wrap">
-        {text}
-      </Typography>
+      <AnimationBlock animationType={animation}>
+        <Typography variant={variant} fontWeight={fontWeight} color={color} align={textAlign} whiteSpace="pre-wrap">
+          {text}
+        </Typography>
+      </AnimationBlock>
     </Box>
   );
 };

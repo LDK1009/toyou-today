@@ -11,7 +11,6 @@ import {
   KeyboardDoubleArrowLeftRounded,
   KeyboardDoubleArrowRightRounded,
   KeyboardDoubleArrowUpRounded,
-  KeyboardRounded,
 } from "@mui/icons-material";
 import { FormatAlignRightRounded } from "@mui/icons-material";
 import { FormatAlignLeftRounded } from "@mui/icons-material";
@@ -342,7 +341,6 @@ const AnimationPicker = ({ currentAnimation, setEditBlockStateProperty }: Animat
     { value: "fadeInToTop", icon: <KeyboardDoubleArrowUpRounded /> },
     { value: "fadeInToBottom", icon: <KeyboardDoubleArrowDownRounded /> },
     { value: "rotate", icon: <CachedRounded /> },
-    { value: "typing", icon: <KeyboardRounded /> },
   ];
 
   return (
