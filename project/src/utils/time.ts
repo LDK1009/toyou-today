@@ -8,3 +8,8 @@ dayjs.locale("ko");
 export const formatDate = (dateString: string) => {
   return dayjs(dateString).format("YYYY년 MM월 DD일");
 };
+
+// 날짜 포맷팅 함수2
+export const DateToYYYYMMDDHHMMSS = (date: Date) => {
+  return dayjs(date).format("YYYY.MM.DD.HH.mm.ss");
+};
