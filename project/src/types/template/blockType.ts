@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export type BlockType =
   | { variant: "text"; content: TextBlockType }
   | { variant: "calendar"; content: CalendarBlockType }
@@ -18,11 +20,7 @@ export type TextBlockType = {
 
 // 다른 블록 타입들도 정의해야 합니다
 export type CalendarBlockType = {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
+  date: Dayjs;
 };
 
 export type ImageBlockType = {

@@ -6,6 +6,8 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useAddBlockDrawerStore } from "@/store";
 import TextEditor from "./TextEditor";
 import { styled } from "@mui/material";
+import CalenderEditor from "./CalenderEditor";
+import ImageEditor from "./ImageEditor";
 
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
@@ -46,7 +48,13 @@ const Container = styled(SwipeableDrawer)`
 const DrawerContent = () => {
   const { variant } = useAddBlockDrawerStore();
 
-  return <DrawerContentContainer role="presentation">{variant === "text" && <TextEditor />}</DrawerContentContainer>;
+  return (
+    <DrawerContentContainer role="presentation">
+      {variant === "text" && <TextEditor />}
+      {variant === "calendar" && <CalenderEditor />}
+      {variant === "image" && <ImageEditor />}
+    </DrawerContentContainer>
+  );
 };
 
 const DrawerContentContainer = styled(Box)``;

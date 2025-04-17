@@ -18,6 +18,7 @@ import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import TextBlock from "../block/TextBlock";
 import React, { useState } from "react";
 import { BlockVariantType } from "@/types/template/blockType";
+import CalenderBlock from "../block/CalenderBlock";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store
@@ -31,7 +32,13 @@ const TemplatesMakeContainer = () => {
   const renderBlocks = () => {
     return templateBlocks.map((el, index) => {
       return (
-        <React.Fragment key={index}>{el.variant === "text" && <TextBlock blockData={el.content} />}</React.Fragment>
+        <React.Fragment key={index}>
+          {el.variant === "text" && <TextBlock blockData={el.content} />}
+          {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
+          {/* {el.variant === "image" && <ImageBlock blockData={el.content} />} */}
+          {/* {el.variant === "video" && <VideoBlock blockData={el.content} />} */}
+          {/* {el.variant === "link" && <LinkBlock blockData={el.content} />} */}
+        </React.Fragment>
       );
     });
   };

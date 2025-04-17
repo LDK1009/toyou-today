@@ -120,9 +120,9 @@ const TextEditor = () => {
       ))}
 
       <GridItem size={12}>
-        <Button startIcon={<AddRounded />} variant="contained" onClick={handleAddButtonClick} fullWidth>
+        <AddButton startIcon={<AddRounded />} variant="contained" onClick={handleAddButtonClick} fullWidth>
           추가
-        </Button>
+        </AddButton>
       </GridItem>
     </Container>
   );
@@ -488,3 +488,7 @@ const ColorPickerBox = styled("div")<ColorPickerBoxProps>`
 const Container = styled(Grid2)``;
 
 const GridItem = styled(Grid2)``;
+
+const AddButton = styled(Button)`
+  color: ${({ theme }) => theme.palette.text.white};
+`;
