@@ -112,12 +112,17 @@ const TextEditor = () => {
 
   return (
     <Container container rowSpacing={2}>
-      {editCategories.map((category, idx) => (
-        <GridItem key={idx} size={category.gridSize}>
-          <Typography variant="body2">{category.label}</Typography>
-          {category.component}
-        </GridItem>
-      ))}
+      {editCategories.map((category, idx) => {
+        if (category.label === "미리보기" && editBlockState.text === "") {
+          return null;
+        }
+        return (
+          <GridItem key={idx} size={category.gridSize}>
+            <Typography variant="body2">{category.label}</Typography>
+            {category.component}
+          </GridItem>
+        );
+      })}
 
       <GridItem size={12}>
         <AddButton startIcon={<AddRounded />} variant="contained" onClick={handleAddButtonClick} fullWidth>
