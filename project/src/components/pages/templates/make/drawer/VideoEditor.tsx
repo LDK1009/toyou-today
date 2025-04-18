@@ -5,11 +5,15 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import { useState } from "react";
+import VideoBlock from "../../block/VideoBlock";
 
 const VideoEditor = () => {
   /////////////////////////////////////////////////////////////// State
   // 유튜브 링크
   const [videoLink, setVideoLink] = useState("");
+  // 입력값
+  const [inputValue, setInputValue] = useState("");
+
   // 유튜브 링크 유효성 검사
   const [isCorrectLink, setIsCorrectLink] = useState(false);
   // 비디오 블록 추가
@@ -22,6 +26,7 @@ const VideoEditor = () => {
   function handleChangeVideoLink(e: React.ChangeEvent<HTMLInputElement>) {
     // 입력받은 유튜브 링크
     const inputLink = e.target.value;
+    setInputValue(inputLink);
     // 유튜브 링크 유효성 검사
     const isValid = checkCorrectLink(inputLink);
 
@@ -30,7 +35,7 @@ const VideoEditor = () => {
       setVideoLink(formattedLink as string);
       setIsCorrectLink(true);
     } else {
-      setVideoLink(inputLink);
+      setVideoLink("");
       setIsCorrectLink(false);
     }
   }
@@ -82,15 +87,16 @@ const VideoEditor = () => {
 
   return (
     <div>
+      {videoLink !== "" && <VideoBlock blockData={{ videoLink }} />}
       <InputWrapper>
         <YoutubeLinkInput
           label="유튜브 링크"
-          value={videoLink}
+          value={inputValue}
           onChange={handleChangeVideoLink}
           color={isCorrectLink ? "success" : "primary"}
-          error={videoLink !== "" && !isCorrectLink}
+          error={inputValue !== "" && !isCorrectLink}
           helperText={
-            videoLink !== "" && !isCorrectLink
+            inputValue !== "" && !isCorrectLink
               ? `유효한 유튜브 링크가 아닙니다 ( 참고 : 유튜브 > 공유 > 링크 복사 )`
               : ""
           }
