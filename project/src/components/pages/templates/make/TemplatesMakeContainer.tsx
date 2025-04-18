@@ -4,6 +4,7 @@ import { mixinContainer } from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
   CalendarMonthRounded,
+  CloseRounded,
   ImageRounded,
   InsertLinkRounded,
   TextFormatRounded,
@@ -19,6 +20,7 @@ import TextBlock from "../block/TextBlock";
 import React, { useState } from "react";
 import { BlockVariantType } from "@/types/template/blockType";
 import CalenderBlock from "../block/CalenderBlock";
+import ImageBlock from "../block/ImageBlock";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store
@@ -35,7 +37,7 @@ const TemplatesMakeContainer = () => {
         <React.Fragment key={index}>
           {el.variant === "text" && <TextBlock blockData={el.content} />}
           {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
-          {/* {el.variant === "image" && <ImageBlock blockData={el.content} />} */}
+          {el.variant === "image" && <ImageBlock blockData={el.content} />}
           {/* {el.variant === "video" && <VideoBlock blockData={el.content} />} */}
           {/* {el.variant === "link" && <LinkBlock blockData={el.content} />} */}
         </React.Fragment>
@@ -104,7 +106,7 @@ const AddBlockButton = () => {
         onClick={() => setIsFadeShow(!isFadeShow)}
         variant="outlined"
         fullWidth
-        endIcon={<AddCircleOutlineRounded />}
+        endIcon={isFadeShow ? <CloseRounded /> : <AddCircleOutlineRounded />}
       >
         {isFadeShow ? "취소" : "블럭 생성"}
       </Button>

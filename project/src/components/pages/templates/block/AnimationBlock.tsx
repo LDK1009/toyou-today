@@ -2,7 +2,7 @@ import { motion, useInView } from "motion/react";
 import { ReactNode, useRef } from "react";
 
 // 애니메이션 타입 정의
-type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate" | "typing";
+type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate";
 
 // 애니메이션 블록 속성 정의
 interface AnimationBlockProps {
@@ -68,15 +68,6 @@ const variants = {
       ease: "easeInOut",
     },
   },
-  typing: {
-    hidden: { width: 0 },
-    visible: { width: "100%" },
-    transition: {
-      duration: 0.5,
-      delay: 0,
-      ease: "easeInOut",
-    },
-  },
 };
 
 export const AnimationBlock = ({ children, animationType }: AnimationBlockProps) => {
@@ -92,9 +83,6 @@ export const AnimationBlock = ({ children, animationType }: AnimationBlockProps)
         animate={isInView ? "visible" : "hidden"}
         variants={variants[animationType]}
         transition={variants[animationType].transition}
-        style={{
-          transformOrigin: "30% 50%",
-        }}
       >
         {children}
       </motion.div>
