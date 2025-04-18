@@ -31,7 +31,7 @@ const CalenderEditor = () => {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
         <DemoContainer components={["DateCalendar"]}>
-          <DemoItem label="Controlled calendar">
+          <DemoItem label="">
             <StyledDateCalendar value={date} onChange={(newValue) => setDate(newValue)} />
           </DemoItem>
         </DemoContainer>
