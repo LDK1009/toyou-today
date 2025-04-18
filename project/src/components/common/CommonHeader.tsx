@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { mixinFlex } from "@/styles/mixins";
 import { useAuthStore } from "@/store";
-import { GavelRounded, PersonOutline, Menu as MenuIcon, ListAlt, AddCircleOutline } from "@mui/icons-material";
+import { PersonOutline, Menu as MenuIcon, ListAlt, AddCircleOutline, CardGiftcardRounded } from "@mui/icons-material";
 import Link from "next/link";
 
 /**
@@ -60,10 +60,10 @@ const CommonHeader = () => {
         {/* 로고 섹션 */}
         <LogoContainer>
           <IconButton component={Link} href="/" color="inherit">
-            <GavelRounded />
+            <CardGiftcardRounded />
           </IconButton>
           <Typography variant="h6" component={Link} href="/" sx={{ textDecoration: "none", color: "inherit" }}>
-            연애재판
+            To You, To Day
           </Typography>
         </LogoContainer>
 
@@ -98,10 +98,10 @@ const CommonHeader = () => {
         {/* 헤더 */}
         <Grid2 container justifyContent="center" alignItems="center">
           <IconButton component={Link} href="/" color="primary">
-            <GavelRounded />
+            <CardGiftcardRounded />
           </IconButton>
           <Typography variant="h6" sx={{ my: 2 }} color="primary">
-            연애재판
+            To You, To Day
           </Typography>
         </Grid2>
         {/* 구분선 */}
