@@ -32,9 +32,7 @@ export type ImageBlockType = {
 };
 
 export type VideoBlockType = {
-  videoUrl: string;
-  caption: string;
-  link: string;
+  videoLink: string;
 };
 
 export type LinkBlockType = {
