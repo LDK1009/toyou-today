@@ -5,6 +5,7 @@ import {
   AddCircleOutlineRounded,
   CalendarMonthRounded,
   CloseRounded,
+  GifRounded,
   ImageRounded,
   InsertLinkRounded,
   TextFormatRounded,
@@ -22,6 +23,7 @@ import { BlockVariantType } from "@/types/template/blockType";
 import CalenderBlock from "../block/CalenderBlock";
 import ImageBlock from "../block/ImageBlock";
 import VideoBlock from "../block/VideoBlock";
+import GifBlock from "../block/GifBlock";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store
@@ -40,6 +42,7 @@ const TemplatesMakeContainer = () => {
           {el.variant === "text" && <TextBlock blockData={el.content} />}
           {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
           {el.variant === "image" && <ImageBlock blockData={el.content} />}
+          {el.variant === "gif" && <GifBlock blockData={el.content} />}
           {el.variant === "video" && <VideoBlock blockData={el.content} />}
           {/* {el.variant === "link" && <LinkBlock blockData={el.content} />} */}
         </React.Fragment>
@@ -83,6 +86,10 @@ const AddBlockButton = () => {
     {
       variant: "image",
       icon: <ImageRounded />,
+    },
+    {
+      variant: "gif",
+      icon: <GifRounded />,
     },
     {
       variant: "video",

@@ -4,10 +4,11 @@ export type BlockType =
   | { variant: "text"; content: TextBlockType }
   | { variant: "calendar"; content: CalendarBlockType }
   | { variant: "image"; content: ImageBlockType }
+  | { variant: "gif"; content: GifBlockType }
   | { variant: "video"; content: VideoBlockType }
   | { variant: "link"; content: LinkBlockType };
 
-export type BlockVariantType = "text" | "calendar" | "image" | "video" | "link" | "button";
+export type BlockVariantType = "text" | "calendar" | "image" | "gif" | "video" | "link" | "button";
 export type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate";
 export type AlignType = "left" | "center" | "right";
 
@@ -31,6 +32,12 @@ export type ImageBlockType = {
   animation: AnimationType;
 };
 
+export type GifBlockType = {
+  gifSrc: string;
+  align: AlignType;
+  animation: AnimationType;
+};
+
 export type VideoBlockType = {
   videoLink: string;
 };
@@ -39,3 +46,5 @@ export type LinkBlockType = {
   url: string;
   text: string;
 };
+
+

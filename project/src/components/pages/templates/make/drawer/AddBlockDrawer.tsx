@@ -9,6 +9,7 @@ import { styled } from "@mui/material";
 import CalenderEditor from "./CalenderEditor";
 import ImageEditor from "./ImageEditor";
 import VideoEditor from "./VideoEditor";
+import GifEditor from "./GifEditor";
 
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
@@ -54,6 +55,7 @@ const DrawerContent = () => {
       {variant === "text" && <TextEditor />}
       {variant === "calendar" && <CalenderEditor />}
       {variant === "image" && <ImageEditor />}
+      {variant === "gif" && <GifEditor />}
       {variant === "video" && <VideoEditor />}
     </DrawerContentContainer>
   );

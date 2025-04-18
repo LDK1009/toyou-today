@@ -45,9 +45,9 @@ export const muiTheme = createTheme({
       dark: "#E58084",
     },
     secondary: {
-      main: "#3DB8B3",  // 좀 더 진하고 선명한 민트
+      main: "#3DB8B3", // 좀 더 진하고 선명한 민트
       light: "#7EDDD8", // 밝은 느낌은 살리되 대비 확보
-      dark: "#28918D",  // 딥 민트 (버튼 등 포인트에)
+      dark: "#28918D", // 딥 민트 (버튼 등 포인트에)
     },
     error: {
       main: "#F44336",

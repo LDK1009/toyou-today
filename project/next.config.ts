@@ -21,6 +21,13 @@ const nextConfig = {
         port: '',
         pathname: '/storage/v1/object/public/**',
       },
+      // Giphy 이미지 경로 추가 (0~9까지 한번에 설정)
+      {
+        protocol: 'https',
+        hostname: 'media*.giphy.com',
+        port: '',
+        pathname: '/media/**',
+      },
     ],
   },
 };
