@@ -29,4 +29,8 @@ const StyledDateCalendar = styled(DateCalendar)`
     color: ${({ theme }) => theme.palette.text.white};
     font-weight: bold;
   }
+
+  & .MuiButtonBase-root.MuiPickersDay-root.MuiPickersDay-today {
+    border:0px;
+  }
 `;
