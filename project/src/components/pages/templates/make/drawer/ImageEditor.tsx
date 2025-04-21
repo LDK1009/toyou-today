@@ -8,7 +8,7 @@ import { AddRounded, ImageRounded } from "@mui/icons-material";
 import { Button, CircularProgress, Stack, styled, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
-import { AlignPicker, AnimationPicker } from "./CommonPicker";
+import { AlignAndAnimationPicker } from "./CommonPicker";
 import ImageBlock from "../../block/ImageBlock";
 
 const ImageEditor = () => {
@@ -50,8 +50,7 @@ const ImageEditor = () => {
   return (
     <Container>
       <FileSelectArea blockData={blockState} setBlockStateProperty={setBlockStateProperty} />
-      <AlignPicker currentAlign={blockState.align} setEditBlockStateProperty={setBlockStateProperty} />
-      <AnimationPicker currentAnimation={blockState.animation} setEditBlockStateProperty={setBlockStateProperty} />
+      <AlignAndAnimationPicker blockState={blockState} setBlockStateProperty={setBlockStateProperty} />
       <AddButton onClick={handleAddImageButtonClick} startIcon={<AddRounded />} variant="contained" fullWidth>
         추가
       </AddButton>
