@@ -6,9 +6,10 @@ export type BlockType =
   | { variant: "image"; content: ImageBlockType }
   | { variant: "gif"; content: GifBlockType }
   | { variant: "video"; content: VideoBlockType }
-  | { variant: "link"; content: LinkBlockType };
+  | { variant: "link"; content: LinkBlockType }
+  | { variant: "gallery"; content: GalleryBlockType };
 
-export type BlockVariantType = "text" | "calendar" | "image" | "gif" | "video" | "link" | "button";
+export type BlockVariantType = "text" | "calendar" | "image" | "gif" | "video" | "link" | "button" | "gallery";
 export type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate";
 export type AlignType = "left" | "center" | "right";
 
@@ -47,4 +48,9 @@ export type LinkBlockType = {
   text: string;
 };
 
+export type GalleryBlockItemType = {
+  imgSrc: string;
+  text: string;
+};
 
+export type GalleryBlockType = GalleryBlockItemType[];

@@ -8,8 +8,6 @@ type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" |
 interface AnimationBlockProps {
   children: ReactNode;
   animationType: AnimationType;
-  duration?: number;
-  delay?: number;
 }
 
 // 애니메이션 변형(variants) 정의

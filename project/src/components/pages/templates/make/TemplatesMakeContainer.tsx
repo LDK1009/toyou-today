@@ -8,6 +8,7 @@ import {
   GifRounded,
   ImageRounded,
   InsertLinkRounded,
+  PhotoLibraryRounded,
   TextFormatRounded,
   VideocamRounded,
 } from "@mui/icons-material";
@@ -24,6 +25,7 @@ import CalenderBlock from "../block/CalenderBlock";
 import ImageBlock from "../block/ImageBlock";
 import VideoBlock from "../block/VideoBlock";
 import GifBlock from "../block/GifBlock";
+import GalleryBlock from "../block/GalleryBlock";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store
@@ -44,6 +46,7 @@ const TemplatesMakeContainer = () => {
           {el.variant === "image" && <ImageBlock blockData={el.content} />}
           {el.variant === "gif" && <GifBlock blockData={el.content} />}
           {el.variant === "video" && <VideoBlock blockData={el.content} />}
+          {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
           {/* {el.variant === "link" && <LinkBlock blockData={el.content} />} */}
         </React.Fragment>
       );
@@ -98,6 +101,10 @@ const AddBlockButton = () => {
     {
       variant: "link",
       icon: <InsertLinkRounded />,
+    },
+    {
+      variant: "gallery",
+      icon: <PhotoLibraryRounded />,
     },
   ];
 
