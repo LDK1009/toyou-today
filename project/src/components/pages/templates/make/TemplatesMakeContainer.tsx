@@ -1,6 +1,6 @@
 "use client";
 
-import { mixinContainer } from "@/styles/mixins";
+import { mixinContainer, mixinHideScrollbar } from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
   CalendarMonthRounded,
@@ -98,6 +98,10 @@ const AddBlockButton = () => {
       icon: <ImageRounded />,
     },
     {
+      variant: "gallery",
+      icon: <PhotoLibraryRounded />,
+    },
+    {
       variant: "gif",
       icon: <GifRounded />,
     },
@@ -108,10 +112,6 @@ const AddBlockButton = () => {
     {
       variant: "link",
       icon: <InsertLinkRounded />,
-    },
-    {
-      variant: "gallery",
-      icon: <PhotoLibraryRounded />,
     },
   ];
 
@@ -144,10 +144,15 @@ const AddBlockButtonContainer = styled(Stack)`
 `;
 
 const MenuButtonContainer = styled(Stack)`
+  width: 100%;
   flex-direction: row;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: start;
   align-items: center;
   column-gap: 8px;
+  overflow-x: auto;
+
+  ${mixinHideScrollbar()}
 `;
 
 const MenuButton = styled(Button)`
