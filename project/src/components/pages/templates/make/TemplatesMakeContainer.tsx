@@ -9,6 +9,7 @@ import {
   ImageRounded,
   InsertLinkRounded,
   PhotoLibraryRounded,
+  QuizRounded,
   SplitscreenRounded,
   TextFormatRounded,
   VideocamRounded,
@@ -28,17 +29,16 @@ import VideoBlock from "../block/VideoBlock";
 import GifBlock from "../block/GifBlock";
 import GalleryBlock from "../block/GalleryBlock";
 import SpaceBlock from "../block/SpaceBlock";
+import LinkBlock from "../block/LinkBlock";
 
 const TemplatesMakeContainer = () => {
-  ////////////////////////////////////////////////// Store
-  // AddBlockDrawerStore
-
+  ////////////////////////////////////////////////// Store //////////////////////////////////////////////////
   // MakeTemplateStore
   const { templateBlocks } = useMakeTemplateStore();
 
-  ////////////////////////////////////////////////// function
+  ////////////////////////////////////////////////// function //////////////////////////////////////////////////
 
-  // 블록 렌더링
+  ////////////////////////////////////////////////// Component //////////////////////////////////////////////////
   const renderBlocks = () => {
     return templateBlocks.map((el, index) => {
       return (
@@ -47,15 +47,17 @@ const TemplatesMakeContainer = () => {
           {el.variant === "text" && <TextBlock blockData={el.content} />}
           {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
           {el.variant === "image" && <ImageBlock blockData={el.content} />}
+          {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
           {el.variant === "gif" && <GifBlock blockData={el.content} />}
           {el.variant === "video" && <VideoBlock blockData={el.content} />}
-          {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
-          {/* {el.variant === "link" && <LinkBlock blockData={el.content} />} */}
+          {el.variant === "link" && <LinkBlock />}
+          {/* {el.variant === "quiz" && <QuizBlock blockData={el.content} />} */}
         </React.Fragment>
       );
     });
   };
 
+  ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
       <Typography variant="h5">템플릿 만들기</Typography>
@@ -72,14 +74,19 @@ export default TemplatesMakeContainer;
 
 ////////////////////////////// 하위 컴포넌트 //////////////////////////////
 const AddBlockButton = () => {
+  // Store
   const { setAllState: setAddBlockDrawerState } = useAddBlockDrawerStore();
+
+  // State
   const [isFadeShow, setIsFadeShow] = useState(false);
 
+  // 블록 버튼 클릭 시 드로어 열기
   const handleOpenDrawer = (variant: BlockVariantType) => {
     setAddBlockDrawerState(variant, "top", true);
     setIsFadeShow(false);
   };
 
+  // 블록 버튼 목록
   const buttons: { variant: BlockVariantType; icon: React.ReactNode }[] = [
     {
       variant: "space",
@@ -113,8 +120,13 @@ const AddBlockButton = () => {
       variant: "link",
       icon: <InsertLinkRounded />,
     },
+    {
+      variant: "quiz",
+      icon: <QuizRounded />,
+    },
   ];
 
+  // 블록 버튼 목록 렌더링
   return (
     <AddBlockButtonContainer>
       <Fade in={isFadeShow}>

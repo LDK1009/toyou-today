@@ -12,6 +12,7 @@ import VideoEditor from "./VideoEditor";
 import GifEditor from "./GifEditor";
 import GalleryEditor from "./GalleryEditor";
 import SpaceEditor from "./SpaceEditor";
+import LinkEditor from "./LinkEditor";
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
   const { anchor, isOpen, setIsOpen } = useAddBlockDrawerStore();
@@ -57,9 +58,11 @@ const DrawerContent = () => {
       {variant === "text" && <TextEditor />}
       {variant === "calendar" && <CalenderEditor />}
       {variant === "image" && <ImageEditor />}
+      {variant === "gallery" && <GalleryEditor />}
       {variant === "gif" && <GifEditor />}
       {variant === "video" && <VideoEditor />}
-      {variant === "gallery" && <GalleryEditor />}
+      {variant === "link" && <LinkEditor />}
+      {/* {variant === "quiz" && <QuizEditor />} */}
     </DrawerContentContainer>
   );
 };
