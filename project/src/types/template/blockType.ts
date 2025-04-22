@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 
 export type BlockType =
+  | { variant: "space"; content: SpaceBlockType }
   | { variant: "text"; content: TextBlockType }
   | { variant: "calendar"; content: CalendarBlockType }
   | { variant: "image"; content: ImageBlockType }
@@ -9,9 +10,13 @@ export type BlockType =
   | { variant: "link"; content: LinkBlockType }
   | { variant: "gallery"; content: GalleryBlockType };
 
-export type BlockVariantType = "text" | "calendar" | "image" | "gif" | "video" | "link" | "button" | "gallery";
+export type BlockVariantType = "space" | "text" | "calendar" | "image" | "gif" | "video" | "link" | "button" | "gallery";
 export type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate";
 export type AlignType = "left" | "center" | "right";
+
+export type SpaceBlockType = {
+  height: number;
+};
 
 export type TextBlockType = {
   textAlign: AlignType;

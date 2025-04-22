@@ -9,6 +9,7 @@ import {
   ImageRounded,
   InsertLinkRounded,
   PhotoLibraryRounded,
+  SplitscreenRounded,
   TextFormatRounded,
   VideocamRounded,
 } from "@mui/icons-material";
@@ -26,6 +27,7 @@ import ImageBlock from "../block/ImageBlock";
 import VideoBlock from "../block/VideoBlock";
 import GifBlock from "../block/GifBlock";
 import GalleryBlock from "../block/GalleryBlock";
+import SpaceBlock from "../block/SpaceBlock";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store
@@ -41,6 +43,7 @@ const TemplatesMakeContainer = () => {
     return templateBlocks.map((el, index) => {
       return (
         <React.Fragment key={index}>
+          {el.variant === "space" && <SpaceBlock blockData={el.content} />}
           {el.variant === "text" && <TextBlock blockData={el.content} />}
           {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
           {el.variant === "image" && <ImageBlock blockData={el.content} />}
@@ -78,6 +81,10 @@ const AddBlockButton = () => {
   };
 
   const buttons: { variant: BlockVariantType; icon: React.ReactNode }[] = [
+    {
+      variant: "space",
+      icon: <SplitscreenRounded />,
+    },
     {
       variant: "text",
       icon: <TextFormatRounded />,
