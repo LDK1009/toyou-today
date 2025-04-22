@@ -50,7 +50,7 @@ const TemplatesMakeContainer = () => {
           {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
           {el.variant === "gif" && <GifBlock blockData={el.content} />}
           {el.variant === "video" && <VideoBlock blockData={el.content} />}
-          {el.variant === "link" && <LinkBlock />}
+          {el.variant === "link" && <LinkBlock blockData={el.content} />}
           {/* {el.variant === "quiz" && <QuizBlock blockData={el.content} />} */}
         </React.Fragment>
       );

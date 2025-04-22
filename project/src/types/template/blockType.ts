@@ -64,8 +64,8 @@ export type VideoBlockType = {
 
 // 링크 블록 타입
 export type LinkBlockType = {
-  url: string;
   text: string;
+  url: string;
   textColor: string;
   buttonColor: string;
 };

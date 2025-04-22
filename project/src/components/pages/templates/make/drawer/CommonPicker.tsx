@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import { FormatAlignLeftRounded } from "@mui/icons-material";
 import { Stack, styled, Typography } from "@mui/material";
-
+import { mixinHideScrollbar } from "@/styles/mixins";
 ////////////////////////////// 정렬 선택기 //////////////////////////////
 type AlignPickerProps = {
   currentAlign: string;
@@ -180,3 +180,77 @@ export const AlignAndAnimationPicker = ({
     </Stack>
   );
 };
+
+////////////////////////////// 색상 선택기 //////////////////////////////
+type ColorPickerProps = {
+  currentColor: string;
+  handleColorBoxClick: (color: string) => void;
+};
+
+export const ColorPicker = ({ currentColor, handleColorBoxClick }: ColorPickerProps) => {
+  const colors = [
+    "#000000", // 검정
+    "#FFFFFF", // 흰색
+    "#FFB6B9", // 메인 색상
+    "#808080", // 회색
+    "#FF0000", // 빨강
+    "#FF7F00", // 주황
+    "#FFFF00", // 노랑
+    "#00FF00", // 초록
+    "#0000FF", // 파랑
+    "#4B0082", // 남색
+    "#9400D3", // 보라
+    "#FF1493", // 분홍
+    "#8B4513", // 갈색
+  ];
+
+  return (
+    <ColorPickerContainer>
+      {colors.map((color, idx) => (
+        <ColorPickerBoxWrapper
+          key={idx}
+          color={color === "#FFFFFF" ? "#FFB6B9" : color}
+          isSelected={color === currentColor}
+          onClick={() => handleColorBoxClick(color)}
+        >
+          <ColorPickerBox color={color} />
+        </ColorPickerBoxWrapper>
+      ))}
+    </ColorPickerContainer>
+  );
+};
+
+const ColorPickerContainer = styled(Stack)`
+  flex-direction: row;
+  column-gap: 4px;
+  width: 100%;
+  overflow-x: scroll;
+  ${mixinHideScrollbar()}
+`;
+
+type ColorPickerBoxWrapperProps = {
+  color: string;
+  isSelected: boolean;
+};
+
+const ColorPickerBoxWrapper = styled("div")<ColorPickerBoxWrapperProps>`
+  border-width: 2px;
+  border-style: solid;
+  border-color: ${({ isSelected, color }) => (isSelected ? color : "#EEEEEE")};
+  border-radius: 8px;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+`;
+
+type ColorPickerBoxProps = {
+  color: string;
+};
+
+const ColorPickerBox = styled("div")<ColorPickerBoxProps>`
+  width: 24px;
+  height: 24px;
+  margin: 4px;
+  background-color: ${({ color }) => color};
+  border-radius: 8px;
+`;
