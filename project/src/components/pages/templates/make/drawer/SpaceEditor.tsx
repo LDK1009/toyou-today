@@ -27,7 +27,9 @@ const SpaceEditor = () => {
 
   return (
     <Container>
+      {/* 미리보기 */}
       <SpaceBlock blockData={{ height: height }} preview={true} />
+      {/* 슬라이더 */}
       <Slider
         aria-label="Temperature"
         defaultValue={10}
