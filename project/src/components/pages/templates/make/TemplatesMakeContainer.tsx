@@ -13,7 +13,7 @@ import {
   TextFormatRounded,
   VideocamRounded,
 } from "@mui/icons-material";
-import { Box, Button, Fade, Stack, Typography } from "@mui/material";
+import { Box, Button, Fade, Stack, Tooltip, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import AddBlockDrawer from "./drawer/AddBlockDrawer";
@@ -120,7 +120,9 @@ const AddBlockButton = () => {
       <Fade in={isFadeShow}>
         <MenuButtonContainer>
           {buttons.map((el, index) => (
-            <MenuButton onClick={() => handleOpenDrawer(el.variant)} key={index} variant="outlined" endIcon={el.icon} />
+            <Tooltip title={el.variant} key={index}>
+              <MenuButton onClick={() => handleOpenDrawer(el.variant)} variant="outlined" endIcon={el.icon} />
+            </Tooltip>
           ))}
         </MenuButtonContainer>
       </Fade>
