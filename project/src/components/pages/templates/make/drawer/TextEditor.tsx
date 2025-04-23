@@ -16,6 +16,7 @@ import { FormatAlignRightRounded } from "@mui/icons-material";
 import { FormatAlignLeftRounded } from "@mui/icons-material";
 import { useAddBlockDrawerStore } from "@/store/ui/addBlockDrawerStore";
 import TextBlock from "../../block/TextBlock";
+import { ColorPicker } from "./CommonPicker";
 
 const TextEditor = () => {
   ////////////////////////////// state //////////////////////////////
@@ -92,7 +93,10 @@ const TextEditor = () => {
       label: "컬러",
       gridSize: 12,
       component: (
-        <ColorPicker currentColor={editBlockState.color} setEditBlockStateProperty={setEditBlockStateProperty} />
+        <ColorPicker
+          currentColor={editBlockState.color}
+          handleColorBoxClick={(color) => setEditBlockStateProperty("color", color)}
+        />
       ),
     },
     {
@@ -406,87 +410,6 @@ const AnimationPickerBox = styled("div")<AnimationPickerBoxProps>`
   & svg {
     color: ${({ theme, isSelected }) => (isSelected ? theme.palette.text.primary : theme.palette.text.secondary)};
   }
-`;
-
-////////// 컬러 선택기
-type ColorPickerProps = {
-  currentColor: string;
-  setEditBlockStateProperty: (key: string, value: string | number) => void;
-};
-
-const ColorPicker = ({ currentColor, setEditBlockStateProperty }: ColorPickerProps) => {
-  const colors = [
-    "#000000", // 검정
-    "#808080", // 회색
-    "#FF0000", // 빨강
-    "#FF7F00", // 주황
-    "#FFFF00", // 노랑
-    "#00FF00", // 초록
-    "#0000FF", // 파랑
-    "#4B0082", // 남색
-    "#9400D3", // 보라
-    "#FF1493", // 분홍
-    "#8B4513", // 갈색
-  ];
-
-  return (
-    <ColorPickerContainer>
-      {colors.map((color, idx) => (
-        <ColorPickerBoxWrapper
-          key={idx}
-          color={color}
-          isSelected={color === currentColor}
-          onClick={() => setEditBlockStateProperty("color", color)}
-        >
-          <ColorPickerBox color={color} />
-        </ColorPickerBoxWrapper>
-      ))}
-    </ColorPickerContainer>
-  );
-};
-
-const ColorPickerContainer = styled(Stack)`
-  flex-direction: row;
-  column-gap: 4px;
-  width: 100%;
-  overflow-x: scroll;
-  /* Chrome, Safari, Opera*/
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Firefox */
-  scrollbar-width: none;
-
-  /* IE and Edge */
-  -ms-overflow-style: none;
-`;
-
-type ColorPickerBoxWrapperProps = {
-  color: string;
-  isSelected: boolean;
-};
-
-const ColorPickerBoxWrapper = styled("div")<ColorPickerBoxWrapperProps>`
-  border-width: 2px;
-  border-style: solid;
-  border-color: ${({ isSelected, color }) => (isSelected ? color : "#EEEEEE")};
-  border-radius: 8px;
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-`;
-
-type ColorPickerBoxProps = {
-  color: string;
-};
-
-const ColorPickerBox = styled("div")<ColorPickerBoxProps>`
-  width: 24px;
-  height: 24px;
-  margin: 4px;
-  background-color: ${({ color }) => color};
-  border-radius: 8px;
 `;
 
 ////////////////////////////// 스타일 //////////////////////////////

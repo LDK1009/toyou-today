@@ -13,6 +13,7 @@ import GifEditor from "./GifEditor";
 import GalleryEditor from "./GalleryEditor";
 import SpaceEditor from "./SpaceEditor";
 import LinkEditor from "./LinkEditor";
+import QuizEditor from "./QuizEditor";
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
   const { anchor, isOpen, setIsOpen } = useAddBlockDrawerStore();
@@ -62,7 +63,7 @@ const DrawerContent = () => {
       {variant === "gif" && <GifEditor />}
       {variant === "video" && <VideoEditor />}
       {variant === "link" && <LinkEditor />}
-      {/* {variant === "quiz" && <QuizEditor />} */}
+      {variant === "quiz" && <QuizEditor />}
     </DrawerContentContainer>
   );
 };

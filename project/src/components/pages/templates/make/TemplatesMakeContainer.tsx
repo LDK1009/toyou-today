@@ -1,6 +1,6 @@
 "use client";
 
-import { mixinContainer, mixinHideScrollbar } from "@/styles/mixins";
+import { mixinContainer, mixinFlex, mixinHideScrollbar } from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
   CalendarMonthRounded,
@@ -30,6 +30,7 @@ import GifBlock from "../block/GifBlock";
 import GalleryBlock from "../block/GalleryBlock";
 import SpaceBlock from "../block/SpaceBlock";
 import LinkBlock from "../block/LinkBlock";
+import QuizBlock from "../block/QuizBlock";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store //////////////////////////////////////////////////
@@ -51,7 +52,7 @@ const TemplatesMakeContainer = () => {
           {el.variant === "gif" && <GifBlock blockData={el.content} />}
           {el.variant === "video" && <VideoBlock blockData={el.content} />}
           {el.variant === "link" && <LinkBlock blockData={el.content} />}
-          {/* {el.variant === "quiz" && <QuizBlock blockData={el.content} />} */}
+          {el.variant === "quiz" && <QuizBlock blockData={el.content} />}
         </React.Fragment>
       );
     });
@@ -71,6 +72,11 @@ const TemplatesMakeContainer = () => {
 };
 
 export default TemplatesMakeContainer;
+////////////////////////////// 스타일 //////////////////////////////
+const Container = styled(Box)`
+  ${mixinContainer()}
+  ${mixinFlex("column", "start", "center")}
+`;
 
 ////////////////////////////// 하위 컴포넌트 //////////////////////////////
 const AddBlockButton = () => {
@@ -179,9 +185,4 @@ const MenuButton = styled(Button)`
   & .MuiButton-icon {
     margin: 0;
   }
-`;
-
-////////////////////////////// 스타일 컴포넌트 //////////////////////////////
-const Container = styled(Box)`
-  ${mixinContainer()}
 `;

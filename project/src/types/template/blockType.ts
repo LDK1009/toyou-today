@@ -73,6 +73,6 @@ export type LinkBlockType = {
 // 퀴즈 블록 타입
 export type QuizBlockType = {
   question: string;
-  options: string[];
   answer: string;
+  color: string;
 };

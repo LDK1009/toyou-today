@@ -2,7 +2,6 @@ import { mixinFlex } from "@/styles/mixins";
 import { SpaceBlockType } from "@/types/template/blockType";
 import { Box, Stack, styled, Typography } from "@mui/material";
 import { shouldForwardProp } from "@/utils/mui";
-
 const SpaceBlock = ({ blockData, preview = false }: { blockData: SpaceBlockType; preview?: boolean }) => {
   return (
     <Container $preview={preview}>
