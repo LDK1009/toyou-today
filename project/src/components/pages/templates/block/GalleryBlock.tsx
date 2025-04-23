@@ -23,14 +23,16 @@ const GalleryBlock = ({ blockData }: { blockData: GalleryBlockType }) => {
         {blockData.map((el, idx) => (
           <SwiperSlide key={idx}>
             <SlideWrapper>
-              <AnimationBlock animationType="fadeInToBottom">
-                <StyledImage src={el.imgSrc} alt="" width={200} height={200} />
-              </AnimationBlock>
-              <AnimationBlock animationType="fadeInToTop">
-                <Typography variant="body1" color="primary.dark">
-                  {el.text}
-                </Typography>
-              </AnimationBlock>
+              <Box>
+                <AnimationBlock animationType="fadeInToBottom">
+                  <StyledImage src={el.imgSrc} alt="" width={200} height={200} />
+                </AnimationBlock>
+                <AnimationBlock animationType="fadeInToTop">
+                  <Typography variant="body1" align="center" color="primary.dark">
+                    {el.text}
+                  </Typography>
+                </AnimationBlock>
+              </Box>
             </SlideWrapper>
           </SwiperSlide>
         ))}
@@ -41,7 +43,9 @@ const GalleryBlock = ({ blockData }: { blockData: GalleryBlockType }) => {
 
 export default GalleryBlock;
 
-const Container = styled(Box)``;
+const Container = styled(Box)`
+  width: 100%;
+`;
 
 const StyledImage = styled(Image)`
   width: 200px;
@@ -68,7 +72,6 @@ const StyledSwiperSlideContainer = styled(Swiper)`
 
 const SlideWrapper = styled(Stack)`
   width: 100%;
-  height: 100%;
   align-items: center;
   justify-content: center;
   row-gap: 16px;
