@@ -5,6 +5,7 @@ import ClientSnackbarProvider from "@/lib/ClientSnackbarProvider";
 import CommonBottomNavigation from "@/components/common/CommonBottomNavigation";
 import CommonHeader from "@/components/common/CommonHeader";
 import GlobalStyles from "@/styles/GlobalStyles";
+import TsParticleInit from "@/lib/TsParticleInit";
 
 // SEO 메타데이터
 export const metadata: Metadata = {
@@ -44,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <TsParticleInit />
         {/* MUI 캐시 프로바이더 (Next15 - MUI 호환)  */}
         <AppRouterCacheProvider>
           {/* MUI 테마 프로바이더 */}
