@@ -14,6 +14,9 @@ import GalleryEditor from "./block/GalleryEditor";
 import SpaceEditor from "./block/SpaceEditor";
 import LinkEditor from "./block/LinkEditor";
 import QuizEditor from "./block/QuizEditor";
+import ParticleEditor from "./page-asset/ParticleEditor";
+import RollingPaperEditor from "./page-asset/RollingPaperEditor";
+import BackgroundMusicEditor from "./page-asset/BackgroundMusicEditor";
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
   const { anchor, isOpen, setIsOpen } = useAddBlockDrawerStore();
@@ -56,9 +59,9 @@ const DrawerContent = () => {
   return (
     <DrawerContentContainer role="presentation">
       {/* 페이지 에셋 추가 드로어 */}
-      {/* {variant === "particle" && <ParticleEditor />} */}
-      {/* {variant === "rollingPaper" && <RollingPaperEditor />} */}
-      {/* {variant === "backgroundMusic" && <BackgroundMusicEditor />} */}
+      {variant === "particle" && <ParticleEditor />}
+      {variant === "rollingPaper" && <RollingPaperEditor />}
+      {variant === "backgroundMusic" && <BackgroundMusicEditor />}
 
       {/* 블록 추가 드로어 */}
       {variant === "space" && <SpaceEditor />}

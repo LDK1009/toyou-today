@@ -4,10 +4,13 @@ import { mixinContainer, mixinFlex, mixinHideScrollbar } from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
   CalendarMonthRounded,
+  CelebrationRounded,
   CloseRounded,
   GifRounded,
+  HistoryEduRounded,
   ImageRounded,
   InsertLinkRounded,
+  MusicNoteRounded,
   PhotoLibraryRounded,
   QuizRounded,
   SplitscreenRounded,
@@ -36,7 +39,7 @@ import { PageAssetVariantType } from "@/types/template/pageAssetType";
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store //////////////////////////////////////////////////
   // 템플릿 블록 스토어
-  const { templateBlocks } = useMakeTemplateStore();
+  const { template: { blocks: templateBlocks } } = useMakeTemplateStore();
 
   ////////////////////////////////////////////////// function //////////////////////////////////////////////////
   // 블록 렌더링
@@ -61,7 +64,6 @@ const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
-      <Typography variant="h5">템플릿 만들기</Typography>
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />
 
@@ -69,7 +71,7 @@ const TemplatesMakeContainer = () => {
       <AddPageAssetButton />
 
       {/* 블록 렌더링 */}
-      {renderBlocks()}
+      <BlockContainer>{renderBlocks()}</BlockContainer>
 
       {/* 블록 추가 버튼 */}
       <AddBlockButton />
@@ -84,28 +86,45 @@ const Container = styled(Box)`
   ${mixinFlex("column", "start", "center")}
 `;
 
+const BlockContainer = styled(Box)``;
+
 //////////////////////////////////////// 하위 컴포넌트 ////////////////////////////////////////
 ////////////////////////////// 페이지 에셋 추가 버튼 //////////////////////////////
 const AddPageAssetButton = () => {
+  // Store
+  const { setAllState: setAddBlockDrawerState } = useAddBlockDrawerStore();
+
+  // 블록 버튼 클릭 시 드로어 열기
+  const handleOpenDrawer = (variant: PageAssetVariantType) => {
+    setAddBlockDrawerState(variant, "bottom", true);
+  };
+
   const assets: { variant: PageAssetVariantType; icon: React.ReactNode }[] = [
     {
       variant: "particle",
-      icon: <ImageRounded />,
+      icon: <CelebrationRounded />,
     },
     {
       variant: "rollingPaper",
-      icon: <ImageRounded />,
+      icon: <HistoryEduRounded />,
     },
     {
       variant: "backgroundMusic",
-      icon: <ImageRounded />,
+      icon: <MusicNoteRounded />,
     },
   ];
 
   return (
     <AddPageAssetButtonContainer>
       {assets.map((el, index) => (
-        <PageAssetButton variant="outlined" endIcon={el.icon} key={index}/>
+        <PageAssetButton onClick={() => handleOpenDrawer(el.variant)} variant="outlined" key={index}>
+          {el.icon}
+          <Typography variant="body2">
+            {el.variant === "particle" && "폭죽"}
+            {el.variant === "rollingPaper" && "롤링페이퍼"}
+            {el.variant === "backgroundMusic" && "배경음악"}
+          </Typography>
+        </PageAssetButton>
       ))}
     </AddPageAssetButtonContainer>
   );
@@ -119,8 +138,16 @@ const AddPageAssetButtonContainer = styled(Stack)`
 `;
 
 const PageAssetButton = styled(Button)`
+  ${mixinFlex("column", "center", "center")}
+  row-gap: 8px;
+
   flex: 1;
   aspect-ratio: 1/1;
+
+  & .MuiSvgIcon-root {
+    font-size: 48px;
+    color: ${({ theme }) => theme.palette.primary.main};
+  }
 `;
 
 ////////////////////////////// 블록 추가 버튼 //////////////////////////////
@@ -182,11 +209,36 @@ const AddBlockButton = () => {
     <AddBlockButtonContainer>
       <Fade in={isFadeShow}>
         <MenuButtonContainer>
-          {buttons.map((el, index) => (
-            <Tooltip title={el.variant} key={index}>
-              <MenuButton onClick={() => handleOpenDrawer(el.variant)} variant="outlined" endIcon={el.icon} />
-            </Tooltip>
-          ))}
+          {buttons.map((el, index) => {
+            const tootipTitle = () => {
+              switch (el.variant) {
+                case "space":
+                  return "빈 공간";
+                case "text":
+                  return "텍스트";
+                case "calendar":
+                  return "캘린더";
+                case "image":
+                  return "이미지";
+                case "gallery":
+                  return "갤러리";
+                case "gif":
+                  return "움짤";
+                case "video":
+                  return "비디오";
+                case "link":
+                  return "링크";
+                case "quiz":
+                  return "퀴즈";
+              }
+            };
+
+            return (
+              <Tooltip title={tootipTitle()} key={index}>
+                <MenuButton onClick={() => handleOpenDrawer(el.variant)} variant="outlined" endIcon={el.icon} />
+              </Tooltip>
+            );
+          })}
         </MenuButtonContainer>
       </Fade>
 
@@ -214,6 +266,7 @@ const MenuButtonContainer = styled(Stack)`
   align-items: center;
   column-gap: 8px;
   overflow-x: auto;
+  margin-top: 16px;
 
   ${mixinHideScrollbar()}
 `;
