@@ -4,16 +4,16 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useAddBlockDrawerStore } from "@/store";
-import TextEditor from "./TextEditor";
+import TextEditor from "./block/TextEditor";
 import { styled } from "@mui/material";
-import CalenderEditor from "./CalenderEditor";
-import ImageEditor from "./ImageEditor";
-import VideoEditor from "./VideoEditor";
-import GifEditor from "./GifEditor";
-import GalleryEditor from "./GalleryEditor";
-import SpaceEditor from "./SpaceEditor";
-import LinkEditor from "./LinkEditor";
-import QuizEditor from "./QuizEditor";
+import CalenderEditor from "./block/CalenderEditor";
+import ImageEditor from "./block/ImageEditor";
+import VideoEditor from "./block/VideoEditor";
+import GifEditor from "./block/GifEditor";
+import GalleryEditor from "./block/GalleryEditor";
+import SpaceEditor from "./block/SpaceEditor";
+import LinkEditor from "./block/LinkEditor";
+import QuizEditor from "./block/QuizEditor";
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
   const { anchor, isOpen, setIsOpen } = useAddBlockDrawerStore();
@@ -55,6 +55,12 @@ const DrawerContent = () => {
 
   return (
     <DrawerContentContainer role="presentation">
+      {/* 페이지 에셋 추가 드로어 */}
+      {/* {variant === "particle" && <ParticleEditor />} */}
+      {/* {variant === "rollingPaper" && <RollingPaperEditor />} */}
+      {/* {variant === "backgroundMusic" && <BackgroundMusicEditor />} */}
+
+      {/* 블록 추가 드로어 */}
       {variant === "space" && <SpaceEditor />}
       {variant === "text" && <TextEditor />}
       {variant === "calendar" && <CalenderEditor />}

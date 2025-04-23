@@ -9,7 +9,7 @@ import { Button, CircularProgress, Stack, styled, Typography } from "@mui/materi
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import { AlignAndAnimationPicker } from "./CommonPicker";
-import ImageBlock from "../../block/ImageBlock";
+import ImageBlock from "../../../block/ImageBlock";
 
 const ImageEditor = () => {
   const [blockState, setBlockState] = useState<ImageBlockType>({

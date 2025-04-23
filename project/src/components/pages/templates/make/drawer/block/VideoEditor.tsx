@@ -5,7 +5,7 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import { useState } from "react";
-import VideoBlock from "../../block/VideoBlock";
+import VideoBlock from "../../../block/VideoBlock";
 
 const VideoEditor = () => {
   /////////////////////////////////////////////////////////////// State

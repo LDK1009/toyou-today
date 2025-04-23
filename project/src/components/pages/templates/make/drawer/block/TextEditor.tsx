@@ -15,7 +15,7 @@ import {
 import { FormatAlignRightRounded } from "@mui/icons-material";
 import { FormatAlignLeftRounded } from "@mui/icons-material";
 import { useAddBlockDrawerStore } from "@/store/ui/addBlockDrawerStore";
-import TextBlock from "../../block/TextBlock";
+import TextBlock from "../../../block/TextBlock";
 import { ColorPicker } from "./CommonPicker";
 
 const TextEditor = () => {

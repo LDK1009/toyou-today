@@ -31,15 +31,15 @@ import GalleryBlock from "../block/GalleryBlock";
 import SpaceBlock from "../block/SpaceBlock";
 import LinkBlock from "../block/LinkBlock";
 import QuizBlock from "../block/QuizBlock";
+import { PageAssetVariantType } from "@/types/template/pageAssetType";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store //////////////////////////////////////////////////
-  // MakeTemplateStore
+  // 템플릿 블록 스토어
   const { templateBlocks } = useMakeTemplateStore();
 
   ////////////////////////////////////////////////// function //////////////////////////////////////////////////
-
-  ////////////////////////////////////////////////// Component //////////////////////////////////////////////////
+  // 블록 렌더링
   const renderBlocks = () => {
     return templateBlocks.map((el, index) => {
       return (
@@ -62,10 +62,16 @@ const TemplatesMakeContainer = () => {
   return (
     <Container>
       <Typography variant="h5">템플릿 만들기</Typography>
+      {/* 블록 추가 드로어 */}
       <AddBlockDrawer />
 
+      {/* 페이지 에셋 추가 버튼 */}
+      <AddPageAssetButton />
+
+      {/* 블록 렌더링 */}
       {renderBlocks()}
 
+      {/* 블록 추가 버튼 */}
       <AddBlockButton />
     </Container>
   );
@@ -78,7 +84,46 @@ const Container = styled(Box)`
   ${mixinFlex("column", "start", "center")}
 `;
 
-////////////////////////////// 하위 컴포넌트 //////////////////////////////
+//////////////////////////////////////// 하위 컴포넌트 ////////////////////////////////////////
+////////////////////////////// 페이지 에셋 추가 버튼 //////////////////////////////
+const AddPageAssetButton = () => {
+  const assets: { variant: PageAssetVariantType; icon: React.ReactNode }[] = [
+    {
+      variant: "particle",
+      icon: <ImageRounded />,
+    },
+    {
+      variant: "rollingPaper",
+      icon: <ImageRounded />,
+    },
+    {
+      variant: "backgroundMusic",
+      icon: <ImageRounded />,
+    },
+  ];
+
+  return (
+    <AddPageAssetButtonContainer>
+      {assets.map((el, index) => (
+        <PageAssetButton variant="outlined" endIcon={el.icon} key={index}/>
+      ))}
+    </AddPageAssetButtonContainer>
+  );
+};
+
+const AddPageAssetButtonContainer = styled(Stack)`
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  column-gap: 8px;
+`;
+
+const PageAssetButton = styled(Button)`
+  flex: 1;
+  aspect-ratio: 1/1;
+`;
+
+////////////////////////////// 블록 추가 버튼 //////////////////////////////
 const AddBlockButton = () => {
   // Store
   const { setAllState: setAddBlockDrawerState } = useAddBlockDrawerStore();

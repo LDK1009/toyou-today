@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { TextField, Typography, Button, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { QuizBlockType } from "@/types/template/blockType";
-import { ColorPicker } from "@/components/pages/templates/make/drawer/CommonPicker";
+import { ColorPicker } from "@/components/pages/templates/make/drawer/block/CommonPicker";
 import { AddRounded } from "@mui/icons-material";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import { useAddBlockDrawerStore } from "@/store";
-import QuizBlock from "../../block/QuizBlock";
+import QuizBlock from "../../../block/QuizBlock";
 import { enqueueSnackbar } from "notistack";
 
 const QuizEditor = () => {

@@ -1,5 +1,5 @@
 import { Button, Slider, Stack, styled } from "@mui/material";
-import SpaceBlock from "../../block/SpaceBlock";
+import SpaceBlock from "../../../block/SpaceBlock";
 import { useState } from "react";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import { useAddBlockDrawerStore } from "@/store";
