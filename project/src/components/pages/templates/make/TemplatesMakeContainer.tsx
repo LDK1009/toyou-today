@@ -35,11 +35,15 @@ import SpaceBlock from "../block/SpaceBlock";
 import LinkBlock from "../block/LinkBlock";
 import QuizBlock from "../block/QuizBlock";
 import { PageAssetVariantType } from "@/types/template/pageAssetType";
+import TextConfetti from "@/components/common/TextConfetti";
+// import TextConfetti from "@/components/common/TextConfetti";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Store //////////////////////////////////////////////////
   // 템플릿 블록 스토어
-  const { template: { blocks: templateBlocks } } = useMakeTemplateStore();
+  const {
+    template: { blocks: templateBlocks, pageAssets: templatePageAssets },
+  } = useMakeTemplateStore();
 
   ////////////////////////////////////////////////// function //////////////////////////////////////////////////
   // 블록 렌더링
@@ -64,6 +68,12 @@ const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
+      {templatePageAssets?.particle && (
+        <TextConfetti
+          particle={templatePageAssets.particle.textConfettiProps.particle}
+          emitters={templatePageAssets.particle.textConfettiProps.emitters}
+        />
+      )}
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />
 
@@ -96,7 +106,7 @@ const AddPageAssetButton = () => {
 
   // 블록 버튼 클릭 시 드로어 열기
   const handleOpenDrawer = (variant: PageAssetVariantType) => {
-    setAddBlockDrawerState(variant, "bottom", true);
+    setAddBlockDrawerState(variant, "top", true);
   };
 
   const assets: { variant: PageAssetVariantType; icon: React.ReactNode }[] = [
