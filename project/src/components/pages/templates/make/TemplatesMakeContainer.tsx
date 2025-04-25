@@ -39,13 +39,48 @@ import TextConfetti from "@/components/common/TextConfetti";
 // import TextConfetti from "@/components/common/TextConfetti";
 
 const TemplatesMakeContainer = () => {
-  ////////////////////////////////////////////////// Store //////////////////////////////////////////////////
+  ////////////////////////////////////////////////// State //////////////////////////////////////////////////
+  const particle = useMakeTemplateStore((state) => state.template.pageAssets?.particle);
+
+  ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
+  return (
+    <Container>
+      {/* ========== Default ========== */}
+      {/* 폭죽 활성화 시 폭죽 렌더링 */}
+      {particle?.isActive && (
+        <TextConfetti particle={particle.textConfettiProps.particle} emitters={particle.textConfettiProps.emitters} />
+      )}
+      {/* 블록 추가 드로어 */}
+      <AddBlockDrawer />
+      {/* ========== End of Default ========== */}
+
+      {/* 페이지 에셋 추가 버튼 */}
+      <AddPageAssetButton />
+
+      {/* 블록 렌더링 */}
+      <BlockComponents />
+
+      {/* 블록 추가 버튼 */}
+      <AddBlockButton />
+    </Container>
+  );
+};
+
+export default TemplatesMakeContainer;
+////////////////////////////// 스타일 //////////////////////////////
+const Container = styled(Box)`
+  ${mixinContainer()}
+  ${mixinFlex("column", "start", "center")}
+`;
+
+//////////////////////////////////////// 하위 컴포넌트 ////////////////////////////////////////
+////////////////////////////// 블록 컴포넌트 //////////////////////////////
+const BlockComponents = () => {
   // 템플릿 블록 스토어
   const {
-    template: { blocks: templateBlocks, pageAssets: templatePageAssets },
+    template: { blocks: templateBlocks },
   } = useMakeTemplateStore();
 
-  ////////////////////////////////////////////////// function //////////////////////////////////////////////////
   // 블록 렌더링
   const renderBlocks = () => {
     return templateBlocks.map((el, index) => {
@@ -65,43 +100,12 @@ const TemplatesMakeContainer = () => {
     });
   };
 
-  ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
-  return (
-    <Container>
-      {/* ========== Default ========== */}
-      {/* 폭죽 활성화 시 폭죽 렌더링 */}
-      {templatePageAssets?.particle && (
-        <TextConfetti
-          particle={templatePageAssets.particle.textConfettiProps.particle}
-          emitters={templatePageAssets.particle.textConfettiProps.emitters}
-        />
-      )}
-      {/* 블록 추가 드로어 */}
-      <AddBlockDrawer />
-      {/* ========== End of Default ========== */}
-
-      {/* 페이지 에셋 추가 버튼 */}
-      <AddPageAssetButton />
-
-      {/* 블록 렌더링 */}
-      <BlockContainer>{renderBlocks()}</BlockContainer>
-
-      {/* 블록 추가 버튼 */}
-      <AddBlockButton />
-    </Container>
-  );
+  // 렌더링
+  return <BlockComponentsContainer>{renderBlocks()}</BlockComponentsContainer>;
 };
 
-export default TemplatesMakeContainer;
-////////////////////////////// 스타일 //////////////////////////////
-const Container = styled(Box)`
-  ${mixinContainer()}
-  ${mixinFlex("column", "start", "center")}
-`;
+const BlockComponentsContainer = styled(Box)``;
 
-const BlockContainer = styled(Box)``;
-
-//////////////////////////////////////// 하위 컴포넌트 ////////////////////////////////////////
 ////////////////////////////// 페이지 에셋 추가 버튼 //////////////////////////////
 const AddPageAssetButton = () => {
   // Store
