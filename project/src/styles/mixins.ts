@@ -177,3 +177,38 @@ export const mixinTextGradient = (startColor: string = "#ff7e5f", endColor: stri
   background-clip: text;
   color: transparent;
 `;
+
+// 스위치 믹스인
+export const mixinSwitch = (width: number, height: number, theme: Theme) => css`
+  && {
+    width: ${width}px;
+    height: ${height + height * 0.15}px;
+    padding: 0px;
+
+    .MuiSwitch-switchBase {
+      padding: 0px;
+      margin: ${height * 0.075}px;
+      transform: translateX(0);
+
+      &.Mui-checked {
+        transform: translateX(${width / 2 - width * 0.1}px);
+
+        & + .MuiSwitch-track {
+          opacity: 1;
+        }
+      }
+    }
+
+    .MuiSwitch-thumb {
+      width: ${width / 2}px;
+      height: ${height}px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+      background-color: ${theme.palette.background.paper};
+    }
+
+    .MuiSwitch-track {
+      border-radius: ${width / 3}px;
+      opacity: 0.5;
+    }
+  }
+`;

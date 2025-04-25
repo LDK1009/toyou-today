@@ -35,11 +35,12 @@ export const useMakeTemplateStore = create<StoreType>((set) => ({
   // 상태
   template: initialTemplate,
 
-  
   // 액션(페이지 에셋)
   // 페이지 에셋 설정
   setPageAsset: (name, content) =>
-    set((state) => ({ template: { ...state.template, [name]: content } })),
+    set((state) => ({
+      template: { ...state.template, pageAssets: { ...state.template.pageAssets, [name]: content } },
+    })),
 
   // 액션(블록)
   // 액션(블록)

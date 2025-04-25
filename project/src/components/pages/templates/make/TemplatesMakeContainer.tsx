@@ -68,6 +68,8 @@ const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
+      {/* ========== Default ========== */}
+      {/* 폭죽 활성화 시 폭죽 렌더링 */}
       {templatePageAssets?.particle && (
         <TextConfetti
           particle={templatePageAssets.particle.textConfettiProps.particle}
@@ -76,6 +78,7 @@ const TemplatesMakeContainer = () => {
       )}
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />
+      {/* ========== End of Default ========== */}
 
       {/* 페이지 에셋 추가 버튼 */}
       <AddPageAssetButton />
