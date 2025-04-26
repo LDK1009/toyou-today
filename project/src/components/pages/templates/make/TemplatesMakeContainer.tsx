@@ -36,10 +36,12 @@ import LinkBlock from "../block/LinkBlock";
 import QuizBlock from "../block/QuizBlock";
 import { PageAssetVariantType } from "@/types/template/pageAssetType";
 import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
+import BackgroundMusicPageAsset from "../page-asset/BackgroundMusicPageAsset";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
   const particle = useMakeTemplateStore((state) => state.template.pageAssets?.particle);
+  const backgroundMusic = useMakeTemplateStore((state) => state.template.pageAssets?.backgroundMusic);
 
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
@@ -47,8 +49,15 @@ const TemplatesMakeContainer = () => {
       {/* ========== Default ========== */}
       {/* 폭죽 활성화 시 폭죽 렌더링 */}
       {particle?.isActive && (
-        <ParticlePageAsset particle={particle.textConfettiProps.particle} emitters={particle.textConfettiProps.emitters} />
+        <ParticlePageAsset
+          particle={particle.textConfettiProps.particle}
+          emitters={particle.textConfettiProps.emitters}
+        />
       )}
+
+      {/* 배경음악 활성화 시 배경음악 렌더링 */}
+      {backgroundMusic && <BackgroundMusicPageAsset />}
+
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />
       {/* ========== End of Default ========== */}

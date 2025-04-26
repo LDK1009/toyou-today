@@ -10,6 +10,7 @@ import {
   NorthWestRounded,
   SouthEastRounded,
   SouthWestRounded,
+  CheckCircleOutlineRounded,
 } from "@mui/icons-material";
 import { emitterOptionsType } from "@/components/pages/templates/page-asset/ParticlePageAsset";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
@@ -269,9 +270,9 @@ const ParticleEditor = () => {
         </Grid2>
       </Grid2>
 
-      <AddButton variant="contained" onClick={handleAddPageAssetButtonClick}>
-        추가
-      </AddButton>
+      <EditButton variant="contained" onClick={handleAddPageAssetButtonClick} startIcon={<CheckCircleOutlineRounded />}>
+        저장
+      </EditButton>
     </Container>
   );
 };
@@ -292,7 +293,7 @@ const TitleText = styled(Typography)`
   color: ${({ theme }) => theme.palette.primary.main};
 `;
 
-const AddButton = styled(Button)`
+const EditButton = styled(Button)`
   width: 100%;
   color: ${({ theme }) => theme.palette.text.white};
 `;

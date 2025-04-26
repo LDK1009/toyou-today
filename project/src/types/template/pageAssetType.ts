@@ -29,5 +29,6 @@ export type RollingPaperAssetType = {
 
 export type BackgroundMusicAssetType = {
   isActive: boolean;
+  label: string;
   musicSrc: string;
 };
