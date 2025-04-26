@@ -35,8 +35,7 @@ import SpaceBlock from "../block/SpaceBlock";
 import LinkBlock from "../block/LinkBlock";
 import QuizBlock from "../block/QuizBlock";
 import { PageAssetVariantType } from "@/types/template/pageAssetType";
-import TextConfetti from "@/components/common/TextConfetti";
-// import TextConfetti from "@/components/common/TextConfetti";
+import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -48,7 +47,7 @@ const TemplatesMakeContainer = () => {
       {/* ========== Default ========== */}
       {/* 폭죽 활성화 시 폭죽 렌더링 */}
       {particle?.isActive && (
-        <TextConfetti particle={particle.textConfettiProps.particle} emitters={particle.textConfettiProps.emitters} />
+        <ParticlePageAsset particle={particle.textConfettiProps.particle} emitters={particle.textConfettiProps.emitters} />
       )}
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />

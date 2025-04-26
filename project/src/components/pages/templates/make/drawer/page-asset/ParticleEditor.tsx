@@ -11,10 +11,11 @@ import {
   SouthEastRounded,
   SouthWestRounded,
 } from "@mui/icons-material";
-import TextConfetti, { emitterOptionsType } from "@/components/common/TextConfetti";
+import { emitterOptionsType } from "@/components/pages/templates/page-asset/ParticlePageAsset";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import { useAddBlockDrawerStore } from "@/store";
 import { mixinHideScrollbar, mixinSwitch } from "@/styles/mixins";
+import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
 
 const ParticleEditor = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -226,7 +227,7 @@ const ParticleEditor = () => {
     <Container>
       {/* 미리보기 */}
       {pageAssetState?.isActive && (
-        <TextConfetti
+        <ParticlePageAsset
           particle={pageAssetState.textConfettiProps.particle}
           emitters={pageAssetState.textConfettiProps.emitters}
         />
