@@ -23,8 +23,22 @@ export type ParticleAssetInputType = {
 };
 
 export type RollingPaperAssetType = {
+  id?: number;
   isActive: boolean;
-  color: string;
+  comments: RollingPaperAsset_CommentItemType[];
+  empathies: RollingPaperAsset_EmpathyItemType[];
+};
+
+export type RollingPaperAsset_CommentItemType = {
+  comment_id?: number;
+  nickname: string;
+  comment: string;
+};
+
+export type RollingPaperAsset_EmpathyItemType = {
+  empathy_id?: number;
+  nickname: string;
+  emoji: string;
 };
 
 export type BackgroundMusicAssetType = {
