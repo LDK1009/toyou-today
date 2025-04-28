@@ -2,6 +2,7 @@ import { BlockType } from "@/types/template/blockType";
 import { PageAssetContentType, PageAssetObjectType, PageAssetVariantType } from "@/types/template/pageAssetType";
 import { TemplateType } from "@/types/template/templateType";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface StoreType {
   // 상태
@@ -31,28 +32,37 @@ const initialTemplate: TemplateType = {
   blocks: [],
 };
 
-export const useMakeTemplateStore = create<StoreType>((set) => ({
-  // 상태
-  template: initialTemplate,
+export const useMakeTemplateStore = create<StoreType>()(
+  persist(
+    (set) => ({
+      // 상태
+      template: initialTemplate,
 
-  // 액션(페이지 에셋)
-  // 페이지 에셋 설정
-  setPageAsset: (name, content) =>
-    set((state) => ({
-      template: { ...state.template, pageAssets: { ...state.template.pageAssets, [name]: content } },
-    })),
+      // 액션(페이지 에셋)
+      // 페이지 에셋 설정
+      setPageAsset: (name, content) =>
+        set((state) => ({
+          template: { ...state.template, pageAssets: { ...state.template.pageAssets, [name]: content } },
+        })),
 
-  // 액션(블록)
-  // 액션(블록)
-  // 블록 추가
-  addBlock: (block: BlockType) =>
-    set((state) => ({ template: { ...state.template, blocks: [...state.template.blocks, block] } })),
+      // 액션(블록)
+      // 액션(블록)
+      // 블록 추가
+      addBlock: (block: BlockType) =>
+        set((state) => ({ template: { ...state.template, blocks: [...state.template.blocks, block] } })),
 
-  // 블록 삭제
-  deleteBlock: (index: number) =>
-    set((state) => ({ template: { ...state.template, blocks: state.template.blocks.filter((_, i) => i !== index) } })),
+      // 블록 삭제
+      deleteBlock: (index: number) =>
+        set((state) => ({
+          template: { ...state.template, blocks: state.template.blocks.filter((_, i) => i !== index) },
+        })),
 
-  // 블록 설정
-  setTemplateBlocks: (templateBlocks: BlockType[]) =>
-    set((state) => ({ template: { ...state.template, blocks: templateBlocks } })),
-}));
+      // 블록 설정
+      setTemplateBlocks: (templateBlocks: BlockType[]) =>
+        set((state) => ({ template: { ...state.template, blocks: templateBlocks } })),
+    }),
+    {
+      name: "makeTemplate-storage",
+    }
+  )
+);
