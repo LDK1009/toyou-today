@@ -40,7 +40,7 @@ import { PageAssetVariantType } from "@/types/template/pageAssetType";
 import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
 import BackgroundMusicPageAsset from "../page-asset/BackgroundMusicPageAsset";
 import RollingPaperPageAsset from "../page-asset/RollingPaperPageAsset";
-import { motion } from "motion/react";
+import { motion, Reorder } from "motion/react";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -95,17 +95,18 @@ const BlockComponents = () => {
   // 템플릿 블록 스토어
   const {
     template: { blocks: templateBlocks },
+    setTemplateBlocks,
   } = useMakeTemplateStore();
 
   // 블록 렌더링
   const renderBlocks = () => {
     return templateBlocks.map((el, index) => {
       return (
-        <React.Fragment key={index}>
+        <Reorder.Item key={el.id} value={el} as="div">
           <BlockWrapper blockIdx={index} blockKey={el.id as number}>
             {el.variant === "space" && <SpaceBlock blockData={el.content} />}
             {el.variant === "text" && <TextBlock blockData={el.content} />}
-            {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
+            {el.variant === "calendar" && <CalenderBlock key={`calendar-${el.id}`} blockData={el.content} />}
             {el.variant === "image" && <ImageBlock blockData={el.content} />}
             {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
             {el.variant === "gif" && <GifBlock blockData={el.content} />}
@@ -113,13 +114,19 @@ const BlockComponents = () => {
             {el.variant === "link" && <LinkBlock blockData={el.content} />}
             {el.variant === "quiz" && <QuizBlock blockData={el.content} />}
           </BlockWrapper>
-        </React.Fragment>
+        </Reorder.Item>
       );
     });
   };
 
   // 렌더링
-  return <BlockComponentsContainer>{renderBlocks()}</BlockComponentsContainer>;
+  return (
+    <BlockComponentsContainer>
+      <Reorder.Group axis="y" values={templateBlocks} onReorder={(state) => setTemplateBlocks(state)}>
+        {renderBlocks()}
+      </Reorder.Group>
+    </BlockComponentsContainer>
+  );
 };
 
 const BlockComponentsContainer = styled(Stack)`
