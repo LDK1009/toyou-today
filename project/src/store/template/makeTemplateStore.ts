@@ -42,8 +42,8 @@ const initialTemplate: MakeTemplateType = {
 };
 
 // 스토어 생성
-export const useMakeTemplateStore = create<StoreType>()(
-  persist(
+export const useMakeTemplateStore = create(
+  persist<StoreType>(
     (set) => ({
       ////////// 상태
       template: initialTemplate,
@@ -63,7 +63,9 @@ export const useMakeTemplateStore = create<StoreType>()(
 
       // 블록 추가
       addBlock: (block: BlockType) =>
-        set((state) => ({ template: { ...state.template, blocks: [...state.template.blocks, block] } })),
+        set((state) => ({
+          template: { ...state.template, blocks: [...state.template.blocks, { ...block, id: state.template.blocks.length }] },
+        })),
 
       // 블록 수정
       updateBlock: (index, block) =>
@@ -79,51 +81,77 @@ export const useMakeTemplateStore = create<StoreType>()(
 
       // 블록 한 칸 위로 옮기기
       moveUpBlock: (targetBlockIndex: number) =>
-        set((state) => ({
-          template: {
-            ...state.template,
-            blocks: state.template.blocks.map((el, idx) => {
-              // 임시 변수에 타겟 블록 저장
-              const tempBlock = state.template.blocks[targetBlockIndex];
+        set((state) => {
+          const prevTemplate = state.template;
+          const prevBlocks = prevTemplate.blocks;
 
-              // 타겟 인덱스 위치에 윗 블록 대입
-              if (idx === targetBlockIndex) {
-                return state.template.blocks[idx - 1];
-              }
+          // 마지막 블록일 경우 옮길 수 없음
+          if (targetBlockIndex === 0) {
+            return {
+              template: prevTemplate,
+            };
+          }
 
-              // 타겟 인덱스 윗 블록 위치에 타겟 블록 대입
-              if (idx === targetBlockIndex - 1) {
-                return tempBlock;
-              }
+          // 블록 옮기기
+          return {
+            template: {
+              ...prevTemplate,
+              blocks: prevBlocks.map((el, idx) => {
+                // 임시 변수에 타겟 블록 저장
+                const tempBlock = prevBlocks[targetBlockIndex];
 
-              return el;
-            }),
-          },
-        })),
+                // 타겟 인덱스 위치에 윗 블록 대입
+                if (idx === targetBlockIndex) {
+                  return prevBlocks[idx - 1];
+                }
+
+                // 타겟 인덱스 윗 블록 위치에 타겟 블록 대입
+                if (idx === targetBlockIndex - 1) {
+                  return tempBlock;
+                }
+
+                return el;
+              }),
+            },
+          };
+        }),
 
       // 블록 한 칸 아래로 옮기기
       moveDownBlock: (targetBlockIndex: number) =>
-        set((state) => ({
-          template: {
-            ...state.template,
-            blocks: state.template.blocks.map((el, idx) => {
-              // 임시 변수에 타겟 블록 저장
-              const tempBlock = state.template.blocks[targetBlockIndex];
+        set((state) => {
+          const prevTemplate = state.template;
+          const prevBlocks = prevTemplate.blocks;
 
-              // 타겟 인덱스 위치에 윗 블록 대입
-              if (idx === targetBlockIndex) {
-                return state.template.blocks[idx + 1];
-              }
+          // 마지막 블록일 경우 옮길 수 없음
+          if (targetBlockIndex === prevBlocks.length - 1) {
+            return {
+              template: prevTemplate,
+            };
+          }
 
-              // 타겟 인덱스 윗 블록 위치에 타겟 블록 대입
-              if (idx === targetBlockIndex + 1) {
-                return tempBlock;
-              }
+          // 블록 옮기기
+          return {
+            template: {
+              ...prevTemplate,
+              blocks: prevBlocks.map((el, idx) => {
+                // 임시 변수에 타겟 블록 저장
+                const tempBlock = prevBlocks[targetBlockIndex];
 
-              return el;
-            }),
-          },
-        })),
+                // 타겟 인덱스 위치에 윗 블록 대입
+                if (idx === targetBlockIndex) {
+                  return prevBlocks[idx + 1];
+                }
+
+                // 타겟 인덱스 윗 블록 위치에 타겟 블록 대입
+                if (idx === targetBlockIndex + 1) {
+                  return tempBlock;
+                }
+
+                return el;
+              }),
+            },
+          };
+        }),
     }),
     {
       name: "makeTemplate-storage",

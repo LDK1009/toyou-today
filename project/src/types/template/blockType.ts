@@ -1,15 +1,15 @@
 import { Dayjs } from "dayjs";
 
 export type BlockType =
-  | { variant: "space"; content: SpaceBlockType }
-  | { variant: "text"; content: TextBlockType }
-  | { variant: "calendar"; content: CalendarBlockType }
-  | { variant: "image"; content: ImageBlockType }
-  | { variant: "gallery"; content: GalleryBlockType }
-  | { variant: "gif"; content: GifBlockType }
-  | { variant: "video"; content: VideoBlockType }
-  | { variant: "link"; content: LinkBlockType }
-  | { variant: "quiz"; content: QuizBlockType };
+  | { id?: number; variant: "space"; content: SpaceBlockType }
+  | { id?: number; variant: "text"; content: TextBlockType }
+  | { id?: number; variant: "calendar"; content: CalendarBlockType }
+  | { id?: number; variant: "image"; content: ImageBlockType }
+  | { id?: number; variant: "gallery"; content: GalleryBlockType }
+  | { id?: number; variant: "gif"; content: GifBlockType }
+  | { id?: number; variant: "video"; content: VideoBlockType }
+  | { id?: number; variant: "link"; content: LinkBlockType }
+  | { id?: number; variant: "quiz"; content: QuizBlockType };
 export type BlockVariantType = "space" | "text" | "calendar" | "image" | "gallery" | "gif" | "video" | "link" | "quiz";
 export type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate";
 export type AlignType = "left" | "center" | "right";

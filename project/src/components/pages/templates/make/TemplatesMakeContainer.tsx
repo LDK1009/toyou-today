@@ -3,6 +3,8 @@
 import { mixinContainer, mixinFlex, mixinHideScrollbar } from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
+  ArrowDownwardRounded,
+  ArrowUpwardRounded,
   CalendarMonthRounded,
   CelebrationRounded,
   CloseRounded,
@@ -38,6 +40,7 @@ import { PageAssetVariantType } from "@/types/template/pageAssetType";
 import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
 import BackgroundMusicPageAsset from "../page-asset/BackgroundMusicPageAsset";
 import RollingPaperPageAsset from "../page-asset/RollingPaperPageAsset";
+import { motion } from "motion/react";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -99,15 +102,17 @@ const BlockComponents = () => {
     return templateBlocks.map((el, index) => {
       return (
         <React.Fragment key={index}>
-          {el.variant === "space" && <SpaceBlock blockData={el.content} />}
-          {el.variant === "text" && <TextBlock blockData={el.content} />}
-          {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
-          {el.variant === "image" && <ImageBlock blockData={el.content} />}
-          {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
-          {el.variant === "gif" && <GifBlock blockData={el.content} />}
-          {el.variant === "video" && <VideoBlock blockData={el.content} />}
-          {el.variant === "link" && <LinkBlock blockData={el.content} />}
-          {el.variant === "quiz" && <QuizBlock blockData={el.content} />}
+          <BlockWrapper blockIdx={index} blockKey={el.id as number}>
+            {el.variant === "space" && <SpaceBlock blockData={el.content} />}
+            {el.variant === "text" && <TextBlock blockData={el.content} />}
+            {el.variant === "calendar" && <CalenderBlock blockData={el.content} />}
+            {el.variant === "image" && <ImageBlock blockData={el.content} />}
+            {el.variant === "gallery" && <GalleryBlock blockData={el.content} />}
+            {el.variant === "gif" && <GifBlock blockData={el.content} />}
+            {el.variant === "video" && <VideoBlock blockData={el.content} />}
+            {el.variant === "link" && <LinkBlock blockData={el.content} />}
+            {el.variant === "quiz" && <QuizBlock blockData={el.content} />}
+          </BlockWrapper>
         </React.Fragment>
       );
     });
@@ -117,8 +122,62 @@ const BlockComponents = () => {
   return <BlockComponentsContainer>{renderBlocks()}</BlockComponentsContainer>;
 };
 
-const BlockComponentsContainer = styled(Box)`
+const BlockComponentsContainer = styled(Stack)`
   width: 100%;
+  row-gap: 24px;
+`;
+
+////////////////////////////// 블록 수정 헤더컴포넌트 //////////////////////////////
+const BlockWrapper = ({
+  blockIdx,
+  blockKey,
+  children,
+}: {
+  blockIdx: number;
+  blockKey: number;
+  children: React.ReactNode;
+}) => {
+  const { moveUpBlock, moveDownBlock } = useMakeTemplateStore();
+
+  return (
+    <BlockWrapper_Animation
+      key={blockKey}
+      animate={{
+        borderColor: ["#FFFFFF", "#FFB6B9", "#FFFFFF"],
+        backgroundColor: ["#FFFFFF", "#FFE0E2", "#FFFFFF"],
+        scale: [1, 1.01, 1],
+      }}
+      transition={{ duration: 1 }}
+    >
+      <BlockWrapper_Container>
+        <BlockWrapper_Header>
+          <Typography variant="h6">블록 수정</Typography>
+          <Button variant="outlined" onClick={() => moveUpBlock(blockIdx)}>
+            <ArrowUpwardRounded />
+          </Button>
+          <Button variant="outlined" onClick={() => moveDownBlock(blockIdx)}>
+            <ArrowDownwardRounded />
+          </Button>
+        </BlockWrapper_Header>
+        {children}
+      </BlockWrapper_Container>
+    </BlockWrapper_Animation>
+  );
+};
+
+const BlockWrapper_Animation = styled(motion.div)`
+  border-width: 3px;
+  border-style: dashed;
+`;
+
+const BlockWrapper_Container = styled(Stack)`
+  width: 100%;
+  row-gap: 4px;
+`;
+
+const BlockWrapper_Header = styled(Stack)`
+  width: 100%;
+  background-color: red;
 `;
 
 ////////////////////////////// 페이지 에셋 추가 버튼 //////////////////////////////
