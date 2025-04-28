@@ -57,6 +57,7 @@ const MusicIconWrapper = styled(Box, { shouldForwardProp })<MusicIconWrapperProp
   height: 50px;
 
   position: fixed;
+  z-index: 100;
   bottom: 86px;
   right: 16px;
 
