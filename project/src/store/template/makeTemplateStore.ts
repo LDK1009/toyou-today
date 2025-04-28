@@ -1,15 +1,12 @@
 import { BlockType } from "@/types/template/blockType";
-import { PageAssetContentType, PageAssetObjectType, PageAssetVariantType } from "@/types/template/pageAssetType";
-import { TemplateType } from "@/types/template/templateType";
+import { PageAssetContentType, PageAssetVariantType } from "@/types/template/pageAssetType";
+import { MakeTemplateType } from "@/types/template/templateType";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface StoreType {
   // 상태
-  template: {
-    pageAssets: PageAssetObjectType;
-    blocks: BlockType[];
-  };
+  template: MakeTemplateType;
 
   // 페이지 에셋 관련 액션
   setPageAsset: (name: PageAssetVariantType, content: PageAssetContentType) => void;
@@ -21,9 +18,9 @@ interface StoreType {
 }
 
 // 초기 템플릿
-const initialTemplate: TemplateType = {
-  id: "",
+const initialTemplate: MakeTemplateType = {
   name: "",
+  makerId: "",
   pageAssets: {
     particle: null,
     rollingPaper: null,
