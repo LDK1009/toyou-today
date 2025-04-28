@@ -23,6 +23,7 @@ const RollingPaperEditor = () => {
   // 롤링페이퍼 테스트 데이터
   const previewData = {
     comments: [
+      { comment_id: 1, nickname: "동규", comment: "생일 축하해! 행복한 하루 보내 :)" },
       { comment_id: 2, nickname: "수민", comment: "생일 진심으로 축하해! 오늘 행복한 하루 보내자" },
       { comment_id: 3, nickname: "민재", comment: "한 살 더 예뻐진 거 축하해. 멋진 한 해 되자" },
       { comment_id: 4, nickname: "서연", comment: "오늘은 그냥 마음껏 즐기자" },
@@ -42,7 +43,6 @@ const RollingPaperEditor = () => {
       { comment_id: 18, nickname: "예준", comment: "생일 사진 올려줘. 보고 싶어" },
       { comment_id: 19, nickname: "하린", comment: "생일 축하해. 앞으로도 항상 행복하자" },
       { comment_id: 20, nickname: "시우", comment: "진짜 멋있다. 생일 진심으로 축하해" },
-      { comment_id: 21, nickname: "은채", comment: "오늘은 아무 생각 말고 마음껏 즐겨" },
     ],
     empathies: [
       { empathy_id: 1, nickname: "지훈", emoji: "🔥" },

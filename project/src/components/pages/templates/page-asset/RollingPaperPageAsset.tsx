@@ -6,15 +6,15 @@ import {
   RollingPaperAsset_EmpathyItemType,
 } from "@/types/template/pageAssetType";
 import CommonTab from "@/components/common/CommonTab";
-import { Button, Grid2, Stack, styled, TextField, Typography } from "@mui/material";
+import { Button, Fade, Grid2, Stack, styled, TextField, Typography } from "@mui/material";
 import { mixinHideScrollbar } from "@/styles/mixins";
-import { motion, useInView } from "motion/react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import BubbleLayer from "@/components/common/BubbleLayer";
-import { HistoryEduRounded } from "@mui/icons-material";
+import { CloseFullscreenRounded, HistoryEduRounded, ReplayRounded } from "@mui/icons-material";
 import { enqueueSnackbar } from "notistack";
 import { shouldForwardProp } from "@/utils/mui";
-
+import { Typewriter } from "react-simple-typewriter";
 const RollingPaperPageAsset = ({
   pageAssetData,
   preview = false,
@@ -84,6 +84,7 @@ const ItemAnimation = ({
   );
 };
 
+//////////////////////////////////////// 댓글 탭 관련 컴포넌트 ////////////////////////////////////////
 //////////////////// 댓글 탭 ////////////////////
 type CommentTabPropsType = {
   comments: RollingPaperAsset_CommentItemType[];
@@ -93,15 +94,19 @@ type CommentTabPropsType = {
 const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
   const inViewRef = useRef(null);
   const isInView = useInView(inViewRef);
+  const [isLetterMode, setIsLetterMode] = useState(false);
 
   return (
     <CommentTab_Container ref={inViewRef}>
+      {/* 편지 모드 레이어 */}
+      {isLetterMode && <LetterLayer comments={comments} setIsLetterMode={setIsLetterMode} />}
+
       {/* 댓글 목록 섹션 */}
       <CommentTab_CommentSection>
         <ReadLetterModeButton
           variant="outlined"
           startIcon={<HistoryEduRounded />}
-          onClick={() => enqueueSnackbar("개발 중인 기능입니다.", { variant: "info" })}
+          onClick={() => setIsLetterMode(true)}
         >
           편지 모드로 보기
         </ReadLetterModeButton>
@@ -133,7 +138,6 @@ const CommentTab_CommentSection = styled(Stack)`
 const ReadLetterModeButton = styled(Button)``;
 
 //////////////////// 댓글 아이템 ////////////////////
-
 type CommentItemPropsType = RollingPaperAsset_CommentItemType & {
   isCommentTabView: boolean;
   index: number;
@@ -233,6 +237,158 @@ const CommentInputSection_Button = styled(Button)`
   & .MuiSvgIcon-root {
     color: ${({ theme }) => theme.palette.text.white};
   }
+`;
+
+//////////////////// 편지 모드 ////////////////////
+const LetterLayer = ({
+  comments,
+  setIsLetterMode,
+}: {
+  comments: RollingPaperAsset_CommentItemType[];
+  setIsLetterMode: (isLetterMode: boolean) => void;
+}) => {
+  // 편지 모드 열림 여부
+  const [open, setOpen] = useState(true);
+  // 타이핑 카운트
+  const [typingCount, setTypingCount] = useState(1);
+  // 현재 타이핑 중인 댓글 인덱스
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // 편지 시작 여부
+  const [isStart, setIsStart] = useState(false);
+  // 편지 완료 여부
+  const [isEnd, setIsEnd] = useState(false);
+
+  // 편지 모드 닫기
+  function handleClose() {
+    setOpen(false);
+    setTimeout(() => {
+      setIsLetterMode(false);
+    }, 300);
+  }
+
+  // 타이핑 진행 상황 추적
+  function handleType(comment: string) {
+    // 타이핑 카운트 증가
+    setTypingCount((prev) => prev + 1);
+
+    // 타이핑 완료 후 실행 함수 호출
+    if (typingCount === comment.length) {
+      console.log("타이핑 완료!");
+      // 마지막 댓글 타이핑 완료 시 완료 여부 변경
+      if (currentIndex === comments.length - 1) {
+        setTimeout(() => {
+          setIsEnd(true);
+        }, 1500);
+        return;
+      }
+      // 다음 댓글 타이핑 시작
+      setTimeout(() => {
+        // 타이핑 완료 후 다음 댓글로 넘어가기
+        setCurrentIndex((prev) => prev + 1);
+        // 타이핑 카운트 초기화
+        setTypingCount(1);
+      }, 1500);
+    }
+  }
+
+  //
+  function handleRestart() {
+    setIsEnd(false);
+    setCurrentIndex(0);
+    setTypingCount(1);
+  }
+
+  useEffect(() => {
+    console.log(typingCount);
+  }, [typingCount]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsStart(true);
+    }, 500);
+  }, []);
+
+  return (
+    <Fade in={open} timeout={300}>
+      <LetterLayer_Container>
+        {/* 닫기 */}
+        <LetterLayer_CloseButton onClick={handleClose}>
+          <CloseFullscreenRounded />
+        </LetterLayer_CloseButton>
+
+        {/* 닉네임 */}
+        <AnimatePresence>
+          <LetterLayer_Nickname key={currentIndex} variant="h5">
+            {comments[currentIndex].nickname}
+          </LetterLayer_Nickname>
+        </AnimatePresence>
+
+        {/* 댓글 */}
+        {isStart && (
+          <Typewriter
+            key={currentIndex}
+            words={[comments[currentIndex].comment]}
+            loop={1}
+            cursor={false}
+            typeSpeed={150}
+            onType={() => handleType(comments[currentIndex].comment)}
+            delaySpeed={0}
+          />
+        )}
+
+        {/* 다시보기 */}
+        {isEnd && (
+          <Fade in={isEnd} timeout={300}>
+            <LetterLayer_RestartButton onClick={handleRestart} startIcon={<ReplayRounded />}>
+              다시보기
+            </LetterLayer_RestartButton>
+          </Fade>
+        )}
+      </LetterLayer_Container>
+    </Fade>
+  );
+};
+
+const LetterLayer_Container = styled(Stack)`
+  width: 100vw;
+  height: 100vh;
+  padding-top: 200px;
+
+  align-items: center;
+  row-gap: 24px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: ${({ theme }) => theme.palette.background.default};
+  z-index: 9999;
+`;
+
+const LetterLayer_Nickname = styled(Typography)`
+  font-weight: bold;
+  color: ${({ theme }) => theme.palette.primary.main};
+  animation: fadeIn 1s ease-in-out;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const LetterLayer_CloseButton = styled(Button)`
+  position: absolute;
+  top: 16px;
+  right: 0px;
+`;
+
+const LetterLayer_RestartButton = styled(Button)`
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 //////////////////// 공감 탭 ////////////////////
