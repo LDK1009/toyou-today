@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import { Box, Tooltip } from "@mui/material";
 import { styled } from "@mui/material";
@@ -6,37 +6,33 @@ import { MusicNoteRounded, MusicOffRounded } from "@mui/icons-material";
 import { mixinFlex } from "@/styles/mixins";
 import { shouldForwardProp } from "@/utils/mui";
 const BackgroundMusicPageAsset = () => {
-  const { template: templateState, setPageAsset } = useMakeTemplateStore();
+  const { template: templateState } = useMakeTemplateStore();
   const backgroundMusicPageAsset = templateState?.pageAssets?.backgroundMusic;
-
-  const { isActive, label, musicSrc } = backgroundMusicPageAsset || {};
+  const [isMusicStart, setIsMusicStart] = useState(true);
+  
+  const { label, musicSrc } = backgroundMusicPageAsset || {};
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
   function handleMusicOnClick() {
-    if (backgroundMusicPageAsset) {
-      setPageAsset("backgroundMusic", {
-        ...backgroundMusicPageAsset,
-        isActive: !backgroundMusicPageAsset?.isActive,
-      });
-    }
+    setIsMusicStart(!isMusicStart);
   }
 
   useEffect(() => {
     if (audioRef.current) {
-      if (isActive) {
+      if (isMusicStart) {
         audioRef.current.play();
       } else {
         audioRef.current.pause();
       }
     }
-  }, [isActive]);
+  }, [isMusicStart]);
 
   return (
     <>
       <Tooltip title={label}>
-        <MusicIconWrapper onClick={handleMusicOnClick} $isActive={isActive || false}>
-          {isActive ? <MusicNoteRounded /> : <MusicOffRounded />}
+        <MusicIconWrapper onClick={handleMusicOnClick} $isActive={isMusicStart || false}>
+          {isMusicStart ? <MusicNoteRounded /> : <MusicOffRounded />}
         </MusicIconWrapper>
       </Tooltip>
       <audio ref={audioRef} src={musicSrc} autoPlay />
