@@ -63,7 +63,7 @@ const CommonHeader = () => {
             <CardGiftcardRounded />
           </IconButton>
           <Typography variant="h6" component={Link} href="/" sx={{ textDecoration: "none", color: "inherit" }}>
-            To You, To Day
+            To You, Today
           </Typography>
         </LogoContainer>
 
@@ -101,7 +101,7 @@ const CommonHeader = () => {
             <CardGiftcardRounded />
           </IconButton>
           <Typography variant="h6" sx={{ my: 2 }} color="primary">
-            To You, To Day
+            To You, Today
           </Typography>
         </Grid2>
         {/* 구분선 */}
