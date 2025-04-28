@@ -45,7 +45,6 @@ const TemplatesMakeContainer = () => {
   const backgroundMusic = useMakeTemplateStore((state) => state.template.pageAssets?.backgroundMusic);
   const rollingPaper = useMakeTemplateStore((state) => state.template.pageAssets?.rollingPaper);
 
-
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
@@ -72,7 +71,7 @@ const TemplatesMakeContainer = () => {
       <BlockComponents />
 
       {/* 롤링페이퍼 활성화 시 롤링페이퍼 렌더링 */}
-      {rollingPaper && <RollingPaperPageAsset pageAssetData={rollingPaper} />}
+      {rollingPaper && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={true} />}
 
       {/* 블록 추가 버튼 */}
       <AddBlockButton />
