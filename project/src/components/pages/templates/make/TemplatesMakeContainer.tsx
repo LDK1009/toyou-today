@@ -169,7 +169,9 @@ const BlockComponents = () => {
   return <BlockComponentsContainer>{renderBlocks()}</BlockComponentsContainer>;
 };
 
-const BlockComponentsContainer = styled(Box)``;
+const BlockComponentsContainer = styled(Box)`
+  width: 100%;
+`;
 
 ////////////////////////////// 페이지 에셋 추가 버튼 //////////////////////////////
 const AddPageAssetButton = () => {
@@ -338,6 +340,7 @@ const AddBlockButton = () => {
 
 const AddBlockButtonContainer = styled(Stack)`
   row-gap: 8px;
+  width: 100%;
 `;
 
 const MenuButtonContainer = styled(Stack)`
