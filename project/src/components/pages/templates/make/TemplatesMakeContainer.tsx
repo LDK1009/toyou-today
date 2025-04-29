@@ -139,14 +139,22 @@ const BlockComponentsContainer = styled(Reorder.Group)`
   padding-top: 8px;
   display: flex;
   flex-direction: column;
-  row-gap: 8px;
+  row-gap: 40px;
 `;
 
 ////////////////////////////// 블록 랩퍼 컴포넌트 //////////////////////////////
-const BlockWrapper = ({ blockIdx, blockData, children }: { blockIdx: number; blockData: BlockType; children: React.ReactNode }) => {
+const BlockWrapper = ({
+  blockIdx,
+  blockData,
+  children,
+}: {
+  blockIdx: number;
+  blockData: BlockType;
+  children: React.ReactNode;
+}) => {
   const { moveUpBlock, moveDownBlock, deleteBlock } = useMakeTemplateStore();
   const { openEditorInEditMode } = useHandleEditor();
-  
+
   return (
     <BlockWrapper_Container>
       <BlockWrapper_Header>
