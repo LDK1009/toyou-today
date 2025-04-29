@@ -1,5 +1,4 @@
-import dayjs, { Dayjs } from "dayjs";
-import React, { useState } from "react";
+import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
@@ -10,20 +9,19 @@ import { styled } from "@mui/material";
 
 const CalenderBlock = ({ blockData }: { blockData: CalendarBlockType }) => {
   const { date } = blockData;
-  const [selectedDate, setSelectedDate] = useState(dayjs(date) || dayjs());
 
-  const handleDateChange = (newDate: Dayjs) => {
-    setSelectedDate(newDate);
-  };
+  const calenderDate = dayjs(date);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <DemoContainer components={["DateCalendar"]}>
-        <DemoItem label="" sx={{ "& .Mui-selected": { color: "blue" } }}>
-          <StyledDateCalendar value={selectedDate} onChange={handleDateChange} readOnly />
-        </DemoItem>
-      </DemoContainer>
-    </LocalizationProvider>
+    <>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+        <DemoContainer components={["DateCalendar"]}>
+          <DemoItem label="" sx={{ "& .Mui-selected": { color: "blue" } }}>
+            <StyledDateCalendar value={calenderDate} onChange={() => {}} readOnly />
+          </DemoItem>
+        </DemoContainer>
+      </LocalizationProvider>
+    </>
   );
 };
 
