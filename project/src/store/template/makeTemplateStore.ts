@@ -68,9 +68,16 @@ export const useMakeTemplateStore = create(
         })),
 
       // 블록 수정
-      updateBlock: (index, block) =>
+      updateBlock: (targetBlockIndex: number, editBlockData: BlockType) =>
         set((state) => ({
-          template: { ...state.template, blocks: state.template.blocks.map((b, i) => (i === index ? block : b)) },
+          template: { 
+            ...state.template, 
+            blocks: state.template.blocks.map((prevBlockData, i) => 
+              i === targetBlockIndex 
+                ? { ...editBlockData, id: prevBlockData.id } // 기존 ID 유지
+                : prevBlockData
+            ) 
+          },
         })),
 
       // 블록 삭제

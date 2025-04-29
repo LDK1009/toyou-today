@@ -1,13 +1,11 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
-import { useAddBlockDrawerStore } from "@/store/ui/addBlockDrawerStore";
-import { AddRounded } from "@mui/icons-material";
 import { styled } from "@mui/material";
 import { ColorPicker } from "./CommonPicker";
 import { useState } from "react";
 import { LinkBlockType } from "@/types/template/blockType";
 import LinkBlock from "../../../block/LinkBlock";
+import CommonAddButton from "./CommonAddButton";
 
 const LinkEditor = () => {
   // 블록 상태
@@ -17,20 +15,6 @@ const LinkEditor = () => {
     textColor: "#FFFFFF",
     buttonColor: "#FFB6B9",
   });
-
-  // 비디오 블록 추가
-  const { addBlock } = useMakeTemplateStore();
-  // 블록 추가 드래그 메뉴 열기
-  const { setIsOpen: setIsOpenAddBlockDrawer } = useAddBlockDrawerStore();
-
-  // 링크 블록 추가
-  function handleAddLinkButtonClick() {
-    addBlock({
-      variant: "link",
-      content: blockState,
-    });
-    setIsOpenAddBlockDrawer(false);
-  }
 
   // 텍스트 색상 변경
   function handleTextColorChange(color: string) {
@@ -101,9 +85,7 @@ const LinkEditor = () => {
       </CategoryContainer>
 
       {/* 추가 버튼 */}
-      <AddButton onClick={handleAddLinkButtonClick} startIcon={<AddRounded />} variant="contained" fullWidth>
-        추가
-      </AddButton>
+      <CommonAddButton blockState={{ variant: "link", content: blockState }} />
     </Container>
   );
 };
@@ -120,8 +102,4 @@ const CategoryContainer = styled(Stack)`
 
 const Title = styled(Typography)`
   color: ${({ theme }) => theme.palette.primary.main};
-`;
-
-const AddButton = styled(Button)`
-  color: ${({ theme }) => theme.palette.text.white};
 `;

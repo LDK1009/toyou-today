@@ -11,14 +11,11 @@ import { ImageRounded, ReplayRounded } from "@mui/icons-material";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
-import { useAddBlockDrawerStore } from "@/store";
+
+import CommonAddButton from "./CommonAddButton";
 
 const GalleryEditor = () => {
   const [blockStates, setBlockStates] = useState<GalleryBlockType>([]);
-
-  const { addBlock } = useMakeTemplateStore();
-  const { setIsOpen: setIsAddBlockDrawerOpen } = useAddBlockDrawerStore();
 
   // 블록 데이터 수정
   function setBlockStateProperty(index: number, key: keyof GalleryBlockItemType, value: string) {
@@ -32,13 +29,6 @@ const GalleryEditor = () => {
     });
 
     setBlockStates(newBlockStates);
-  }
-
-  // 블록 데이터 추가
-  function handleAddBlockButtonClick() {
-    addBlock({ variant: "gallery", content: blockStates });
-    setIsAddBlockDrawerOpen(false);
-    setBlockStates([]);
   }
 
   return (
@@ -64,9 +54,7 @@ const GalleryEditor = () => {
             >
               재업로드
             </ReselectButton>
-            <AddButton onClick={handleAddBlockButtonClick} variant="contained" fullWidth>
-              추가
-            </AddButton>
+            <CommonAddButton blockState={{ variant: "gallery", content: blockStates }} disabled={blockStates.length === 0} />
           </>
         )}
       </ButtonWrapper>
@@ -82,10 +70,6 @@ const ButtonWrapper = styled(Stack)`
 
 const ReselectButton = styled(Button)`
   color: ${({ theme }) => theme.palette.primary.main};
-`;
-
-const AddButton = styled(Button)`
-  color: ${({ theme }) => theme.palette.text.white};
 `;
 
 ////////////////////////////// 하위 컴포넌트 //////////////////////////////

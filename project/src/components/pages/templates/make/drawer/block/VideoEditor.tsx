@@ -1,11 +1,10 @@
-import { useAddBlockDrawerStore } from "@/store";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
-import { AddRounded, CheckCircleOutlineRounded } from "@mui/icons-material";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { CheckCircleOutlineRounded } from "@mui/icons-material";
+import { Stack, TextField, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import { useState } from "react";
 import VideoBlock from "../../../block/VideoBlock";
+import CommonAddButton from "./CommonAddButton";
 
 const VideoEditor = () => {
   /////////////////////////////////////////////////////////////// State
@@ -16,10 +15,6 @@ const VideoEditor = () => {
 
   // 유튜브 링크 유효성 검사
   const [isCorrectLink, setIsCorrectLink] = useState(false);
-  // 비디오 블록 추가
-  const { addBlock } = useMakeTemplateStore();
-  // 블록 추가 드래그 메뉴 열기
-  const { setIsOpen: setIsOpenAddBlockDrawer } = useAddBlockDrawerStore();
 
   /////////////////////////////////////////////////////////////// Function
 
@@ -77,14 +72,6 @@ const VideoEditor = () => {
     return regex.test(link);
   }
 
-  // 비디오 블록 추가
-  function handleAddImageButtonClick() {
-    // 비디오 블록 추가
-    addBlock({ variant: "video", content: { videoLink } });
-    // 블록 추가 드래그 메뉴 닫기
-    setIsOpenAddBlockDrawer(false);
-  }
-
   return (
     <div>
       {videoLink !== "" && <VideoBlock blockData={{ videoLink }} />}
@@ -111,15 +98,7 @@ const VideoEditor = () => {
         )}
       </InputWrapper>
 
-      <AddButton
-        onClick={handleAddImageButtonClick}
-        startIcon={<AddRounded />}
-        variant="contained"
-        fullWidth
-        disabled={!isCorrectLink}
-      >
-        추가
-      </AddButton>
+      <CommonAddButton blockState={{ variant: "video", content: { videoLink } }} disabled={!isCorrectLink} />
     </div>
   );
 };
@@ -135,8 +114,4 @@ const InputWrapper = styled(Stack)`
 
 const YoutubeLinkInput = styled(TextField)`
   width: 100%;
-`;
-
-const AddButton = styled(Button)`
-  color: ${({ theme }) => theme.palette.text.white};
 `;

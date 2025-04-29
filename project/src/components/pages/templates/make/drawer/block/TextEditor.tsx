@@ -1,9 +1,7 @@
-import { Button, Grid2, Stack, styled, TextField, Typography } from "@mui/material";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
+import { Grid2, Stack, styled, TextField, Typography } from "@mui/material";
 import { TextBlockType } from "@/types/template/blockType";
 import React, { useState } from "react";
 import {
-  AddRounded,
   CachedRounded,
   DoNotDisturbAltRounded,
   FormatAlignCenterRounded,
@@ -14,15 +12,11 @@ import {
 } from "@mui/icons-material";
 import { FormatAlignRightRounded } from "@mui/icons-material";
 import { FormatAlignLeftRounded } from "@mui/icons-material";
-import { useAddBlockDrawerStore } from "@/store/ui/addBlockDrawerStore";
 import TextBlock from "../../../block/TextBlock";
 import { ColorPicker } from "./CommonPicker";
+import CommonAddButton from "./CommonAddButton";
 
 const TextEditor = () => {
-  ////////////////////////////// state //////////////////////////////
-  // 텍스트 블록 추가 함수
-  const { addBlock } = useMakeTemplateStore();
-  const { setIsOpen: setAddBlockDrawerIsOpen } = useAddBlockDrawerStore();
   ////////////////////////////// Variables //////////////////////////////
   // 추가 텍스트 블록 상태
   const [editBlockState, setEditBlockState] = useState<TextBlockType>({
@@ -38,11 +32,6 @@ const TextEditor = () => {
   // 텍스트 블록 상태 수정 함수
   function setEditBlockStateProperty(key: string, value: string | number) {
     setEditBlockState({ ...editBlockState, [key]: value });
-  }
-
-  function handleAddButtonClick() {
-    addBlock({ variant: "text", content: editBlockState });
-    setAddBlockDrawerIsOpen(false);
   }
 
   ////////////////////////////// Variables //////////////////////////////
@@ -116,6 +105,7 @@ const TextEditor = () => {
 
   return (
     <Container container rowSpacing={2}>
+      {/* 블록 수정 컴포넌트 집합체 */}
       {editCategories.map((category, idx) => {
         if (category.label === "미리보기" && editBlockState.text === "") {
           return null;
@@ -128,10 +118,9 @@ const TextEditor = () => {
         );
       })}
 
+      {/* 블록 추가 버튼 */}
       <GridItem size={12}>
-        <AddButton startIcon={<AddRounded />} variant="contained" onClick={handleAddButtonClick} fullWidth>
-          추가
-        </AddButton>
+        <CommonAddButton blockState={{ variant: "text", content: editBlockState }} disabled={editBlockState.text === ""} />
       </GridItem>
     </Container>
   );
@@ -416,7 +405,3 @@ const AnimationPickerBox = styled("div")<AnimationPickerBoxProps>`
 const Container = styled(Grid2)``;
 
 const GridItem = styled(Grid2)``;
-
-const AddButton = styled(Button)`
-  color: ${({ theme }) => theme.palette.text.white};
-`;

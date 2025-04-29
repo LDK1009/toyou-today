@@ -1,15 +1,14 @@
 import { getCurrentUserUID } from "@/service/auth";
 import { getImageUrl, uploadImage } from "@/service/buckets/images";
-import { useAddBlockDrawerStore } from "@/store";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import { ImageBlockType } from "@/types/template/blockType";
 import { DateToYYYYMMDDHHMMSS } from "@/utils/time";
-import { AddRounded, ImageRounded } from "@mui/icons-material";
-import { Button, CircularProgress, Stack, styled, Typography } from "@mui/material";
+import { ImageRounded } from "@mui/icons-material";
+import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import { AlignAndAnimationPicker } from "./CommonPicker";
 import ImageBlock from "../../../block/ImageBlock";
+import CommonAddButton from "./CommonAddButton";
 
 const ImageEditor = () => {
   const [blockState, setBlockState] = useState<ImageBlockType>({
@@ -18,42 +17,17 @@ const ImageEditor = () => {
     animation: "none",
   });
 
-  ////////////////////////////// State //////////////////////////////
-  const { addBlock } = useMakeTemplateStore();
-  const { setIsOpen: setIsAddBlockDrawerOpen } = useAddBlockDrawerStore();
-
   ////////////////////////////// Function //////////////////////////////
   // 이미지 블록 상태 수정 함수
   const setBlockStateProperty = (key: string, value: string | number) => {
     setBlockState((prev) => ({ ...prev, [key]: value }));
   };
 
-  // 이미지 추가 버튼 클릭 함수
-  function handleAddImageButtonClick() {
-    // 이미지 블록 상태 비구조화
-    const { imgSrc, align, animation } = blockState;
-
-    // 이미지 추가
-    addBlock({
-      variant: "image",
-      content: {
-        imgSrc,
-        align,
-        animation,
-      },
-    });
-
-    // 이미지 추가 블록 드로어 닫기
-    setIsAddBlockDrawerOpen(false);
-  }
-
   return (
     <Container>
       <FileSelectArea blockData={blockState} setBlockStateProperty={setBlockStateProperty} />
       <AlignAndAnimationPicker blockState={blockState} setBlockStateProperty={setBlockStateProperty} />
-      <AddButton onClick={handleAddImageButtonClick} startIcon={<AddRounded />} variant="contained" fullWidth>
-        추가
-      </AddButton>
+      <CommonAddButton blockState={{ variant: "image", content: blockState }} disabled={blockState.imgSrc === ""} />
     </Container>
   );
 };
@@ -67,7 +41,13 @@ const Container = styled(Stack)`
 
 ////////////////////////////// 하위 컴포넌트 //////////////////////////////
 ////////// 이미지 선택 영역 //////////
-const FileSelectArea = ({ blockData, setBlockStateProperty }: { blockData: ImageBlockType; setBlockStateProperty: (key: string, value: string | number) => void }) => {
+const FileSelectArea = ({
+  blockData,
+  setBlockStateProperty,
+}: {
+  blockData: ImageBlockType;
+  setBlockStateProperty: (key: string, value: string | number) => void;
+}) => {
   const [loading, setLoading] = useState(false);
 
   // 파일 선택 시 파일 선택 핸들러
@@ -164,8 +144,4 @@ export const FileSelectButton_Label = styled("label")`
 
 export const FileSelectButton_Input = styled("input")`
   display: none; // 기존 버튼 숨기기
-`;
-
-const AddButton = styled(Button)`
-  color: ${({ theme }) => theme.palette.text.white};
 `;

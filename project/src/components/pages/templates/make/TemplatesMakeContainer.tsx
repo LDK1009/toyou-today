@@ -43,6 +43,7 @@ import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticleP
 import BackgroundMusicPageAsset from "../page-asset/BackgroundMusicPageAsset";
 import RollingPaperPageAsset from "../page-asset/RollingPaperPageAsset";
 import { Reorder } from "motion/react";
+import { useHandleEditor } from "@/hooks/useHandleEditor";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -53,6 +54,9 @@ const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
+      {/* <div>{editMode ? "수정" : "추가"}</div> */}
+      {/* <div>{editTargetBlockIndex}</div> */}
+      {/* <div>{editTargetBlockData?.variant}</div> */}
       {/* ========== Default ========== */}
       {/* 폭죽 활성화 시 폭죽 렌더링 */}
       {particle?.isActive && (
@@ -105,7 +109,7 @@ const BlockComponents = () => {
     return templateBlocks.map((el, index) => {
       return (
         <Reorder.Item key={el.id} value={el} as="div">
-          <BlockWrapper blockIdx={index}>
+          <BlockWrapper blockIdx={index} blockData={el}>
             {el.variant === "space" && <SpaceBlock blockData={el.content} />}
             {el.variant === "text" && <TextBlock blockData={el.content} />}
             {el.variant === "calendar" && <CalenderBlock key={`calendar-${el.id}`} blockData={el.content} />}
@@ -142,9 +146,10 @@ const BlockComponentsContainer = styled(Reorder.Group)`
 `;
 
 ////////////////////////////// 블록 랩퍼 컴포넌트 //////////////////////////////
-const BlockWrapper = ({ blockIdx, children }: { blockIdx: number; children: React.ReactNode }) => {
-  const { moveUpBlock, moveDownBlock, updateBlock, deleteBlock } = useMakeTemplateStore();
-
+const BlockWrapper = ({ blockIdx, blockData, children }: { blockIdx: number; blockData: BlockType; children: React.ReactNode }) => {
+  const { moveUpBlock, moveDownBlock, deleteBlock } = useMakeTemplateStore();
+  const { openEditorInEditMode } = useHandleEditor();
+  
   return (
     <BlockWrapper_Container>
       <BlockWrapper_Header>
@@ -163,7 +168,7 @@ const BlockWrapper = ({ blockIdx, children }: { blockIdx: number; children: Reac
         {/* 버튼 래퍼 */}
         <BlockWrapper_ButtonWrapper>
           {/* 수정 버튼 */}
-          <BlockWrapper_Button onClick={() => moveUpBlock(blockIdx)}>
+          <BlockWrapper_Button onClick={() => openEditorInEditMode(blockIdx, blockData)}>
             <EditOutlined />
           </BlockWrapper_Button>
           {/* 삭제 버튼 */}

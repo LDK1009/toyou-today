@@ -17,17 +17,20 @@ import QuizEditor from "./block/QuizEditor";
 import ParticleEditor from "./page-asset/ParticleEditor";
 import RollingPaperEditor from "./page-asset/RollingPaperEditor";
 import BackgroundMusicEditor from "./page-asset/BackgroundMusicEditor";
+import { useHandleEditor } from "@/hooks/useHandleEditor";
+
 export default function AddBlockDrawer() {
   ////////////////////////////// State //////////////////////////////
   const { anchor, isOpen, setIsOpen } = useAddBlockDrawerStore();
 
+  const { handleEditorClose } = useHandleEditor();
   ////////////////////////////// Render //////////////////////////////
   return (
     <Container
       anchor={anchor}
       open={isOpen}
       onClose={() => {
-        setIsOpen(false);
+        handleEditorClose();
       }}
       onOpen={() => {
         setIsOpen(true);

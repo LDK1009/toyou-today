@@ -1,21 +1,13 @@
 import React, { useState } from "react";
-import { TextField, Typography, Button, Stack } from "@mui/material";
+import { TextField, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { QuizBlockType } from "@/types/template/blockType";
 import { ColorPicker } from "@/components/pages/templates/make/drawer/block/CommonPicker";
-import { AddRounded } from "@mui/icons-material";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
-import { useAddBlockDrawerStore } from "@/store";
 import QuizBlock from "../../../block/QuizBlock";
-import { enqueueSnackbar } from "notistack";
+import CommonAddButton from "./CommonAddButton";
 
 const QuizEditor = () => {
   ////////////////////////////// State //////////////////////////////
-  // 템플릿 블록 추가
-  const { addBlock } = useMakeTemplateStore();
-  // 퀴즈 블록 추가 버튼 닫기
-  const { setIsOpen: setIsAddBlockDrawerOpen } = useAddBlockDrawerStore();
-  // 퀴즈 블록 상태
   const [blockState, setBlockState] = useState<QuizBlockType>({
     question: "",
     answer: "",
@@ -31,26 +23,6 @@ const QuizEditor = () => {
   // 퀴즈 질문 변경
   const handleQuestionChange = (value: string) => {
     setBlockState({ ...blockState, question: value });
-  };
-
-  // 퀴즈 블록 추가
-  const handleAddQuizBlock = () => {
-    if (blockState.question === "") {
-      enqueueSnackbar("질문을 입력해주세요.", { variant: "error" });
-      return;
-    }
-
-    if (blockState.answer === "") {
-      enqueueSnackbar("정답을 입력해주세요.", { variant: "error" });
-      return;
-    }
-    // 퀴즈 블록 추가
-    addBlock({
-      variant: "quiz",
-      content: blockState,
-    });
-    // 퀴즈 블록 추가 버튼 닫기
-    setIsAddBlockDrawerOpen(false);
   };
 
   const handleColorChange = (color: string) => {
@@ -90,14 +62,10 @@ const QuizEditor = () => {
       </SectionWrapper>
 
       {/* 추가 버튼 섹션 */}
-      <AddButton
-        onClick={handleAddQuizBlock}
-        startIcon={<AddRounded />}
-        variant="contained"
+      <CommonAddButton
+        blockState={{ variant: "quiz", content: blockState }}
         disabled={blockState.question === "" || blockState.answer === ""}
-      >
-        추가
-      </AddButton>
+      />
     </Container>
   );
 };
@@ -121,12 +89,6 @@ const StyledTextField = styled(TextField)`
   & .MuiOutlinedInput-root {
     border-radius: 8px;
   }
-`;
-
-const AddButton = styled(Button)`
-  width: 100%;
-  margin-top: 16px;
-  color: ${({ theme }) => theme.palette.text.white};
 `;
 
 export default QuizEditor;

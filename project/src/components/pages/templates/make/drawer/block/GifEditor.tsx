@@ -13,13 +13,13 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
-import { AddRounded, ExpandMoreRounded, ImageSearchRounded } from "@mui/icons-material";
+import { ExpandMoreRounded, ImageSearchRounded } from "@mui/icons-material";
 import Image from "next/image";
 import { GifBlockType } from "@/types/template/blockType";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
-import { useAddBlockDrawerStore } from "@/store/ui/addBlockDrawerStore";
 import GifBlock from "@/components/pages/templates/block/GifBlock";
 import { AlignAndAnimationPicker } from "./CommonPicker";
+import CommonAddButton from "./CommonAddButton";
+
 
 const GifEditor = () => {
   // 선택된 이미지 주소
@@ -37,10 +37,6 @@ const GifEditor = () => {
   const [loading, setLoading] = useState(false);
   // 아코디언 열림 상태
   const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
-
-  const { addBlock } = useMakeTemplateStore();
-  // 이미지 추가 블록 드로어 닫기
-  const { setIsOpen: setIsAddBlockDrawerOpen } = useAddBlockDrawerStore();
 
   // 검색 결과 가져오기
   const getGifs = async () => {
@@ -72,25 +68,6 @@ const GifEditor = () => {
   // 이미지 선택
   const handleImgClick = (src: string) => {
     setBlockStateProperty("gifSrc", src);
-  };
-
-  // 이미지 추가 버튼 클릭
-  const handleAddGifButtonClick = () => {
-    // 이미지 블록 상태 비구조화
-    const { gifSrc, align, animation } = blockState;
-
-    // 이미지 추가
-    addBlock({
-      variant: "gif",
-      content: {
-        gifSrc,
-        align,
-        animation,
-      },
-    });
-
-    // 이미지 추가 블록 드로어 닫기
-    setIsAddBlockDrawerOpen(false);
   };
 
   // 이미지 블록 상태 수정 함수
@@ -163,9 +140,7 @@ const GifEditor = () => {
       <AlignAndAnimationPicker blockState={blockState} setBlockStateProperty={setBlockStateProperty} />
 
       {/* 제출 */}
-      <AddButton onClick={handleAddGifButtonClick} startIcon={<AddRounded />} variant="contained" fullWidth>
-        추가
-      </AddButton>
+      <CommonAddButton blockState={{ variant: "gif", content: blockState }} disabled={blockState.gifSrc === ""} />
     </Container>
   );
 };
@@ -246,8 +221,4 @@ const GifImageAccordion = styled(Accordion)`
   &::before {
     display: none;
   }
-`;
-
-const AddButton = styled(Button)`
-  color: ${({ theme }) => theme.palette.text.white};
 `;
