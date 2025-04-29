@@ -210,7 +210,7 @@ const AlignPickerBox = styled("div")<AlignPickerBoxProps>`
   }
 `;
 
-////////// 폰트 선택기
+////////// 크기 선택기
 type FontSizePickerProps = {
   currentFontSize: number;
   setEditBlockStateProperty: (key: string, value: string | number) => void;

@@ -11,7 +11,14 @@ const TextBlock = ({ blockData }: { blockData: TextBlockType }) => {
   return (
     <Box>
       <AnimationBlock animationType={animation}>
-        <Typography variant={variant} fontWeight={fontWeight} color={color} align={textAlign} whiteSpace="pre-wrap">
+        <Typography
+          variant={variant}
+          fontWeight={fontWeight}
+          color={color}
+          align={textAlign}
+          whiteSpace="pre-wrap"
+          component="div"
+        >
           {text}
         </Typography>
       </AnimationBlock>
