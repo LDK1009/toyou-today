@@ -20,7 +20,7 @@ type ContainerProps = {
 
 const Container = styled(Stack, { shouldForwardProp })<ContainerProps>`
   position: relative;
-  height: 100px;
+  height: ${({ $preview }) => ($preview ? "100px" : "auto")};
   ${mixinFlex("column", "center", "center")}
   border: ${({ $preview, theme }) => ($preview ? `3px dashed ${theme.palette.divider}` : "none")};
 `;

@@ -54,9 +54,6 @@ const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
-      {/* <div>{editMode ? "수정" : "추가"}</div> */}
-      {/* <div>{editTargetBlockIndex}</div> */}
-      {/* <div>{editTargetBlockData?.variant}</div> */}
       {/* ========== Default ========== */}
       {/* 폭죽 활성화 시 폭죽 렌더링 */}
       {particle?.isActive && (
