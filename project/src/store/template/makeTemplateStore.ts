@@ -64,19 +64,22 @@ export const useMakeTemplateStore = create(
       // 블록 추가
       addBlock: (block: BlockType) =>
         set((state) => ({
-          template: { ...state.template, blocks: [...state.template.blocks, { ...block, id: state.template.blocks.length }] },
+          template: {
+            ...state.template,
+            blocks: [...state.template.blocks, { ...block, id: state.template.blocks.length }],
+          },
         })),
 
       // 블록 수정
       updateBlock: (targetBlockIndex: number, editBlockData: BlockType) =>
         set((state) => ({
-          template: { 
-            ...state.template, 
-            blocks: state.template.blocks.map((prevBlockData, i) => 
-              i === targetBlockIndex 
+          template: {
+            ...state.template,
+            blocks: state.template.blocks.map((prevBlockData, i) =>
+              i === targetBlockIndex
                 ? { ...editBlockData, id: prevBlockData.id } // 기존 ID 유지
                 : prevBlockData
-            ) 
+            ),
           },
         })),
 
