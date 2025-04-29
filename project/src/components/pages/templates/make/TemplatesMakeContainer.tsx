@@ -1,11 +1,19 @@
 "use client";
 
-import { mixinContainer, mixinFlex, mixinHideScrollbar } from "@/styles/mixins";
+import {
+  mixinContainer,
+  mixinFlex,
+  mixinHideScrollbar,
+  mixinMuiButtonNoShadow,
+  mixinTextInputBorder,
+} from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
   ArrowDownwardRounded,
+  ArrowForwardRounded,
   ArrowUpwardRounded,
   CalendarMonthRounded,
+  CardGiftcardRounded,
   CelebrationRounded,
   CloseRounded,
   DeleteOutlineRounded,
@@ -21,7 +29,7 @@ import {
   TextFormatRounded,
   VideocamRounded,
 } from "@mui/icons-material";
-import { Box, Button, Fade, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Fade, Stack, TextField, Tooltip, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import AddBlockDrawer from "./drawer/AddBlockDrawer";
@@ -44,9 +52,14 @@ import BackgroundMusicPageAsset from "../page-asset/BackgroundMusicPageAsset";
 import RollingPaperPageAsset from "../page-asset/RollingPaperPageAsset";
 import { Reorder } from "motion/react";
 import { useHandleEditor } from "@/hooks/useHandleEditor";
+import { createTemplate } from "@/service/tables/templates";
+import { getCurrentUserUID } from "@/service/auth";
+import { useRouter } from "next/navigation";
+import { enqueueSnackbar } from "notistack";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
+  // 페이지 에셋
   const particle = useMakeTemplateStore((state) => state.template.pageAssets?.particle);
   const backgroundMusic = useMakeTemplateStore((state) => state.template.pageAssets?.backgroundMusic);
   const rollingPaper = useMakeTemplateStore((state) => state.template.pageAssets?.rollingPaper);
@@ -54,7 +67,7 @@ const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// Render //////////////////////////////////////////////////
   return (
     <Container>
-      {/* ========== Default ========== */}
+      {/* ========== 배경 레이어 섹션 ========== */}
       {/* 폭죽 활성화 시 폭죽 렌더링 */}
       {particle?.isActive && (
         <ParticlePageAsset
@@ -68,32 +81,40 @@ const TemplatesMakeContainer = () => {
 
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />
-      {/* ========== End of Default ========== */}
 
-      {/* 페이지 에셋 추가 버튼 */}
+      {/* ========== 컨텐츠 섹션 ========== */}
+      {/* 페이지 에셋 추가 */}
       <AddPageAssetButton />
 
-      {/* 블록 렌더링 */}
+      {/* 블록 리스트 */}
       <BlockComponents />
 
-      {/* 롤링페이퍼 활성화 시 롤링페이퍼 렌더링 */}
+      {/* 롤링페이퍼 */}
       {rollingPaper?.isActive && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={true} />}
 
-      {/* 블록 추가 버튼 */}
-      <AddBlockButton />
+      {/* 블록 추가 */}
+      <ButtonWrapper>
+        <AddBlockButton />
+        <CreateTemplateButton />
+      </ButtonWrapper>
     </Container>
   );
 };
 
 export default TemplatesMakeContainer;
+
 ////////////////////////////// 스타일 //////////////////////////////
 const Container = styled(Box)`
   ${mixinContainer()}
   ${mixinFlex("column", "start", "center")}
 `;
 
+const ButtonWrapper = styled(Stack)`
+  row-gap: 8px;
+`;
+
 //////////////////////////////////////// 하위 컴포넌트 ////////////////////////////////////////
-////////////////////////////// 블록 컴포넌트 //////////////////////////////
+////////////////////////////// 블록 리스트 컴포넌트 //////////////////////////////
 const BlockComponents = () => {
   // 템플릿 블록 스토어
   const {
@@ -378,7 +399,7 @@ const AddBlockButton = () => {
         onClick={() => setIsFadeShow(!isFadeShow)}
         variant="outlined"
         fullWidth
-        endIcon={isFadeShow ? <CloseRounded /> : <AddCircleOutlineRounded />}
+        startIcon={isFadeShow ? <CloseRounded /> : <AddCircleOutlineRounded />}
       >
         {isFadeShow ? "취소" : "블럭 생성"}
       </Button>
@@ -416,4 +437,158 @@ const MenuButton = styled(Button)`
   & .MuiButton-icon {
     margin: 0;
   }
+`;
+
+////////////////////////////// 템플릿 제작 버튼 //////////////////////////////
+const CreateTemplateButton = () => {
+  const router = useRouter();
+  const { template, initTemplate } = useMakeTemplateStore();
+
+  // 템플릿 이름
+  const [templateName, setTemplateName] = useState("");
+  // 레이어 열림 여부
+  const [open, setOpen] = useState(false);
+  // 페이지 제작 완료 여부
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  // 레이어 열림 버튼 클릭 시
+  async function handleOpenLayer() {
+    const { data: uid } = await getCurrentUserUID();
+
+    if (!uid) {
+      enqueueSnackbar("로그인 후 이용 가능합니다.", { variant: "error" });
+      enqueueSnackbar("페이지 정보가 저장되었습니다.", { variant: "info" });
+
+      router.push("/auth/sign-in");
+      return;
+    }
+
+    setOpen(true);
+  }
+
+  // 템플릿 제작 버튼 클릭 시
+  async function handleButtonClick() {
+    const { data: uid } = await getCurrentUserUID();
+
+    // 로그인 여부 확인
+    if (!uid) {
+      return { data: null, error: "로그인 후 이용 가능합니다." };
+    }
+
+    // 템플릿 생성
+    const { error } = await createTemplate({
+      ...template,
+      name: templateName,
+      makerId: uid,
+    });
+
+    if (error) {
+      enqueueSnackbar("페이지 제작 실패", { variant: "error" });
+      return;
+    }
+
+    // 템플릿 초기화
+    initTemplate();
+
+    setIsCompleted(true);
+  }
+
+  // 렌더링
+  return (
+    <CreateTemplateButton_Container>
+      {/* 페이지 제작 레이어 */}
+      <Fade in={open} timeout={300}>
+        {/* 페이지 제작 레이어 */}
+        <CreateTemplateButton_Layer>
+          <LetterLayer_CloseIcon onClick={() => setOpen(false)} />
+          <CreateTemplateButton_Layer_ContentContainer>
+            {/* 안내 문구 */}
+            <CreateTemplateButton_Layer_Title variant="h5">
+              {isCompleted ? "페이지 제작 완료!" : "마지막 단계에요"}
+              <br />
+              {isCompleted ? "제작된 페이지를 확인해주세요" : "페이지 이름을 작성해주세요!"}
+            </CreateTemplateButton_Layer_Title>
+            {/* 텍스트 입력 필드 */}
+            {isCompleted === false && (
+              <CreateTemplateButton_Layer_TextInput
+                placeholder="제작한 페이지 이름"
+                value={templateName}
+                onChange={(e) => setTemplateName(e.target.value)}
+              />
+            )}
+            {/* 제작 완료 버튼 */}
+            <CreateTemplateButton_Layer_SubmitButton
+              onClick={isCompleted ? () => router.push(`/templates}`) : handleButtonClick}
+              variant="contained"
+              startIcon={!isCompleted && <CardGiftcardRounded />}
+              endIcon={isCompleted && <ArrowForwardRounded />}
+            >
+              {isCompleted ? "내 페이지 보러가기" : "페이지 제작하기"}
+            </CreateTemplateButton_Layer_SubmitButton>
+          </CreateTemplateButton_Layer_ContentContainer>
+        </CreateTemplateButton_Layer>
+      </Fade>
+
+      {/* 페이지 제작 레이어 버튼 */}
+      <CreateTemplateButton_CreateButton
+        onClick={handleOpenLayer}
+        variant="contained"
+        startIcon={<CardGiftcardRounded />}
+      >
+        페이지 제작
+      </CreateTemplateButton_CreateButton>
+    </CreateTemplateButton_Container>
+  );
+};
+
+const CreateTemplateButton_CreateButton = styled(Button)`
+  width: 100%;
+  color: ${({ theme }) => theme.palette.text.white};
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+`;
+
+const LetterLayer_CloseIcon = styled(CloseRounded)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: ${({ theme }) => theme.palette.primary.main};
+`;
+
+const CreateTemplateButton_Container = styled(Box)``;
+
+const CreateTemplateButton_Layer = styled(Stack)`
+  width: 100vw;
+  height: 100vh;
+  padding: 40px;
+  ${mixinFlex("column", "center", "center")}
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: ${({ theme }) => theme.palette.background.default};
+  z-index: 9999;
+`;
+
+const CreateTemplateButton_Layer_ContentContainer = styled(Stack)`
+  row-gap: 16px;
+`;
+
+const CreateTemplateButton_Layer_Title = styled(Typography)`
+  text-align: center;
+  color: ${({ theme }) => theme.palette.primary.main};
+  font-weight: bold;
+`;
+
+const CreateTemplateButton_Layer_TextInput = styled(TextField)`
+  width: 100%;
+  ${({ theme }) => mixinTextInputBorder(theme)}
+`;
+
+const CreateTemplateButton_Layer_SubmitButton = styled(Button)`
+  width: 100%;
+  color: ${({ theme }) => theme.palette.text.white};
+  ${mixinMuiButtonNoShadow()}
 `;

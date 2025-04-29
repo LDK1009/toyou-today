@@ -11,6 +11,9 @@ interface StoreType {
   template: MakeTemplateType;
 
   ////////// 페이지 에셋 관련 액션
+  // 템플릿 초기화
+  initTemplate: () => void;   
+
   // 페이지 에셋 설정
   setPageAsset: (name: PageAssetVariantType, content: PageAssetContentType) => void;
 
@@ -47,6 +50,10 @@ export const useMakeTemplateStore = create(
     (set) => ({
       ////////// 상태
       template: initialTemplate,
+
+      ////////// 템플릿 관련 액션
+      // 템플릿 초기화
+      initTemplate: () => set({ template: initialTemplate }),
 
       ////////// 페이지 에셋 관련 액션
       // 페이지 에셋 설정

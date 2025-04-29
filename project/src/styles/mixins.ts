@@ -212,3 +212,24 @@ export const mixinSwitch = (width: number, height: number, theme: Theme) => css`
     }
   }
 `;
+
+// 텍스트 입력 믹스인
+export const mixinTextInputBorder = (theme: Theme) => css`
+  & .MuiInputBase-root {
+    border: 1px solid ${theme.palette.primary.main};
+  }
+
+  & .MuiOutlinedInput-notchedOutline {
+    border-color: ${theme.palette.primary.main};
+  }
+`;
+
+
+// 버튼 그림자 숨기기
+export const mixinMuiButtonNoShadow = () => css`
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+`;
