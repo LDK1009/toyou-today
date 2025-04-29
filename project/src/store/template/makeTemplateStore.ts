@@ -74,9 +74,9 @@ export const useMakeTemplateStore = create(
         })),
 
       // 블록 삭제
-      deleteBlock: (index: number) =>
+      deleteBlock: (targetBlockIndex: number) =>
         set((state) => ({
-          template: { ...state.template, blocks: state.template.blocks.filter((_, i) => i !== index) },
+          template: { ...state.template, blocks: state.template.blocks.filter((_, i) => i !== targetBlockIndex) },
         })),
 
       // 블록 한 칸 위로 옮기기

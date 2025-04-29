@@ -8,6 +8,8 @@ import {
   CalendarMonthRounded,
   CelebrationRounded,
   CloseRounded,
+  DeleteOutlineRounded,
+  EditOutlined,
   GifRounded,
   HistoryEduRounded,
   ImageRounded,
@@ -27,7 +29,7 @@ import { useAddBlockDrawerStore } from "@/store";
 import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import TextBlock from "../block/TextBlock";
 import React, { useState } from "react";
-import { BlockVariantType } from "@/types/template/blockType";
+import { BlockType, BlockVariantType } from "@/types/template/blockType";
 import CalenderBlock from "../block/CalenderBlock";
 import ImageBlock from "../block/ImageBlock";
 import VideoBlock from "../block/VideoBlock";
@@ -40,7 +42,7 @@ import { PageAssetVariantType } from "@/types/template/pageAssetType";
 import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
 import BackgroundMusicPageAsset from "../page-asset/BackgroundMusicPageAsset";
 import RollingPaperPageAsset from "../page-asset/RollingPaperPageAsset";
-import { motion, Reorder } from "motion/react";
+import { Reorder } from "motion/react";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -74,7 +76,7 @@ const TemplatesMakeContainer = () => {
       <BlockComponents />
 
       {/* 롤링페이퍼 활성화 시 롤링페이퍼 렌더링 */}
-      {rollingPaper && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={true} />}
+      {rollingPaper?.isActive && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={true} />}
 
       {/* 블록 추가 버튼 */}
       <AddBlockButton />
@@ -103,7 +105,7 @@ const BlockComponents = () => {
     return templateBlocks.map((el, index) => {
       return (
         <Reorder.Item key={el.id} value={el} as="div">
-          <BlockWrapper blockIdx={index} blockKey={el.id as number}>
+          <BlockWrapper blockIdx={index}>
             {el.variant === "space" && <SpaceBlock blockData={el.content} />}
             {el.variant === "text" && <TextBlock blockData={el.content} />}
             {el.variant === "calendar" && <CalenderBlock key={`calendar-${el.id}`} blockData={el.content} />}
@@ -121,61 +123,59 @@ const BlockComponents = () => {
 
   // 렌더링
   return (
-    <BlockComponentsContainer>
-      <Reorder.Group axis="y" values={templateBlocks} onReorder={(state) => setTemplateBlocks(state)}>
-        {renderBlocks()}
-      </Reorder.Group>
+    <BlockComponentsContainer
+      axis="y"
+      values={templateBlocks}
+      onReorder={(state) => setTemplateBlocks(state as BlockType[])}
+    >
+      {renderBlocks()}
     </BlockComponentsContainer>
   );
 };
 
-const BlockComponentsContainer = styled(Stack)`
+const BlockComponentsContainer = styled(Reorder.Group)`
   width: 100%;
-  row-gap: 24px;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
 `;
 
-////////////////////////////// 블록 수정 헤더컴포넌트 //////////////////////////////
-const BlockWrapper = ({
-  blockIdx,
-  blockKey,
-  children,
-}: {
-  blockIdx: number;
-  blockKey: number;
-  children: React.ReactNode;
-}) => {
-  const { moveUpBlock, moveDownBlock } = useMakeTemplateStore();
+////////////////////////////// 블록 랩퍼 컴포넌트 //////////////////////////////
+const BlockWrapper = ({ blockIdx, children }: { blockIdx: number; children: React.ReactNode }) => {
+  const { moveUpBlock, moveDownBlock, updateBlock, deleteBlock } = useMakeTemplateStore();
 
   return (
-    <BlockWrapper_Animation
-      key={blockKey}
-      animate={{
-        borderColor: ["#FFFFFF", "#FFB6B9", "#FFFFFF"],
-        backgroundColor: ["#FFFFFF", "#FFE0E2", "#FFFFFF"],
-        scale: [1, 1.01, 1],
-      }}
-      transition={{ duration: 1 }}
-    >
-      <BlockWrapper_Container>
-        <BlockWrapper_Header>
-          <Typography variant="h6">블록 수정</Typography>
-          <Button variant="outlined" onClick={() => moveUpBlock(blockIdx)}>
+    <BlockWrapper_Container>
+      <BlockWrapper_Header>
+        {/* 버튼 래퍼 */}
+        <BlockWrapper_ButtonWrapper>
+          {/* 위로 옮기기 버튼 */}
+          <BlockWrapper_Button onClick={() => moveUpBlock(blockIdx)}>
             <ArrowUpwardRounded />
-          </Button>
-          <Button variant="outlined" onClick={() => moveDownBlock(blockIdx)}>
+          </BlockWrapper_Button>
+          {/* 위로 옮기기 버튼 */}
+          <BlockWrapper_Button onClick={() => moveDownBlock(blockIdx)}>
             <ArrowDownwardRounded />
-          </Button>
-        </BlockWrapper_Header>
-        {children}
-      </BlockWrapper_Container>
-    </BlockWrapper_Animation>
+          </BlockWrapper_Button>
+        </BlockWrapper_ButtonWrapper>
+
+        {/* 버튼 래퍼 */}
+        <BlockWrapper_ButtonWrapper>
+          {/* 수정 버튼 */}
+          <BlockWrapper_Button onClick={() => moveUpBlock(blockIdx)}>
+            <EditOutlined />
+          </BlockWrapper_Button>
+          {/* 삭제 버튼 */}
+          <BlockWrapper_Button onClick={() => deleteBlock(blockIdx)} sx={{ color: "#F44336" }}>
+            <DeleteOutlineRounded />
+          </BlockWrapper_Button>
+        </BlockWrapper_ButtonWrapper>
+      </BlockWrapper_Header>
+      {children}
+    </BlockWrapper_Container>
   );
 };
-
-const BlockWrapper_Animation = styled(motion.div)`
-  border-width: 3px;
-  border-style: dashed;
-`;
 
 const BlockWrapper_Container = styled(Stack)`
   width: 100%;
@@ -184,7 +184,31 @@ const BlockWrapper_Container = styled(Stack)`
 
 const BlockWrapper_Header = styled(Stack)`
   width: 100%;
-  background-color: red;
+  padding: 4px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.palette.primary.main};
+  z-index: 100;
+
+  & .MuiSvgIcon-root {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const BlockWrapper_ButtonWrapper = styled(Stack)`
+  flex-direction: row;
+  align-items: center;
+  column-gap: 4px;
+`;
+
+const BlockWrapper_Button = styled(Button)`
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  max-width: 32px;
 `;
 
 ////////////////////////////// 페이지 에셋 추가 버튼 //////////////////////////////
