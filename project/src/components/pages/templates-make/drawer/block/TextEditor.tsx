@@ -1,6 +1,6 @@
 import { Grid2, Stack, styled, TextField, Typography } from "@mui/material";
 import { TextBlockType } from "@/types/template/blockType";
-import React, { useState } from "react";
+import React from "react";
 import {
   CachedRounded,
   DoNotDisturbAltRounded,
@@ -15,18 +15,35 @@ import { FormatAlignLeftRounded } from "@mui/icons-material";
 import TextBlock from "../../../templates/block/TextBlock";
 import { ColorPicker } from "./CommonPicker";
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
 
 const TextEditor = () => {
-  ////////////////////////////// Variables //////////////////////////////
-  // 추가 텍스트 블록 상태
-  const [editBlockState, setEditBlockState] = useState<TextBlockType>({
+  // 전역 에디터 상태
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  const initBlockState: TextBlockType = {
     textAlign: "left",
     fontSize: 1,
     fontWeight: "normal",
     animation: "none",
     color: "#000000",
     text: "",
-  });
+  };
+
+  const isTextBlockExist =
+    blockEditorState &&
+    "textAlign" in blockEditorState &&
+    "fontSize" in blockEditorState &&
+    "fontWeight" in blockEditorState &&
+    "animation" in blockEditorState &&
+    "color" in blockEditorState &&
+    "text" in blockEditorState;
+
+  const editBlockState = isTextBlockExist ? (blockEditorState as TextBlockType) : initBlockState;
+
+  function setEditBlockState(value: TextBlockType) {
+    setBlockEditorState(value);
+  }
 
   ////////////////////////////// Fuctions //////////////////////////////
   // 텍스트 블록 상태 수정 함수
@@ -120,7 +137,10 @@ const TextEditor = () => {
 
       {/* 블록 추가 버튼 */}
       <GridItem size={12}>
-        <CommonAddButton blockState={{ variant: "text", content: editBlockState }} disabled={editBlockState.text === ""} />
+        <CommonAddButton
+          blockState={{ variant: "text", content: editBlockState }}
+          disabled={editBlockState.text === ""}
+        />
       </GridItem>
     </Container>
   );

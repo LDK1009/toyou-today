@@ -5,11 +5,25 @@ import { styled } from "@mui/material";
 import { useState } from "react";
 import VideoBlock from "../../../templates/block/VideoBlock";
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
+import { VideoBlockType } from "@/types/template/blockType";
 
 const VideoEditor = () => {
   /////////////////////////////////////////////////////////////// State
-  // 유튜브 링크
-  const [videoLink, setVideoLink] = useState("");
+  // 전역 블록 상태
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  // 비디오 블록 존재 여부
+  const isVideoBlockExist = blockEditorState && "videoLink" in blockEditorState;
+
+  // 비디오 블록 상태
+  const videoLink = isVideoBlockExist ? (blockEditorState as VideoBlockType).videoLink : "";
+
+  // 비디오 블록 상태 수정
+  const setVideoLink = (newVideoLink: string) => {
+    setBlockEditorState({ ...blockEditorState, videoLink: newVideoLink });
+  };
+
   // 입력값
   const [inputValue, setInputValue] = useState("");
 

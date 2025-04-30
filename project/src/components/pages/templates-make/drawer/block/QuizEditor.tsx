@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { QuizBlockType } from "@/types/template/blockType";
 import { ColorPicker } from "@/components/pages/templates-make/drawer/block/CommonPicker";
 import QuizBlock from "../../../templates/block/QuizBlock";
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
 
 const QuizEditor = () => {
-  ////////////////////////////// State //////////////////////////////
-  const [blockState, setBlockState] = useState<QuizBlockType>({
+  const initBlockState: QuizBlockType = {
     question: "",
     answer: "",
     color: "#FFB6B9",
-  });
+  };
+
+  // 전역 블록 상태
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  // 블록 존재 여부
+  const isQuizBlockExist =
+    blockEditorState && "question" in blockEditorState && "answer" in blockEditorState && "color" in blockEditorState;
+
+  // 블록 상태
+  const blockState = isQuizBlockExist ? (blockEditorState as QuizBlockType) : initBlockState;
+
+  // 블록 상태 수정
+  const setBlockState = (newBlockState: QuizBlockType) => {
+    setBlockEditorState(newBlockState);
+  };
 
   ////////////////////////////// Functions //////////////////////////////
   // 퀴즈 정답 변경

@@ -19,15 +19,30 @@ import { GifBlockType } from "@/types/template/blockType";
 import GifBlock from "@/components/pages/templates/block/GifBlock";
 import { AlignAndAnimationPicker } from "./CommonPicker";
 import CommonAddButton from "./CommonAddButton";
-
+import { useAddBlockDrawerStore } from "@/store";
 
 const GifEditor = () => {
-  // 선택된 이미지 주소
-  const [blockState, setBlockState] = useState<GifBlockType>({
+  // 상태 초기화값
+  const initBlockState: GifBlockType = {
     gifSrc: "",
     align: "center",
     animation: "none",
-  });
+  };
+
+  // 전역 블록 상태
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  // 블록 존재 여부
+  const isGifBlockExist =
+    blockEditorState && "gifSrc" in blockEditorState && "align" in blockEditorState && "animation" in blockEditorState;
+
+  // 블록 상태  
+  const blockState = isGifBlockExist ? (blockEditorState as GifBlockType) : initBlockState;
+
+  // 블록 상태 수정
+  const setBlockState = (newBlockState: GifBlockType) => {
+    setBlockEditorState(newBlockState);
+  };
 
   // 검색 결과 이미지 목록
   const [imgs, setImgs] = useState([]);
@@ -72,7 +87,7 @@ const GifEditor = () => {
 
   // 이미지 블록 상태 수정 함수
   function setBlockStateProperty(key: string, value: string | number) {
-    setBlockState((prev) => ({ ...prev, [key]: value }));
+    setBlockState({ ...blockState, [key]: value });
   }
 
   return (
@@ -137,7 +152,10 @@ const GifEditor = () => {
       </GifImageAccordion>
 
       {/* 정렬&애니메이션 선택기 */}
-      <AlignAndAnimationPicker blockState={blockState} setBlockStateProperty={setBlockStateProperty} />
+      <AlignAndAnimationPicker
+        blockState={blockState}
+        setBlockStateProperty={(key, value) => setBlockStateProperty(key as keyof GifBlockType, value)}
+      />
 
       {/* 제출 */}
       <CommonAddButton blockState={{ variant: "gif", content: blockState }} disabled={blockState.gifSrc === ""} />

@@ -1,17 +1,29 @@
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/ko";
-import React, { useState } from "react";
+import React from "react";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { styled } from "@mui/material";
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
 
 const CalenderEditor = () => {
-  ////////////////////////////// State //////////////////////////////
-  // 날짜 선택 상태
-  const [date, setDate] = useState<Dayjs>(dayjs());
+  // 전역 에디터 상태
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  const isCalendarBlockExist = blockEditorState && 'date' in blockEditorState;
+  
+  const editBlockState = isCalendarBlockExist 
+    ? { date: dayjs(blockEditorState.date) } 
+    : { date: dayjs() };
+
+  const date = editBlockState.date;
+
+  function setDate(value: Dayjs) {
+    setBlockEditorState({ date: value });
+  }
 
   ////////////////////////////// Render //////////////////////////////
   return (

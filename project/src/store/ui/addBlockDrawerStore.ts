@@ -7,7 +7,7 @@ type Anchor = "top" | "left" | "bottom" | "right";
 
 interface StoreType {
   // 상태
-  variant: BlockVariantType | PageAssetVariantType;
+  variant: BlockVariantType | PageAssetVariantType | null;
   anchor: Anchor;
   isOpen: boolean;
 
@@ -32,7 +32,7 @@ interface StoreType {
 
 export const useAddBlockDrawerStore = create<StoreType>((set) => ({
   // 상태
-  variant: "text",
+  variant: null,
   anchor: "top",
   isOpen: false,
 

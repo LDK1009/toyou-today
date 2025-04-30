@@ -13,9 +13,25 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
 
 const GalleryEditor = () => {
-  const [blockStates, setBlockStates] = useState<GalleryBlockType>([]);
+  // const [blockStates, setBlockStates] = useState<GalleryBlockType>([]);
+
+  const initBlockState: GalleryBlockType = [];
+
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  const isGalleryBlockExist =
+    blockEditorState &&
+    Array.isArray(blockEditorState) &&
+    blockEditorState.every((item) => "imgSrc" in item && "text" in item);
+
+  const blockStates = isGalleryBlockExist ? (blockEditorState as GalleryBlockType) : initBlockState;
+
+  const setBlockStates = (newBlockStates: GalleryBlockType) => {
+    setBlockEditorState(newBlockStates);
+  };
 
   // 블록 데이터 수정
   function setBlockStateProperty(index: number, key: keyof GalleryBlockItemType, value: string) {
@@ -54,7 +70,10 @@ const GalleryEditor = () => {
             >
               재업로드
             </ReselectButton>
-            <CommonAddButton blockState={{ variant: "gallery", content: blockStates }} disabled={blockStates.length === 0} />
+            <CommonAddButton
+              blockState={{ variant: "gallery", content: blockStates }}
+              disabled={blockStates.length === 0}
+            />
           </>
         )}
       </ButtonWrapper>

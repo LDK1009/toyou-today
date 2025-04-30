@@ -5,13 +5,19 @@ import { shouldForwardProp } from "@/utils/mui";
 import { motion, useInView } from "motion/react";
 import { useRef, useState } from "react";
 
-const QuizBlock = ({ blockData, preview = false }: { blockData: QuizBlockType; preview?: boolean }) => {
+type QuizBlockProps = {
+  blockData: QuizBlockType;
+  preview?: boolean;
+};
+
+const QuizBlock = ({ blockData, preview = false }: QuizBlockProps) => {
   ////////////////////////////// State //////////////////////////////
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
   const [isAnswerIncorrect, setIsAnswerIncorrect] = useState(false);
   const [inputValue, setInputValue] = useState("");
   // 애니메이션 재생을 위한 키 상태 추가
   const [animationKey, setAnimationKey] = useState(0);
+
 
   ////////////////////////////// Variable //////////////////////////////
   // 퀴즈 블록 데이터

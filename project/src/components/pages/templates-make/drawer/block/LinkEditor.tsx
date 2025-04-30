@@ -2,19 +2,38 @@ import { Stack, TextField, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import { ColorPicker } from "./CommonPicker";
-import { useState } from "react";
 import { LinkBlockType } from "@/types/template/blockType";
 import LinkBlock from "../../../templates/block/LinkBlock";
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
 
 const LinkEditor = () => {
-  // 블록 상태
-  const [blockState, setBlockState] = useState<LinkBlockType>({
+  // 블록 상태 초기화값
+  const initBlockState: LinkBlockType = {
     text: "",
     url: "",
     textColor: "#FFFFFF",
     buttonColor: "#FFB6B9",
-  });
+  };
+
+  // 전역 블록 상태
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  // 블록 존재 여부
+  const isLinkBlockExist =
+    blockEditorState &&
+    "text" in blockEditorState &&
+    "url" in blockEditorState &&
+    "textColor" in blockEditorState &&
+    "buttonColor" in blockEditorState;
+
+  // 블록 상태
+  const blockState = isLinkBlockExist ? (blockEditorState as LinkBlockType) : initBlockState;
+
+  // 블록 상태 수정
+  const setBlockState = (newBlockState: LinkBlockType) => {
+    setBlockEditorState(newBlockState);
+  };
 
   // 텍스트 색상 변경
   function handleTextColorChange(color: string) {

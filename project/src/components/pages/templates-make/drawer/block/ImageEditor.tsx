@@ -9,18 +9,29 @@ import { useState } from "react";
 import { AlignAndAnimationPicker } from "./CommonPicker";
 import ImageBlock from "../../../templates/block/ImageBlock";
 import CommonAddButton from "./CommonAddButton";
+import { useAddBlockDrawerStore } from "@/store";
 
 const ImageEditor = () => {
-  const [blockState, setBlockState] = useState<ImageBlockType>({
+  const initBlockState: ImageBlockType = {
     imgSrc: "",
     align: "center",
     animation: "none",
-  });
+  };
+
+  const { blockEditorState, setBlockEditorState } = useAddBlockDrawerStore();
+
+  const isImageBlockExist =
+    blockEditorState && "imgSrc" in blockEditorState && "align" in blockEditorState && "animation" in blockEditorState;
+  const blockState = isImageBlockExist ? (blockEditorState as ImageBlockType) : initBlockState;
+
+  function setBlockState(value: ImageBlockType) {
+    setBlockEditorState(value);
+  }
 
   ////////////////////////////// Function //////////////////////////////
   // 이미지 블록 상태 수정 함수
   const setBlockStateProperty = (key: string, value: string | number) => {
-    setBlockState((prev) => ({ ...prev, [key]: value }));
+    setBlockState({ ...blockState, [key]: value });
   };
 
   return (
