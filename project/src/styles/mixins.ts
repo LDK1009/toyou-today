@@ -2,15 +2,17 @@ import { css } from "@emotion/react";
 import { Theme } from "@mui/material/styles";
 
 const breakpoint = {
-  xs: 0,
-  // 모바일 범위
-  sm: 600,
-  // 태블릿 범위
-  md: 900,
-  // 노트북 범위
-  lg: 1200,
-  // 데스크톱 범위
-  xl: 1536,
+  // 모바일 (스마트폰)
+  mobile: 768, // 0px 이상 ~ 767px 이하
+
+  // 태블릿 (아이패드 등)
+  tablet: 1024, // 768px 이상 ~ 1023px 이하
+
+  // 노트북 (소형 데스크탑 포함)
+  laptop: 1440, // 1024px 이상 ~ 1439px 이하
+
+  // 데스크탑 (고해상도 포함)
+  desktop: 1920, // 1440px 이상
 };
 
 // 믹스인 정의
@@ -24,8 +26,28 @@ export const mixinContainer = () => css`
   margin: 0 auto;
   padding: 80px 16px;
 
+  // ~ 모바일
+  @media (min-width: 0px) and (max-width: ${breakpoint.mobile}px) {
+    max-width: ${breakpoint.mobile * 0.8}px;
+  }
+
+  // 모바일 ~ 태블릿
+  @media (min-width: ${breakpoint.mobile}px) and (max-width: ${breakpoint.tablet}px) {
+    max-width: ${breakpoint.tablet * 0.8}px;
+  }
+
+  // 태블릿 ~ 노트북
+  @media (min-width: ${breakpoint.tablet}px) and (max-width: ${breakpoint.laptop}px) {
+    max-width: ${breakpoint.laptop * 0.8}px;
+  }
+
+  // 데스크톱 ~
+  @media (min-width: ${breakpoint.desktop}px) {
+    max-width: ${breakpoint.desktop * 0.8}px;
+  }
+
   /* 모바일 화면에서는 헤더 높이가 56px로 줄어듦 */
-  @media (max-width: ${breakpoint.sm - 1}px) {
+  @media (max-width: ${breakpoint.mobile}px) {
     padding: 70px 16px;
   }
 `;
@@ -92,14 +114,14 @@ export const mixinBorderRadius = (level: "small" | "medium" | "large" | "circle"
 
 // 모바일에서만 보이는 믹스인
 export const mixinOnlyMobile = () => css`
-  @media (max-width: ${breakpoint.sm - 1}px) {
+  @media (max-width: ${breakpoint.mobile}px) {
     display: none;
   }
 `;
 
 // PC에서만 보이는 믹스인
 export const mixinOnlyPC = () => css`
-  @media (min-width: ${breakpoint.xs}px) {
+  @media (min-width: ${breakpoint.tablet}px) {
     display: none;
   }
 `;
@@ -223,7 +245,6 @@ export const mixinTextInputBorder = (theme: Theme) => css`
     border-color: ${theme.palette.primary.main};
   }
 `;
-
 
 // 버튼 그림자 숨기기
 export const mixinMuiButtonNoShadow = () => css`
