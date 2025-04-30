@@ -12,3 +12,11 @@ export async function readTemplates() {
 
   return { data, error };
 }
+
+export async function readTemplateById(id: string) {
+  const { data, error } = await supabase.from("templates").select("*").eq("id", id).single();
+
+  return { data, error };
+}
+
+

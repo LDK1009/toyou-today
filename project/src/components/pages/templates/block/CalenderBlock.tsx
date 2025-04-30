@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
