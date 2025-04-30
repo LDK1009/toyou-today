@@ -5,6 +5,7 @@ import { TemplateType } from "@/types/template/templateType";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material";
 import BlockList from "./container/BlockList";
+import CopyButton from "./container/CopyButton";
 
 type PropsType = {
   templateData: TemplateType;
@@ -13,6 +14,7 @@ type PropsType = {
 const TeaplatesIdContainer = ({ templateData }: PropsType) => {
   return (
     <Container>
+      <CopyButton template={templateData} />
       <BlockList blocks={templateData.blocks} />
     </Container>
   );

@@ -3,7 +3,7 @@
 import { BlockType } from "@/types/template/blockType";
 import SpaceBlock from "../../templates/block/SpaceBlock";
 import TextBlock from "../../templates/block/TextBlock";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import ImageBlock from "../../templates/block/ImageBlock";
 import GalleryBlock from "../../templates/block/GalleryBlock";
 import GifBlock from "../../templates/block/GifBlock";
@@ -16,7 +16,7 @@ import { styled } from "@mui/material";
 
 // 동적으로 CalenderBlock 불러오기 (클라이언트 사이드에서만 렌더링)
 const CalenderBlock = dynamic(() => import("../../templates/block/CalenderBlock"), {
-  ssr: false
+  ssr: false,
 });
 
 const BlockList = ({ blocks }: { blocks: BlockType[] }) => {
@@ -46,6 +46,7 @@ export default BlockList;
 
 const Container = styled(Stack)`
   width: 100%;
+  padding-top: 16px;
   flex-direction: column;
   row-gap: 40px;
 `;
