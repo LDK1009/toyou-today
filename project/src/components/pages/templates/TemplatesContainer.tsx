@@ -1,14 +1,16 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 import { mixinContainer } from "@/styles/mixins";
 import { styled } from "@mui/material";
+import { TemplateType } from "@/types/template/templateType";
+import TemplateList from "./container/TemplateList";
 
-const TemplatesContainer = () => {
+const TemplatesContainer = ({ templates }: { templates: TemplateType[] }) => {
   return (
     <Container>
-      <Typography variant="h1">템플릿 페이지</Typography>
+        <TemplateList templates={templates}/>
     </Container>
   );
 };
