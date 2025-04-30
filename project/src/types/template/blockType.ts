@@ -10,9 +10,11 @@ export type BlockType =
   | { id?: number; variant: "video"; content: VideoBlockType }
   | { id?: number; variant: "link"; content: LinkBlockType }
   | { id?: number; variant: "quiz"; content: QuizBlockType };
+  
 export type BlockVariantType = "space" | "text" | "calendar" | "image" | "gallery" | "gif" | "video" | "link" | "quiz";
 export type AnimationType = "none" | "fadeInToLeft" | "fadeInToRight" | "fadeInToTop" | "fadeInToBottom" | "rotate";
 export type AlignType = "left" | "center" | "right";
+export type BlockContentType = SpaceBlockType | TextBlockType | CalendarBlockType | ImageBlockType | GalleryBlockType | GifBlockType | VideoBlockType | LinkBlockType | QuizBlockType;
 
 // 스페이스 블록 타입
 export type SpaceBlockType = {

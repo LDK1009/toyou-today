@@ -17,6 +17,7 @@ export function useHandleEditor() {
     // 액션 - 드로어
     setIsOpen: setEditorOpen,
     setAllState: setEditorAllState,
+    setBlockEditorState,
 
     // 액션 - 수정 모드
     setEditMode,
@@ -37,6 +38,10 @@ export function useHandleEditor() {
 
   ////////// 에디터 수정모드로 열기 //////////
   function openEditorInEditMode(editTargetBlockIndex: number, editTargetBlockData: BlockType) {
+    // 타겟 블록 데이터(수정 버튼 클릭한 블록의 데이터)
+    const targetBlockData = currentBlocks[editTargetBlockIndex];
+    setBlockEditorState(targetBlockData.content);
+
     // 수정 모드 켜기
     setEditMode(true);
     // 수정 모드 대상 블록 인덱스 설정

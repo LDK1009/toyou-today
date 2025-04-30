@@ -1,4 +1,4 @@
-import { BlockVariantType } from "@/types/template/blockType";
+import { BlockContentType, BlockVariantType } from "@/types/template/blockType";
 import { PageAssetVariantType } from "@/types/template/pageAssetType";
 import { BlockType } from "@/types/template/blockType";
 import { create } from "zustand";
@@ -15,6 +15,8 @@ interface StoreType {
   editTargetBlockIndex: number;
   editTargetBlockData: BlockType | null;
 
+  blockEditorState: BlockContentType | null;
+
   // 액션
   setVariant: (variant: BlockVariantType | PageAssetVariantType) => void;
   setAnchor: (anchor: Anchor) => void;
@@ -24,6 +26,8 @@ interface StoreType {
   setEditMode: (editMode: boolean) => void;
   setEditTargetBlockIndex: (editTargetBlockIndex: number) => void;
   setEditTargetBlockData: (editTargetBlockData: BlockType | null) => void;
+
+  setBlockEditorState: (blockEditorState: BlockContentType) => void;
 }
 
 export const useAddBlockDrawerStore = create<StoreType>((set) => ({
@@ -36,6 +40,8 @@ export const useAddBlockDrawerStore = create<StoreType>((set) => ({
   editMode: false,
   editTargetBlockData: null,
 
+  blockEditorState: null,
+
   // 액션
   setVariant: (variant: BlockVariantType | PageAssetVariantType) => set({ variant }),
   setAnchor: (anchor: Anchor) => set({ anchor }),
@@ -46,4 +52,6 @@ export const useAddBlockDrawerStore = create<StoreType>((set) => ({
   setEditMode: (editMode: boolean) => set({ editMode }),
   setEditTargetBlockIndex: (editTargetBlockIndex: number) => set({ editTargetBlockIndex }),
   setEditTargetBlockData: (editTargetBlockData: BlockType | null) => set({ editTargetBlockData }),
+
+  setBlockEditorState: (blockEditorState: BlockContentType) => set({ blockEditorState }),
 }));
