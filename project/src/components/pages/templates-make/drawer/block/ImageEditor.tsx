@@ -7,7 +7,7 @@ import { CircularProgress, Stack, styled, Typography } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import { AlignAndAnimationPicker } from "./CommonPicker";
-import ImageBlock from "../../../block/ImageBlock";
+import ImageBlock from "../../../templates/block/ImageBlock";
 import CommonAddButton from "./CommonAddButton";
 
 const ImageEditor = () => {

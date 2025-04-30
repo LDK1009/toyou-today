@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { TextField, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { QuizBlockType } from "@/types/template/blockType";
-import { ColorPicker } from "@/components/pages/templates/make/drawer/block/CommonPicker";
-import QuizBlock from "../../../block/QuizBlock";
+import { ColorPicker } from "@/components/pages/templates-make/drawer/block/CommonPicker";
+import QuizBlock from "../../../templates/block/QuizBlock";
 import CommonAddButton from "./CommonAddButton";
 
 const QuizEditor = () => {

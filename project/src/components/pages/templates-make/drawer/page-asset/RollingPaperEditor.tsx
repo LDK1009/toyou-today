@@ -4,7 +4,7 @@ import { RollingPaperAssetType } from "@/types/template/pageAssetType";
 import { CheckCircleOutlineRounded } from "@mui/icons-material";
 import { Button, Stack, styled, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
-import RollingPaperPageAsset from "../../../page-asset/RollingPaperPageAsset";
+import RollingPaperPageAsset from "../../../templates/page-asset/RollingPaperPageAsset";
 import { useAddBlockDrawerStore } from "@/store";
 
 const RollingPaperEditor = () => {

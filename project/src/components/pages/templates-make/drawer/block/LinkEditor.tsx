@@ -4,7 +4,7 @@ import { styled } from "@mui/material";
 import { ColorPicker } from "./CommonPicker";
 import { useState } from "react";
 import { LinkBlockType } from "@/types/template/blockType";
-import LinkBlock from "../../../block/LinkBlock";
+import LinkBlock from "../../../templates/block/LinkBlock";
 import CommonAddButton from "./CommonAddButton";
 
 const LinkEditor = () => {

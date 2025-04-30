@@ -12,7 +12,7 @@ import {
 } from "@mui/icons-material";
 import { FormatAlignRightRounded } from "@mui/icons-material";
 import { FormatAlignLeftRounded } from "@mui/icons-material";
-import TextBlock from "../../../block/TextBlock";
+import TextBlock from "../../../templates/block/TextBlock";
 import { ColorPicker } from "./CommonPicker";
 import CommonAddButton from "./CommonAddButton";
 

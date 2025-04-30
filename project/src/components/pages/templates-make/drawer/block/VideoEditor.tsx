@@ -3,7 +3,7 @@ import { Stack, TextField, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import { useState } from "react";
-import VideoBlock from "../../../block/VideoBlock";
+import VideoBlock from "../../../templates/block/VideoBlock";
 import CommonAddButton from "./CommonAddButton";
 
 const VideoEditor = () => {
