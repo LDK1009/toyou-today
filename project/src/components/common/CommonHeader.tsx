@@ -19,7 +19,13 @@ import {
 } from "@mui/material";
 import { mixinFlex } from "@/styles/mixins";
 import { useAuthStore } from "@/store";
-import { PersonOutline, Menu as MenuIcon, ListAlt, AddCircleOutline, CardGiftcardRounded } from "@mui/icons-material";
+import {
+  PersonOutline,
+  Menu as MenuIcon,
+  CardGiftcardRounded,
+  CottageOutlined,
+  DashboardOutlined,
+} from "@mui/icons-material";
 import Link from "next/link";
 
 /**
@@ -46,8 +52,8 @@ const CommonHeader = () => {
   /////////////////////////////// Variables ///////////////////////////////
   const drawerWidth = 250;
   const navItems = [
-    { title: "메뉴1", path: "/", icon: <ListAlt /> },
-    { title: "메뉴2", path: "/", icon: <AddCircleOutline /> },
+    { title: "홈", path: "/", icon: <CottageOutlined /> },
+    { title: "템플릿", path: "/templates", icon: <DashboardOutlined /> },
     user.isSignIn
       ? { title: "마이페이지", path: "/my-page", icon: <PersonOutline /> }
       : { title: "로그인", path: "/auth/sign-in", icon: <PersonOutline /> },
@@ -113,7 +119,11 @@ const CommonHeader = () => {
               <ListItemButton
                 component={Link}
                 href={item.path}
-                sx={{ columnGap: 2, "& svg": { color: (theme) => theme.palette.primary.main } }}
+                sx={{
+                  columnGap: 2,
+                  "& svg": { color: (theme) => theme.palette.primary.main },
+                  color: (theme) => theme.palette.primary.dark,
+                }}
               >
                 {item.icon}
                 <ListItemText primary={item.title} />
