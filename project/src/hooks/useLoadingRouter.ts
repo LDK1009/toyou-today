@@ -1,5 +1,5 @@
 import { useLoadingStore } from "@/store/ui/loadingStore";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const useLoadingRouter = () => {
@@ -7,16 +7,14 @@ export const useLoadingRouter = () => {
   const router = useRouter();
   // 현재 경로
   const pathname = usePathname();
-  // 현재 경로 쿼리 파라미터
-  const searchParams = useSearchParams();
   // 로딩 상태
   const { setIsLoading } = useLoadingStore();
 
-  // 라우터 이동 시 로딩 종료
+  // 경로 변경 시 로딩 종료
   useEffect(() => {
     setIsLoading(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   // 라우터 이동 전 로딩 시작
   const navigateWithLoading = (path: string) => {
