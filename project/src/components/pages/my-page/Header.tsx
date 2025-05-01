@@ -1,46 +1,34 @@
-import { mixinFlex, mixinBorderRadius, mixinBoxShadow } from "@/styles/mixins";
-import { styled, Typography, Paper } from "@mui/material";
+import { useAuthStore } from "@/store";
+import { mixinFlex } from "@/styles/mixins";
+import { styled, Typography, Stack } from "@mui/material";
 import Image from "next/image";
+import { enqueueSnackbar } from "notistack";
 
-//////////////////////////////////////// Types ////////////////////////////////////////
-
-/**
- * 헤더 컴포넌트 Props 타입 정의
- */
-interface PropsType {
-  imgSrc: string;  // 프로필 이미지 경로
-  nickname: string;  // 사용자 닉네임(이메일)
-}
-
-//////////////////////////////////////// Component ////////////////////////////////////////
-
-/**
- * 마이페이지 헤더 컴포넌트
- * 사용자 프로필 정보를 표시
- */
-const Header = ({ imgSrc, nickname }: PropsType) => {
+const Header = () => {
   //////////////////////////////////////// Render ////////////////////////////////////////
-  
+  const { user } = useAuthStore();
+
+  function handleProfileImgClick() {
+    enqueueSnackbar("개발 중인 기능입니다.", { variant: "info" });
+  }
   return (
     <Container>
-      {/* 섹션 제목 */}
-      <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
-        내 프로필
-      </Typography>
-      
+      <Title variant="h6">프로필</Title>
+
       {/* 프로필 카드 */}
-      <ProfileCard elevation={2}>
+      <ProfileCard>
         {/* 프로필 이미지 */}
-        <ProfileImg 
-          src={imgSrc} 
-          alt={`${nickname}의 프로필 이미지`} 
-          width={80} 
-          height={80} 
+        <ProfileImg
+          src="/img/logo-192.png"
+          alt={`${user.email}의 프로필 이미지`}
+          width={80}
+          height={80}
+          onClick={handleProfileImgClick}
         />
-        
+
         {/* 프로필 정보 */}
         <ProfileInfo>
-          <NicknameText variant="body1">{nickname}</NicknameText>
+          <NicknameText variant="body1">{user.email}</NicknameText>
           <StatusText variant="body2">일반 회원</StatusText>
         </ProfileInfo>
       </ProfileCard>
@@ -53,22 +41,25 @@ export default Header;
 //////////////////////////////////////// Styles ////////////////////////////////////////
 
 // 헤더 컨테이너 스타일
-const Container = styled("div")`
-  ${mixinFlex("column")};
-  align-items: flex-start;
+const Container = styled(Stack)`
   width: 100%;
+  row-gap: 4px;
+`;
+
+const Title = styled(Typography)`
+  font-weight: bold;
+  color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 // 프로필 카드 스타일
-const ProfileCard = styled(Paper)`
-  ${mixinFlex("row")};
-  justify-content: flex-start;
-  align-items: center;
+const ProfileCard = styled(Stack)`
+  ${mixinFlex("row", "flex-start", "center")};
   width: 100%;
   padding: 16px;
-  gap: 20px;
-  ${mixinBorderRadius("medium")};
-  ${mixinBoxShadow("light")};
+  column-gap: 16px;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.palette.primary.main};
+  background-color: ${({ theme }) => theme.palette.background.paper};
 `;
 
 // 프로필 이미지 스타일
@@ -88,11 +79,10 @@ const ProfileInfo = styled("div")`
 
 // 닉네임 텍스트 스타일
 const NicknameText = styled(Typography)`
-  font-weight: 600;
+  color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 // 상태 텍스트 스타일
 const StatusText = styled(Typography)`
-  color: ${({ theme }) => theme.palette.primary.main};
-  font-weight: 500;
+  color: ${({ theme }) => theme.palette.text.secondary};
 `;

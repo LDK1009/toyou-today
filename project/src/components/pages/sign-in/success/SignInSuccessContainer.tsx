@@ -24,7 +24,7 @@ const SignInSuccessContainer = () => {
           isSignIn: true,
           created_at: data.user.created_at as string,
         };
-        
+
         setUser(userData);
       } else {
         enqueueSnackbar("유저 정보 가져오기 오류 발생", { variant: "error" });
@@ -92,4 +92,5 @@ const ButtonWrap = styled("div")`
 
 const HomeButton = styled(Button)`
   width: 100%;
+  color: ${({ theme }) => theme.palette.text.white};
 `;

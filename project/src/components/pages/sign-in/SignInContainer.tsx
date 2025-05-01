@@ -101,6 +101,7 @@ const HomeButton = styled(Button)`
   height: 48px;
   font-weight: 500;
   text-transform: none;
+  color: ${({ theme }) => theme.palette.text.white};
 `;
 
 const KakaoButton = styled(Button)`
