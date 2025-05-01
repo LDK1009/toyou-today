@@ -2,7 +2,7 @@ import React from "react";
 import { TemplateType } from "@/types/template/templateType";
 import { Grid2, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material";
-import { mixinFlex, mixinMultilineEllipsis, mixinTextGradient } from "@/styles/mixins";
+import { mixinFlex, mixinMultilineEllipsis } from "@/styles/mixins";
 import { shouldForwardProp } from "@/utils/mui";
 import { CardGiftcardRounded } from "@mui/icons-material";
 import { useLoadingRouter } from "@/hooks/useLoadingRouter";
@@ -24,8 +24,7 @@ const TemplateItem = ({ template }: { template: TemplateType }) => {
 
   // ID를 기반으로 일관된 색상 인덱스 생성
   const colorIndex = typeof template?.id === "number" ? template.id % colors.length : 0;
-  // 템플릿 테두리 색상 선택
-  const borderColor = colors[colorIndex];
+
   // 템플릿 색상 3개 선택
   const backgroundColors = [
     colors[colorIndex],
@@ -39,14 +38,12 @@ const TemplateItem = ({ template }: { template: TemplateType }) => {
   }
 
   return (
-    <Container size={6} borderColor={borderColor} onClick={goToTemplate}>
+    <Container size={6} onClick={goToTemplate}>
       <ColorBox backgroundColors={backgroundColors}>
         <CardGiftcardRounded />
       </ColorBox>
       <NameWrapper>
-        <Name variant="body1" colors={backgroundColors}>
-          {template.name}
-        </Name>
+        <Name variant="body2">{template.name}</Name>
       </NameWrapper>
     </Container>
   );
@@ -54,14 +51,10 @@ const TemplateItem = ({ template }: { template: TemplateType }) => {
 
 export default TemplateItem;
 
-type ContainerProps = {
-  borderColor: string;
-};
-
-const Container = styled(Grid2, { shouldForwardProp })<ContainerProps>`
+const Container = styled(Grid2, { shouldForwardProp })`
   ${mixinFlex("column", "center", "center")}
   background-color: ${({ theme }) => theme.palette.background.default};
-  border: 1px solid ${({ borderColor }) => borderColor};
+  border: 1px solid ${({ theme }) => theme.palette.primary.main};
   border-radius: 8px;
   cursor: pointer;
 `;
@@ -75,6 +68,7 @@ const ColorBox = styled(Stack, { shouldForwardProp })<ColorBoxProps>`
   width: 100%;
   height: 150px;
   border-radius: 8px 8px 0px 0px;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.primary.main};
   background: linear-gradient(
     -45deg,
     ${({ backgroundColors }) => backgroundColors[0]},
@@ -93,12 +87,9 @@ const NameWrapper = styled(Stack)`
   padding: 8px;
 `;
 
-type NameProps = {
-  colors: string[];
-};
-
-const Name = styled(Typography)<NameProps>`
+const Name = styled(Typography)`
   ${mixinMultilineEllipsis(1)}
-  ${({ colors }) => mixinTextGradient(colors[0], colors[1])}
   text-align: center;
+  color: ${({ theme }) => theme.palette.primary.dark};
+  font-weight: bold;
 `;
