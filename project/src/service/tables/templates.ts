@@ -2,8 +2,8 @@ import { supabase } from "@/lib/supabaseClient";
 import { MakeTemplateType } from "@/types/template/templateType";
 
 export async function createTemplate(template: MakeTemplateType) {
-  const { data, error } = await supabase.from("templates").insert(template).select();
-  console.log(data, error);
+  const { data, error } = await supabase.from("templates").insert(template).select().single();
+  
   return { data, error };
 }
 

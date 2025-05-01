@@ -10,7 +10,6 @@ import {
 import {
   AddCircleOutlineRounded,
   ArrowDownwardRounded,
-  ArrowForwardRounded,
   ArrowUpwardRounded,
   CalendarMonthRounded,
   CardGiftcardRounded,
@@ -56,6 +55,7 @@ import { createTemplate } from "@/service/tables/templates";
 import { getCurrentUserUID } from "@/service/auth";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
+import Loading from "@/components/common/Loading";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -449,10 +449,15 @@ const CreateTemplateButton = () => {
   // 레이어 열림 여부
   const [open, setOpen] = useState(false);
   // 페이지 제작 완료 여부
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCreateLoading, setIsCreateLoading] = useState(false);
 
   // 레이어 열림 버튼 클릭 시
   async function handleOpenLayer() {
+    if (template.blocks.length < 5) {
+      enqueueSnackbar("최소 5개 이상의 블록을 추가해주세요.", { variant: "error" });
+      return;
+    }
+
     const { data: uid } = await getCurrentUserUID();
 
     if (!uid) {
@@ -468,6 +473,8 @@ const CreateTemplateButton = () => {
 
   // 템플릿 제작 버튼 클릭 시
   async function handleButtonClick() {
+    setIsCreateLoading(true);
+
     const { data: uid } = await getCurrentUserUID();
 
     // 로그인 여부 확인
@@ -476,7 +483,7 @@ const CreateTemplateButton = () => {
     }
 
     // 템플릿 생성
-    const { error } = await createTemplate({
+    const { data, error } = await createTemplate({
       name: templateName,
       makerId: uid,
       blocks: template.blocks,
@@ -491,7 +498,11 @@ const CreateTemplateButton = () => {
     // 템플릿 초기화
     initTemplate();
 
-    setIsCompleted(true);
+    // 템플릿 제작 로딩 종료
+    setIsCreateLoading(false);
+
+    // 템플릿 제작 완료 후 템플릿 상세 페이지로 이동
+    router.push(`/templates/${data.id}`);
   }
 
   // 렌더링
@@ -503,29 +514,32 @@ const CreateTemplateButton = () => {
         <CreateTemplateButton_Layer>
           <LetterLayer_CloseIcon onClick={() => setOpen(false)} />
           <CreateTemplateButton_Layer_ContentContainer>
-            {/* 안내 문구 */}
-            <CreateTemplateButton_Layer_Title variant="h5">
-              {isCompleted ? "페이지 제작 완료!" : "마지막 단계에요"}
-              <br />
-              {isCompleted ? "제작된 페이지를 확인해주세요" : "페이지 이름을 작성해주세요!"}
-            </CreateTemplateButton_Layer_Title>
-            {/* 텍스트 입력 필드 */}
-            {isCompleted === false && (
-              <CreateTemplateButton_Layer_TextInput
-                placeholder="제작한 페이지 이름"
-                value={templateName}
-                onChange={(e) => setTemplateName(e.target.value)}
-              />
+            {isCreateLoading ? (
+              <Loading />
+            ) : (
+              <>
+                {/* 안내 문구 */}
+                <CreateTemplateButton_Layer_Title variant="h5">
+                  마지막이에요!
+                  <br />
+                  소중한 사람의 이름을 작성해주세요
+                </CreateTemplateButton_Layer_Title>
+                {/* 텍스트 입력 필드 */}
+                <CreateTemplateButton_Layer_TextInput
+                  placeholder="제작한 페이지 이름"
+                  value={templateName}
+                  onChange={(e) => setTemplateName(e.target.value)}
+                />
+                {/* 제작 완료 버튼 */}
+                <CreateTemplateButton_Layer_SubmitButton
+                  onClick={handleButtonClick}
+                  variant="contained"
+                  startIcon={<CardGiftcardRounded />}
+                >
+                  페이지 제작하기
+                </CreateTemplateButton_Layer_SubmitButton>
+              </>
             )}
-            {/* 제작 완료 버튼 */}
-            <CreateTemplateButton_Layer_SubmitButton
-              onClick={isCompleted ? () => router.push(`/templates}`) : handleButtonClick}
-              variant="contained"
-              startIcon={!isCompleted && <CardGiftcardRounded />}
-              endIcon={isCompleted && <ArrowForwardRounded />}
-            >
-              {isCompleted ? "내 페이지 보러가기" : "페이지 제작하기"}
-            </CreateTemplateButton_Layer_SubmitButton>
           </CreateTemplateButton_Layer_ContentContainer>
         </CreateTemplateButton_Layer>
       </Fade>
