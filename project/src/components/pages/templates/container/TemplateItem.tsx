@@ -2,7 +2,7 @@ import React from "react";
 import { TemplateType } from "@/types/template/templateType";
 import { Grid2, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material";
-import { mixinFlex, mixinMultilineEllipsis } from "@/styles/mixins";
+import { mixinFlex, mixinMultilineEllipsis, mixinTextGradient } from "@/styles/mixins";
 import { useRouter } from "next/navigation";
 import { shouldForwardProp } from "@/utils/mui";
 import { CardGiftcardRounded } from "@mui/icons-material";
@@ -44,7 +44,9 @@ const TemplateItem = ({ template }: { template: TemplateType }) => {
         <CardGiftcardRounded />
       </ColorBox>
       <NameWrapper>
-        <Name variant="body1">{template.name}</Name>
+        <Name variant="body1" colors={backgroundColors}>
+          {template.name}
+        </Name>
       </NameWrapper>
     </Container>
   );
@@ -91,8 +93,12 @@ const NameWrapper = styled(Stack)`
   padding: 8px;
 `;
 
-const Name = styled(Typography)`
+type NameProps = {
+  colors: string[];
+};
+
+const Name = styled(Typography)<NameProps>`
   ${mixinMultilineEllipsis(1)}
-  color: ${({ theme }) => theme.palette.primary.main};
+  ${({ colors }) => mixinTextGradient(colors[0], colors[1])}
   text-align: center;
 `;
