@@ -3,12 +3,12 @@ import { MakeTemplateType } from "@/types/template/templateType";
 
 export async function createTemplate(template: MakeTemplateType) {
   const { data, error } = await supabase.from("templates").insert(template).select();
-
+  console.log(data, error);
   return { data, error };
 }
 
 export async function readTemplates() {
-  const { data, error } = await supabase.from("templates").select("*");
+  const { data, error } = await supabase.from("templates").select("*").order("createdAt", { ascending: false });
 
   return { data, error };
 }
@@ -18,5 +18,3 @@ export async function readTemplateById(id: string) {
 
   return { data, error };
 }
-
-
