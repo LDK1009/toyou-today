@@ -7,7 +7,6 @@ import CommonHeader from "@/components/common/CommonHeader";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { templateInfo } from "@/utils/templateInfo";
 import Loading from "@/components/common/Loading";
-
 // SEO 메타데이터
 export const metadata: Metadata = {
   manifest: "/manifest.json",

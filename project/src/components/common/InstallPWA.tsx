@@ -1,27 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button, Snackbar, Alert, styled } from "@mui/material";
-import { GetApp, Close } from "@mui/icons-material";
+import { Snackbar, styled, Stack, Typography } from "@mui/material";
+import { FileDownloadOutlined, PhoneAndroidOutlined } from "@mui/icons-material";
+import { mixinFlex } from "@/styles/mixins";
 
-/**
- * PWA 설치 프롬프트 이벤트 인터페이스
- * 브라우저 표준이 아니므로 직접 타입 정의가 필요함
- */
+// PWA 설치 프롬프트 이벤트 인터페이스
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
-/**
- * PWA 설치 버튼 컴포넌트
- * 사용자가 PWA를 설치할 수 있도록 UI를 제공함
- */
+// PWA 설치 버튼 컴포넌트
 const InstallPWA = () => {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
 
+  // 설치 프롬프트 이벤트 핸들러
   useEffect(() => {
     /**
      * beforeinstallprompt 이벤트 핸들러
@@ -90,10 +86,7 @@ const InstallPWA = () => {
     };
   }, []);
 
-  /**
-   * 설치 버튼 클릭 핸들러
-   * 저장된 설치 프롬프트를 활성화하여 브라우저 설치 UI 표시
-   */
+  // 설치 버튼 클릭 핸들러
   const handleInstallClick = async () => {
     if (!installPrompt) return;
 
@@ -115,10 +108,7 @@ const InstallPWA = () => {
     setInstallPrompt(null);
   };
 
-  /**
-   * 배너 닫기 핸들러
-   * 사용자가 배너를 닫았을 때 처리
-   */
+  // 배너 닫기 핸들러
   const handleCloseBanner = () => {
     // 배너 숨기기
     setShowInstallBanner(false);
@@ -134,41 +124,27 @@ const InstallPWA = () => {
   // 컴포넌트 렌더링
   return (
     <>
-      {/* 고정 설치 버튼 (화면 우측 하단에 고정) */}
-      <InstallButton
-        variant="contained"
-        color="primary"
-        startIcon={<GetApp />}
-        onClick={handleInstallClick}
-        sx={{ color: "white" }}
-      >
-        &nbsp; 앱 설치하기
-      </InstallButton>
-
       {/* 설치 안내 배너 (상단에 표시되는 알림) */}
       <Snackbar
+        sx={{
+          "& .MuiSnackbarContent-root": {
+            backgroundColor: "transparent",
+          },
+          top: "64px",
+        }}
         open={showInstallBanner}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        autoHideDuration={10 * 1000}
+        autoHideDuration={7 * 1000}
         onClose={handleCloseBanner}
+        onClick={handleInstallClick}
+        disableWindowBlurListener={true}
+        ClickAwayListenerProps={{ onClickAway: () => {} }}
       >
-        <InstallAlert
-          severity="info"
-          action={
-            <>
-              {/* 설치 버튼 */}
-              <Button variant="text" size="small" onClick={handleInstallClick} sx={{ color: "#212121" }}>
-                설치
-              </Button>
-              {/* 닫기 버튼 */}
-              <Button variant="text" size="small" onClick={handleCloseBanner}>
-                <Close fontSize="small" />
-              </Button>
-            </>
-          }
-        >
-          ✨ 앱 설치하기
-        </InstallAlert>
+        <InstallBox>
+          <PhoneAndroidOutlined />
+          <InstallText variant="body2">앱 설치하기</InstallText>
+          <InstallIcon onClick={handleInstallClick} />
+        </InstallBox>
       </Snackbar>
     </>
   );
@@ -180,19 +156,24 @@ export default InstallPWA;
  * 스타일링된 설치 버튼
  * Material-UI의 styled API를 사용하여 버튼 스타일 정의
  */
-const InstallButton = styled(Button)`
-  position: fixed;
-  bottom: 60px;
-  right: 8px;
-  z-index: 1000;
-  border-radius: 28px;
-  padding: 8px 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-`;
+const InstallBox = styled(Stack)`
+  ${mixinFlex("row", "space-between", "center")}
+  width: 150px;
 
-const InstallAlert = styled(Alert)`
+  padding: 8px;
   background-color: ${({ theme }) => theme.palette.background.paper};
   border: 2px solid ${({ theme }) => theme.palette.primary.main};
-  color: ${({ theme }) => theme.palette.text.primary};
   border-radius: 16px;
+
+  & .MuiSvgIcon-root {
+    color: ${({ theme }) => theme.palette.primary.main};
+  }
+`;
+
+const InstallIcon = styled(FileDownloadOutlined)`
+  color: ${({ theme }) => theme.palette.primary.main};
+`;
+
+const InstallText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.primary.main};
 `;

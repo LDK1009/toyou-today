@@ -2,9 +2,9 @@
 
 import { mixinContainer, mixinFlex } from "@/styles/mixins";
 import { styled, Box, Button, Typography, Stack } from "@mui/material";
-import InstallPWA from "@/components/common/InstallPWA";
 import { AddBoxRounded, DashboardRounded } from "@mui/icons-material";
 import { useLoadingRouter } from "@/hooks/useLoadingRouter";
+import InstallPWA from "@/components/common/InstallPWA";
 
 //////////////////////////////////////// Component ////////////////////////////////////////
 
@@ -13,6 +13,7 @@ const MainContainer = () => {
   //////////////////////////////////////// Render ////////////////////////////////////////
   return (
     <Container>
+      {/* 앱 설치 프롬프트 */}
       <InstallPWA />
       <ButtonWrapper>
         <MakePageButton
