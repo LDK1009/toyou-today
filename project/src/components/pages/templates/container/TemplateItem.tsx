@@ -3,12 +3,12 @@ import { TemplateType } from "@/types/template/templateType";
 import { Grid2, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material";
 import { mixinFlex, mixinMultilineEllipsis, mixinTextGradient } from "@/styles/mixins";
-import { useRouter } from "next/navigation";
 import { shouldForwardProp } from "@/utils/mui";
 import { CardGiftcardRounded } from "@mui/icons-material";
+import { useLoadingRouter } from "@/hooks/useLoadingRouter";
 
 const TemplateItem = ({ template }: { template: TemplateType }) => {
-  const router = useRouter();
+  const { navigateWithLoading } = useLoadingRouter();
 
   // 템플릿 색상 목록
   const colors = [
@@ -35,7 +35,7 @@ const TemplateItem = ({ template }: { template: TemplateType }) => {
 
   // 템플릿 상세 페이지로 이동
   function goToTemplate() {
-    router.push(`/templates/${template.id}`);
+    navigateWithLoading(`/templates/${template.id}`);
   }
 
   return (

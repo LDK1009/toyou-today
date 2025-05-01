@@ -6,6 +6,7 @@ import CommonBottomNavigation from "@/components/common/CommonBottomNavigation";
 import CommonHeader from "@/components/common/CommonHeader";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { templateInfo } from "@/utils/templateInfo";
+import Loading from "@/components/common/Loading";
 
 // SEO 메타데이터
 export const metadata: Metadata = {
@@ -48,6 +49,8 @@ export default function RootLayout({
             <ClientSnackbarProvider />
             {/* 헤더 */}
             <CommonHeader />
+            {/* 로딩 */}
+            <Loading />
             {/* 페이지 컨텐츠 */}
             {children}
             {/* 바텀 내비게이션 */}

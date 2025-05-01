@@ -4,20 +4,29 @@ import { mixinContainer, mixinFlex } from "@/styles/mixins";
 import { styled, Box, Button, Typography, Stack } from "@mui/material";
 import InstallPWA from "@/components/common/InstallPWA";
 import { AddBoxRounded, DashboardRounded } from "@mui/icons-material";
+import { useLoadingRouter } from "@/hooks/useLoadingRouter";
 
 //////////////////////////////////////// Component ////////////////////////////////////////
 
 const MainContainer = () => {
+  const { navigateWithLoading } = useLoadingRouter();
   //////////////////////////////////////// Render ////////////////////////////////////////
-
   return (
     <Container>
       <InstallPWA />
       <ButtonWrapper>
-        <MakePageButton href="/templates/make" variant="outlined" endIcon={<AddBoxRounded />}>
+        <MakePageButton
+          onClick={() => navigateWithLoading("/templates/make")}
+          variant="outlined"
+          endIcon={<AddBoxRounded />}
+        >
           <ButtonText variant="h6">페이지 만들기</ButtonText>
         </MakePageButton>
-        <StartWithTemplateButton href="/templates" variant="contained" endIcon={<DashboardRounded />}>
+        <StartWithTemplateButton
+          onClick={() => navigateWithLoading("/templates")}
+          variant="contained"
+          endIcon={<DashboardRounded />}
+        >
           <ButtonText variant="h6">템플릿으로 시작하기</ButtonText>
         </StartWithTemplateButton>
       </ButtonWrapper>

@@ -6,7 +6,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { Paper, styled } from "@mui/material";
 import { CottageOutlined, PersonOutlineOutlined, SearchOutlined } from "@mui/icons-material";
 import { mixinFlex } from "@/styles/mixins";
-import Link from "next/link";
+import { useLoadingRouter } from "@/hooks/useLoadingRouter";
 
 export default function LabelBottomNavigation() {
   const [value, setValue] = React.useState("home");
@@ -38,6 +38,9 @@ export default function LabelBottomNavigation() {
     setValue(newValue);
   };
 
+  // 라우터 이동 함수
+  const { navigateWithLoading } = useLoadingRouter();
+
   /////////////////////////////// 렌더링 ///////////////////////////////
   return (
     <Container elevation={3}>
@@ -45,8 +48,7 @@ export default function LabelBottomNavigation() {
         {navigationItems.map((item) => (
           <BottomNavigationAction
             key={item.value}
-            component={Link}
-            href={item.href}
+            onClick={() => navigateWithLoading(item.href)}
             label={item.label}
             value={item.value}
             icon={item.icon}

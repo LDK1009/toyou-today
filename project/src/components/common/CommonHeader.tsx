@@ -27,6 +27,7 @@ import {
   DashboardOutlined,
 } from "@mui/icons-material";
 import Link from "next/link";
+import { useLoadingRouter } from "@/hooks/useLoadingRouter";
 
 /**
  * 헤더 컴포넌트 - 웹사이트의 상단 네비게이션 바를 표시합니다.
@@ -39,6 +40,7 @@ const CommonHeader = () => {
   const { user } = useAuthStore();
 
   /////////////////////////////// Hooks ///////////////////////////////
+  const { navigateWithLoading } = useLoadingRouter();
 
   ////////// State
   // 모바일 메뉴 상태 관리
@@ -64,11 +66,11 @@ const CommonHeader = () => {
     return (
       <StyledToolbar>
         {/* 로고 섹션 */}
-        <LogoContainer>
-          <IconButton component={Link} href="/" color="inherit">
+        <LogoContainer onClick={() => navigateWithLoading("/")}>
+          <IconButton color="inherit">
             <CardGiftcardRounded />
           </IconButton>
-          <Typography variant="h6" component={Link} href="/" sx={{ textDecoration: "none", color: "inherit" }}>
+          <Typography variant="h6" sx={{ textDecoration: "none", color: "inherit" }}>
             To You, Today
           </Typography>
         </LogoContainer>
@@ -88,7 +90,12 @@ const CommonHeader = () => {
           sx={{ display: { xs: "none", sm: "flex" }, width: "100%" }}
         >
           {navItems.map((item) => (
-            <Button key={item.title} component={Link} href={item.path} color="inherit" sx={{ textAlign: "center" }}>
+            <Button
+              key={item.title}
+              color="inherit"
+              sx={{ textAlign: "center" }}
+              onClick={() => navigateWithLoading(item.path)}
+            >
               {item.title}
             </Button>
           ))}
@@ -117,8 +124,7 @@ const CommonHeader = () => {
           {navItems.map((item) => (
             <ListItem key={item.title} disablePadding>
               <ListItemButton
-                component={Link}
-                href={item.path}
+                onClick={() => navigateWithLoading(item.path)}
                 sx={{
                   columnGap: 2,
                   "& svg": { color: (theme) => theme.palette.primary.main },
