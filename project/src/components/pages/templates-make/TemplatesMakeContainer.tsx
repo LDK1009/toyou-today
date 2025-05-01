@@ -477,9 +477,10 @@ const CreateTemplateButton = () => {
 
     // 템플릿 생성
     const { error } = await createTemplate({
-      ...template,
       name: templateName,
       makerId: uid,
+      blocks: template.blocks,
+      pageAssets: template.pageAssets,
     });
 
     if (error) {
