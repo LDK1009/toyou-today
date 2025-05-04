@@ -6,9 +6,9 @@ import { useEffect } from "react";
 import Header from "./Header";
 import { styled, Stack } from "@mui/material";
 import { mixinContainer } from "@/styles/mixins";
-import AccountInformation from "./AccountInformation";
 import MenuList from "./MenuList";
 import ButtonGroup from "./ButtonGroup";
+import PageList from "./PageList";
 
 const MyPageContainer = () => {
   //////////////////////////////////////// State ////////////////////////////////////////
@@ -30,7 +30,7 @@ const MyPageContainer = () => {
   return (
     <Container>
       <Header />
-      <AccountInformation />
+      <PageList />
       <MenuList />
       <ButtonGroup />
     </Container>
