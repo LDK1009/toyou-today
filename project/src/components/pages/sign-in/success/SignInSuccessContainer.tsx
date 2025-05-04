@@ -1,6 +1,6 @@
 "use client";
 
-import { mixinBorderRadius, mixinContainer, mixinFlex, mixinFontColor } from "@/styles/mixins";
+import { mixinBorderRadius, mixinContainer, mixinFlex, mixinFontColor, mixinMuiButtonNoShadow } from "@/styles/mixins";
 import { Button, styled, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -91,6 +91,9 @@ const ButtonWrap = styled("div")`
 `;
 
 const HomeButton = styled(Button)`
+  ${mixinMuiButtonNoShadow}
+
   width: 100%;
+  height: 48px;
   color: ${({ theme }) => theme.palette.text.white};
 `;
