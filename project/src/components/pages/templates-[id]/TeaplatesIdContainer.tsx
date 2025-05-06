@@ -6,16 +6,41 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/material";
 import BlockList from "./container/BlockList";
 import CopyButton from "./container/CopyButton";
+import RollingPaperPageAsset from "../templates/page-asset/RollingPaperPageAsset";
+import BackgroundMusicPageAsset from "../templates/page-asset/BackgroundMusicPageAsset";
+import ParticlePageAsset from "../templates/page-asset/ParticlePageAsset";
 
 type PropsType = {
   templateData: TemplateType;
 };
 
 const TeaplatesIdContainer = ({ templateData }: PropsType) => {
+  // 페이지 에셋
+  const particle = templateData.pageAssets?.particle;
+  const backgroundMusic = templateData.pageAssets?.backgroundMusic;
+  const rollingPaper = templateData.pageAssets?.rollingPaper;
+
   return (
     <Container>
+      {particle?.isActive && (
+        <ParticlePageAsset
+          particle={particle.textConfettiProps.particle}
+          emitters={particle.textConfettiProps.emitters}
+        />
+      )}
+
+      {/* 배경음악 활성화 시 배경음악 렌더링 */}
+      {backgroundMusic?.isActive && <BackgroundMusicPageAsset pageAssetData={backgroundMusic} />}
+
+      <pre>{JSON.stringify(backgroundMusic, null, 2)}</pre>
+      {/* 복사 버튼 */}
       <CopyButton template={templateData} />
+
+      {/* 블록 리스트 */}
       <BlockList blocks={templateData.blocks} />
+
+      {/* 롤링페이퍼 */}
+      {rollingPaper?.isActive && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={false} />}
     </Container>
   );
 };
