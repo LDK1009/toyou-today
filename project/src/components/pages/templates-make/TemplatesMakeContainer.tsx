@@ -77,7 +77,7 @@ const TemplatesMakeContainer = () => {
       )}
 
       {/* 배경음악 활성화 시 배경음악 렌더링 */}
-      {backgroundMusic?.isActive && <BackgroundMusicPageAsset />}
+      {backgroundMusic?.isActive && <BackgroundMusicPageAsset pageAssetData={backgroundMusic} />}
 
       {/* 블록 추가 드로어 */}
       <AddBlockDrawer />

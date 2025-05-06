@@ -1,23 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useMakeTemplateStore } from "@/store/template/makeTemplateStore";
 import { Box, Tooltip } from "@mui/material";
 import { styled } from "@mui/material";
 import { MusicNoteRounded, MusicOffRounded } from "@mui/icons-material";
 import { mixinFlex } from "@/styles/mixins";
 import { shouldForwardProp } from "@/utils/mui";
-const BackgroundMusicPageAsset = () => {
-  const { template: templateState } = useMakeTemplateStore();
-  const backgroundMusicPageAsset = templateState?.pageAssets?.backgroundMusic;
-  const [isMusicStart, setIsMusicStart] = useState(true);
-  
-  const { label, musicSrc } = backgroundMusicPageAsset || {};
+import { BackgroundMusicAssetType } from "@/types/template/pageAssetType";
 
+const BackgroundMusicPageAsset = ({ pageAssetData }: { pageAssetData: BackgroundMusicAssetType }) => {
+  // 배경음악 활성화 상태
+  const [isMusicStart, setIsMusicStart] = useState(true);
+
+  // 배경음악 데이터
+  const { label, musicSrc } = pageAssetData || {};
+
+  // 배경음악 오디오 요소
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // 배경음악 활성화 상태 변경 함수
   function handleMusicOnClick() {
     setIsMusicStart(!isMusicStart);
   }
 
+  // 배경음악 활성화 상태 변경 시 오디오 재생 여부 확인
   useEffect(() => {
     if (audioRef.current) {
       if (isMusicStart) {
@@ -28,13 +32,16 @@ const BackgroundMusicPageAsset = () => {
     }
   }, [isMusicStart]);
 
+  // 배경음악 렌더링
   return (
     <>
+      {/* 배경음악 활성화 상태 표시 */}
       <Tooltip title={label}>
         <MusicIconWrapper onClick={handleMusicOnClick} $isActive={isMusicStart || false}>
           {isMusicStart ? <MusicNoteRounded /> : <MusicOffRounded />}
         </MusicIconWrapper>
       </Tooltip>
+      {/* 배경음악 오디오 요소 */}
       <audio ref={audioRef} src={musicSrc} autoPlay />
     </>
   );
