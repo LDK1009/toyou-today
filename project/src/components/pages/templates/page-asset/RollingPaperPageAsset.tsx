@@ -112,6 +112,7 @@ const RollingPaperPageAsset = ({ templateId, preview = false }: PropsType) => {
 
   return (
     <Container>
+      <TextField>dd</TextField>
       <CommonTab tabList={tabList} />
     </Container>
   );

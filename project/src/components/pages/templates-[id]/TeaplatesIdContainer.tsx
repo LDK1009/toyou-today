@@ -40,9 +40,7 @@ const TeaplatesIdContainer = ({ templateData }: PropsType) => {
       <BlockList blocks={templateData.blocks} />
 
       {/* 롤링페이퍼 */}
-      {rollingPaper?.isActive && (
-        <RollingPaperPageAsset templateId={Number(templateData.id)} preview={false} />
-      )}
+      {rollingPaper?.isActive && <RollingPaperPageAsset templateId={Number(templateData.id)} preview={false} />}
     </Container>
   );
 };
@@ -51,4 +49,5 @@ export default TeaplatesIdContainer;
 
 const Container = styled(Box)`
   ${mixinContainer()}
+  padding-bottom: 150px !important;
 `;

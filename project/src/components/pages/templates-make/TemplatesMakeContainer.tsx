@@ -107,6 +107,7 @@ export default TemplatesMakeContainer;
 const Container = styled(Box)`
   ${mixinContainer()}
   ${mixinFlex("column", "start", "center")}
+  padding-bottom: 150px !important;
 `;
 
 const ButtonWrapper = styled(Stack)`
