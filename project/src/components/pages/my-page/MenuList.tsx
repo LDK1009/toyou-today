@@ -2,7 +2,8 @@ import { mixinFlex } from "@/styles/mixins";
 import { styled, Typography, Box, Stack, Button } from "@mui/material";
 import React from "react";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import { InfoOutlined, NotificationsOutlined, SecurityOutlined } from "@mui/icons-material";
+import { GradingRounded, NotificationsOutlined, SupportAgentRounded } from "@mui/icons-material";
+import { enqueueSnackbar } from "notistack";
 
 const MenuList = () => {
   //////////////////////////////////////// Variables ////////////////////////////////////////
@@ -12,24 +13,26 @@ const MenuList = () => {
       title: "메뉴",
       menus: [
         {
-          name: "개인정보 관리",
-          icon: <InfoOutlined />,
+          name: "1:1 문의",
+          icon: <SupportAgentRounded />,
           onClick: () => {
-            alert("개인정보 관리");
+            window.location.href = "http://pf.kakao.com/_vExhBn/chat";
+          },
+        },
+        {
+          name: "피드백",
+          icon: <GradingRounded />,
+          onClick: () => {
+            window.location.href = "https://forms.gle/edKTVwNEHU11eB8U8";
           },
         },
         {
           name: "알림",
           icon: <NotificationsOutlined />,
           onClick: () => {
-            alert("알림 설정");
-          },
-        },
-        {
-          name: "보안",
-          icon: <SecurityOutlined />,
-          onClick: () => {
-            alert("보안 설정");
+            enqueueSnackbar("개발 중인 기능입니다.", {
+              variant: "info",
+            });
           },
         },
       ],
