@@ -1,13 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import {
-  RollingPaperAssetType,
-  RollingPaperAsset_CommentItemType,
-  RollingPaperAsset_EmpathyItemType,
-} from "@/types/template/pageAssetType";
 import CommonTab from "@/components/common/CommonTab";
 import { Button, Fade, Grid2, Stack, styled, TextField, Typography } from "@mui/material";
-import { mixinHideScrollbar } from "@/styles/mixins";
+import { mixinHideScrollbar, mixinTextInputBorder } from "@/styles/mixins";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import BubbleLayer from "@/components/common/BubbleLayer";
@@ -15,22 +10,103 @@ import { CloseFullscreenRounded, HistoryEduRounded, ReplayRounded } from "@mui/i
 import { enqueueSnackbar } from "notistack";
 import { shouldForwardProp } from "@/utils/mui";
 import { Typewriter } from "react-simple-typewriter";
-const RollingPaperPageAsset = ({
-  pageAssetData,
-  preview = false,
-}: {
-  pageAssetData: RollingPaperAssetType;
+import { CommentType } from "@/types/tables/commentType";
+import { EmpathyType } from "@/types/tables/empathyType";
+import { readComments } from "@/service/tables/comments";
+import { readEmpathies } from "@/service/tables/empathy";
+
+type PropsType = {
+  templateId?: number;
   preview?: boolean;
-}) => {
+};
+
+const RollingPaperPageAsset = ({ templateId, preview = false }: PropsType) => {
+  const [comments, setComments] = useState<CommentType[] | []>([]);
+  const [empathies, setEmpathies] = useState<EmpathyType[] | []>([]);
+
+  // 댓글, 공감 데이터 가져오기
+  async function fetchData() {
+    if (preview === false && templateId) {
+      const comments = await readComments(templateId);
+      const empathies = await readEmpathies(templateId);
+      setComments(comments || []);
+      setEmpathies(empathies || []);
+    }
+  }
+
+  // 마운트 시 댓글, 공감 데이터 가져오기
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateId, preview]);
+
+  // 미리보기 데이터
+  const previewData = {
+    comments: [
+      { id: 1, nickname: "동규", comment: "생일 축하해! 행복한 하루 보내 :)" },
+      { id: 2, nickname: "수민", comment: "생일 진심으로 축하해! 오늘 행복한 하루 보내자" },
+      { id: 3, nickname: "민재", comment: "한 살 더 예뻐진 거 축하해. 멋진 한 해 되자" },
+      { id: 4, nickname: "서연", comment: "오늘은 그냥 마음껏 즐기자" },
+      { id: 5, nickname: "현우", comment: "생일 인생샷 꼭 올려줘야 해" },
+      { id: 6, nickname: "지수", comment: "멋지다 진짜. 생일 기념으로 밥 한번 사줘" },
+      { id: 7, nickname: "태현", comment: "생일인 거 오늘 하루 내내 티 내도 돼" },
+      { id: 8, nickname: "소연", comment: "앞으로 좋은 일만 가득했으면 좋겠다" },
+      { id: 9, nickname: "예진", comment: "오늘 주인공 너야. 생일 축하해" },
+      { id: 10, nickname: "도윤", comment: "생일 소식 들으니까 괜히 나도 기분 좋다" },
+      { id: 11, nickname: "채원", comment: "진심으로 축하해. 행복 가득한 하루 보내" },
+      { id: 12, nickname: "유준", comment: "좋은 소식 들으니까 마음까지 따뜻해진다" },
+      { id: 13, nickname: "하은", comment: "오늘은 너만 생각하면서 신나게 놀아" },
+      { id: 14, nickname: "지후", comment: "생일 다음은 내 차례니까 기대해줘" },
+      { id: 15, nickname: "민서", comment: "오늘은 무조건 니가 주인공이야. 생일 축하해" },
+      { id: 16, nickname: "성민", comment: "오늘 하루 특별하게 보내자. 생일 축하해" },
+      { id: 17, nickname: "다은", comment: "생일이니까 곧 만나서 한잔하자" },
+      { id: 18, nickname: "예준", comment: "생일 사진 올려줘. 보고 싶어" },
+      { id: 19, nickname: "하린", comment: "생일 축하해. 앞으로도 항상 행복하자" },
+      { id: 20, nickname: "시우", comment: "진짜 멋있다. 생일 진심으로 축하해" },
+    ],
+    empathies: [
+      { id: 1, nickname: "지훈", emoji: "🔥" },
+      { id: 2, nickname: "수민", emoji: "💕" },
+      { id: 3, nickname: "민재", emoji: "🎉" },
+      { id: 4, nickname: "서연", emoji: "👍🏻" },
+      { id: 5, nickname: "현우", emoji: "🔥" },
+      { id: 6, nickname: "지수", emoji: "🎊" },
+      { id: 7, nickname: "태현", emoji: "🎉" },
+      { id: 8, nickname: "소연", emoji: "💕" },
+      { id: 9, nickname: "예진", emoji: "🔥" },
+      { id: 10, nickname: "도윤", emoji: "🎉" },
+      { id: 11, nickname: "채원", emoji: "🎊" },
+      { id: 12, nickname: "유준", emoji: "👍🏻" },
+      { id: 13, nickname: "하은", emoji: "💕" },
+      { id: 14, nickname: "지후", emoji: "🔥" },
+      { id: 15, nickname: "민서", emoji: "🎉" },
+      { id: 16, nickname: "성민", emoji: "🎊" },
+      { id: 17, nickname: "다은", emoji: "💕" },
+      { id: 18, nickname: "예준", emoji: "👍🏻" },
+      { id: 19, nickname: "하린", emoji: "🔥" },
+      { id: 20, nickname: "시우", emoji: "🎊" },
+      { id: 21, nickname: "은채", emoji: "💕" },
+      { id: 22, nickname: "윤아", emoji: "🎉" },
+      { id: 23, nickname: "도현", emoji: "👍🏻" },
+      { id: 24, nickname: "가은", emoji: "🎊" },
+      { id: 25, nickname: "세진", emoji: "🔥" },
+      { id: 26, nickname: "하영", emoji: "💕" },
+      { id: 27, nickname: "서윤", emoji: "🎉" },
+      { id: 28, nickname: "주원", emoji: "🔥" },
+      { id: 29, nickname: "나윤", emoji: "💕" },
+      { id: 30, nickname: "정우", emoji: "👍🏻" },
+    ],
+  };
+
   // 탭 리스트
   const tabList = [
     {
       label: "댓글",
-      component: <CommentTab comments={pageAssetData.comments} preview={preview} />,
+      component: <CommentTab comments={preview ? previewData.comments : comments} preview={preview} />,
     },
     {
       label: "공감",
-      component: <EmpathyTab empathies={pageAssetData.empathies} preview={preview} />,
+      component: <EmpathyTab empathies={preview ? previewData.empathies : empathies} preview={preview} />,
     },
   ];
 
@@ -87,7 +163,7 @@ const ItemAnimation = ({
 //////////////////////////////////////// 댓글 탭 관련 컴포넌트 ////////////////////////////////////////
 //////////////////// 댓글 탭 ////////////////////
 type CommentTabPropsType = {
-  comments: RollingPaperAsset_CommentItemType[];
+  comments: CommentType[] | [];
   preview?: boolean;
 };
 
@@ -95,6 +171,14 @@ const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
   const inViewRef = useRef(null);
   const isInView = useInView(inViewRef);
   const [isLetterMode, setIsLetterMode] = useState(false);
+
+  function handleReadLetterModeButtonClick() {
+    if (comments.length === 0) {
+      enqueueSnackbar("첫번째 댓글을 남겨주세요!", { variant: "info" });
+      return;
+    }
+    setIsLetterMode(true);
+  }
 
   return (
     <CommentTab_Container ref={inViewRef}>
@@ -106,13 +190,19 @@ const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
         <ReadLetterModeButton
           variant="outlined"
           startIcon={<HistoryEduRounded />}
-          onClick={() => setIsLetterMode(true)}
+          onClick={handleReadLetterModeButtonClick}
         >
           편지 모드로 보기
         </ReadLetterModeButton>
-        {comments.map((item, idx) => (
-          <CommentItem key={idx} {...item} isCommentTabView={isInView} index={idx} />
-        ))}
+        {comments.length > 0 ? (
+          comments.map((item, idx) => <CommentItem key={idx} {...item} isCommentTabView={isInView} index={idx} />)
+        ) : (
+          <CommentTab_CommentSection_Empty>
+            <CommentTab_CommentSection_Empty_Text variant="body2">
+              첫번째 댓글을 남겨주세요!
+            </CommentTab_CommentSection_Empty_Text>
+          </CommentTab_CommentSection_Empty>
+        )}
       </CommentTab_CommentSection>
 
       {/* 댓글 입력 섹션 */}
@@ -135,10 +225,21 @@ const CommentTab_CommentSection = styled(Stack)`
   ${mixinHideScrollbar}
 `;
 
+const CommentTab_CommentSection_Empty = styled(Stack)`
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CommentTab_CommentSection_Empty_Text = styled(Typography)`
+  color: ${({ theme }) => theme.palette.primary.main};
+`;
+
 const ReadLetterModeButton = styled(Button)``;
 
 //////////////////// 댓글 아이템 ////////////////////
-type CommentItemPropsType = RollingPaperAsset_CommentItemType & {
+type CommentItemPropsType = CommentType & {
   isCommentTabView: boolean;
   index: number;
 };
@@ -173,7 +274,7 @@ const CommentItem_Comment = styled(Typography)`
 const CommentInputSection = ({ preview }: { preview?: boolean }) => {
   const [inputValue, setInputValue] = useState("");
 
-  const handleSubmitButtonClick = () => {
+  async function handleSubmitButtonClick() {
     // 미리보기 모드 예외 처리
     if (preview) {
       enqueueSnackbar("미리보기 모드에서는 댓글을 입력할 수 없습니다.", { variant: "info" });
@@ -192,6 +293,7 @@ const CommentInputSection = ({ preview }: { preview?: boolean }) => {
      * 2. 새로운 댓글 추가
      * 3. DB에 댓글 추가
      * */
+    
     console.log(inputValue);
 
     return;
@@ -219,14 +321,12 @@ const CommentInputSection_Container = styled(Grid2)``;
 
 const CommentInputSection_Input = styled(TextField)`
   width: 100%;
+
   & .MuiInputBase-root {
     height: 40px;
-    border: 1px solid ${({ theme }) => theme.palette.primary.main};
   }
 
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: ${({ theme }) => theme.palette.primary.main};
-  }
+  ${({ theme }) => mixinTextInputBorder(theme)};
 `;
 
 const CommentInputSection_Button = styled(Button)`
@@ -244,7 +344,7 @@ const LetterLayer = ({
   comments,
   setIsLetterMode,
 }: {
-  comments: RollingPaperAsset_CommentItemType[];
+  comments: CommentType[];
   setIsLetterMode: (isLetterMode: boolean) => void;
 }) => {
   // 편지 모드 열림 여부
@@ -393,7 +493,7 @@ const LetterLayer_RestartButton = styled(Button)`
 
 //////////////////// 공감 탭 ////////////////////
 type EmpathyTabPropsType = {
-  empathies: RollingPaperAsset_EmpathyItemType[];
+  empathies: EmpathyType[] | [];
   preview?: boolean;
 };
 
@@ -403,11 +503,19 @@ const EmpathyTab = ({ empathies, preview }: EmpathyTabPropsType) => {
   return (
     <EmpathyTab_Container ref={inViewRef}>
       <EmpathyTab_EmpathySection>
-        <EmpathyItemWrapper container spacing={1}>
-          {empathies.map((item, idx) => (
-            <EmpathyItem key={idx} {...item} isEmpathyTabView={isInView} index={idx} />
-          ))}
-        </EmpathyItemWrapper>
+        {empathies.length > 0 ? (
+          <EmpathyItemWrapper container spacing={1}>
+            {empathies.map((item, idx) => (
+              <EmpathyItem key={idx} {...item} isEmpathyTabView={isInView} index={idx} />
+            ))}
+          </EmpathyItemWrapper>
+        ) : (
+          <EmpathyTab_EmpathySection_Empty>
+            <EmpathyTab_EmpathySection_Empty_Text variant="body2">
+              첫번째 공감을 남겨주세요!
+            </EmpathyTab_EmpathySection_Empty_Text>
+          </EmpathyTab_EmpathySection_Empty>
+        )}
       </EmpathyTab_EmpathySection>
       <EmpathyInputSection preview={preview} />
       {isInView && <BubbleLayer />}
@@ -433,8 +541,19 @@ const EmpathyItemWrapper = styled(Grid2)`
   width: 100%;
 `;
 
+const EmpathyTab_EmpathySection_Empty = styled(Stack)`
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const EmpathyTab_EmpathySection_Empty_Text = styled(Typography)`
+  color: ${({ theme }) => theme.palette.primary.main};
+`;
+
 //////////////////// 공감 아이템 ////////////////////
-type EmpathyItemPropsType = RollingPaperAsset_EmpathyItemType & {
+type EmpathyItemPropsType = EmpathyType & {
   isEmpathyTabView: boolean;
   index: number;
 };

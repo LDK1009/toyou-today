@@ -56,24 +56,7 @@ export type emitterOptionsType = {
 //////////////////////////////////////// 롤링페이퍼 관련 타입 ////////////////////////////////////////
 // 롤링페이퍼 에셋 타입
 export type RollingPaperAssetType = {
-  id?: number;
   isActive: boolean;
-  comments: RollingPaperAsset_CommentItemType[];
-  empathies: RollingPaperAsset_EmpathyItemType[];
-};
-
-// 롤링페이퍼 댓글 아이템 타입
-export type RollingPaperAsset_CommentItemType = {
-  comment_id?: number;
-  nickname: string;
-  comment: string;
-};
-
-// 롤링페이퍼 공감 아이템 타입
-export type RollingPaperAsset_EmpathyItemType = {
-  empathy_id?: number;
-  nickname: string;
-  emoji: string;
 };
 
 //////////////////////////////////////// 배경음악 관련 타입 ////////////////////////////////////////

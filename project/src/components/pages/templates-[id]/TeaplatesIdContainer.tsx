@@ -22,6 +22,7 @@ const TeaplatesIdContainer = ({ templateData }: PropsType) => {
 
   return (
     <Container>
+      {/* 폭죽 */}
       {particle?.isActive && (
         <ParticlePageAsset
           particle={particle.textConfettiProps.particle}
@@ -29,18 +30,19 @@ const TeaplatesIdContainer = ({ templateData }: PropsType) => {
         />
       )}
 
-      {/* 배경음악 활성화 시 배경음악 렌더링 */}
+      {/* 배경음악 */}
       {backgroundMusic?.isActive && <BackgroundMusicPageAsset pageAssetData={backgroundMusic} />}
 
-      <pre>{JSON.stringify(backgroundMusic, null, 2)}</pre>
-      {/* 복사 버튼 */}
+      {/* 이 템플릿으로 시작하기 */}
       <CopyButton template={templateData} />
 
       {/* 블록 리스트 */}
       <BlockList blocks={templateData.blocks} />
 
       {/* 롤링페이퍼 */}
-      {rollingPaper?.isActive && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={false} />}
+      {rollingPaper?.isActive && (
+        <RollingPaperPageAsset templateId={Number(templateData.id)} preview={false} />
+      )}
     </Container>
   );
 };

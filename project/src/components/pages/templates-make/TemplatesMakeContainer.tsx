@@ -90,7 +90,7 @@ const TemplatesMakeContainer = () => {
       <BlockComponents />
 
       {/* 롤링페이퍼 */}
-      {rollingPaper?.isActive && <RollingPaperPageAsset pageAssetData={rollingPaper} preview={true} />}
+      {rollingPaper?.isActive && <RollingPaperPageAsset preview={true} />}
 
       {/* 블록 추가 */}
       <ButtonWrapper>

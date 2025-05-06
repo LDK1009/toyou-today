@@ -238,7 +238,7 @@ export const mixinSwitch = (width: number, height: number, theme: Theme) => css`
 // 텍스트 입력 믹스인
 export const mixinTextInputBorder = (theme: Theme) => css`
   & .MuiInputBase-root {
-    border: 1px solid ${theme.palette.primary.main};
+    border : none;
   }
 
   & .MuiOutlinedInput-notchedOutline {
