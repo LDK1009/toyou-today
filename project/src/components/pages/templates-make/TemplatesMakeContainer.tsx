@@ -48,7 +48,7 @@ import QuizBlock from "../templates/block/QuizBlock";
 import { PageAssetVariantType } from "@/types/template/pageAssetType";
 import ParticlePageAsset from "@/components/pages/templates/page-asset/ParticlePageAsset";
 import BackgroundMusicPageAsset from "../templates/page-asset/BackgroundMusicPageAsset";
-import RollingPaperPageAsset from "../templates/page-asset/RollingPaperPageAsset";
+import RollingPaperPageAsset from "../templates/page-asset/rollingpaper/RollingPaperPageAsset";
 import { Reorder } from "motion/react";
 import { useHandleEditor } from "@/hooks/useHandleEditor";
 import { createTemplate } from "@/service/tables/templates";

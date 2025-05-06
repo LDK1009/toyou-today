@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/material";
 import BlockList from "./container/BlockList";
 import CopyButton from "./container/CopyButton";
-import RollingPaperPageAsset from "../templates/page-asset/RollingPaperPageAsset";
+import RollingPaperPageAsset from "../templates/page-asset/rollingpaper/RollingPaperPageAsset";
 import BackgroundMusicPageAsset from "../templates/page-asset/BackgroundMusicPageAsset";
 import ParticlePageAsset from "../templates/page-asset/ParticlePageAsset";
 

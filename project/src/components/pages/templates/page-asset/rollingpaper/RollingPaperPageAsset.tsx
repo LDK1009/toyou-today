@@ -12,17 +12,17 @@ import { shouldForwardProp } from "@/utils/mui";
 import { Typewriter } from "react-simple-typewriter";
 import { CommentType } from "@/types/tables/commentType";
 import { EmpathyType } from "@/types/tables/empathyType";
-import { readComments } from "@/service/tables/comments";
-import { readEmpathies } from "@/service/tables/empathy";
-
+import { createComment, readComments } from "@/service/tables/comments";
+import { createEmpathy, readEmpathies } from "@/service/tables/empathy";
+import { generateRandomNickname } from "@/utils/nickname";
+import { useRollingPaperStore } from "@/store/template-[id]/rollingPaperStore";
 type PropsType = {
   templateId?: number;
   preview?: boolean;
 };
 
 const RollingPaperPageAsset = ({ templateId, preview = false }: PropsType) => {
-  const [comments, setComments] = useState<CommentType[] | []>([]);
-  const [empathies, setEmpathies] = useState<EmpathyType[] | []>([]);
+  const { comments, empathies, setComments, setEmpathies } = useRollingPaperStore();
 
   // 댓글, 공감 데이터 가져오기
   async function fetchData() {
@@ -102,17 +102,28 @@ const RollingPaperPageAsset = ({ templateId, preview = false }: PropsType) => {
   const tabList = [
     {
       label: "댓글",
-      component: <CommentTab comments={preview ? previewData.comments : comments} preview={preview} />,
+      component: (
+        <CommentTab
+          templateId={templateId as number}
+          comments={preview ? previewData.comments : comments}
+          preview={preview}
+        />
+      ),
     },
     {
       label: "공감",
-      component: <EmpathyTab empathies={preview ? previewData.empathies : empathies} preview={preview} />,
+      component: (
+        <EmpathyTab
+          templateId={templateId as number}
+          empathies={preview ? previewData.empathies : empathies}
+          preview={preview}
+        />
+      ),
     },
   ];
 
   return (
     <Container>
-      <TextField>dd</TextField>
       <CommonTab tabList={tabList} />
     </Container>
   );
@@ -164,11 +175,12 @@ const ItemAnimation = ({
 //////////////////////////////////////// 댓글 탭 관련 컴포넌트 ////////////////////////////////////////
 //////////////////// 댓글 탭 ////////////////////
 type CommentTabPropsType = {
+  templateId: number;
   comments: CommentType[] | [];
   preview?: boolean;
 };
 
-const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
+const CommentTab = ({ templateId, comments, preview }: CommentTabPropsType) => {
   const inViewRef = useRef(null);
   const isInView = useInView(inViewRef);
   const [isLetterMode, setIsLetterMode] = useState(false);
@@ -188,6 +200,7 @@ const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
 
       {/* 댓글 목록 섹션 */}
       <CommentTab_CommentSection>
+        {/* 편지 모드 버튼 */}
         <ReadLetterModeButton
           variant="outlined"
           startIcon={<HistoryEduRounded />}
@@ -195,6 +208,7 @@ const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
         >
           편지 모드로 보기
         </ReadLetterModeButton>
+        {/* 댓글 목록 */}
         {comments.length > 0 ? (
           comments.map((item, idx) => <CommentItem key={idx} {...item} isCommentTabView={isInView} index={idx} />)
         ) : (
@@ -207,7 +221,7 @@ const CommentTab = ({ comments, preview }: CommentTabPropsType) => {
       </CommentTab_CommentSection>
 
       {/* 댓글 입력 섹션 */}
-      <CommentInputSection preview={preview} />
+      <CommentInputSection preview={preview} templateId={templateId} />
     </CommentTab_Container>
   );
 };
@@ -272,7 +286,13 @@ const CommentItem_Comment = styled(Typography)`
   color: ${({ theme }) => theme.palette.text.primary};
 `;
 //////////////////// 댓글 입력 섹션 ////////////////////
-const CommentInputSection = ({ preview }: { preview?: boolean }) => {
+type CommentInputSectionPropsType = {
+  preview?: boolean;
+  templateId: number;
+};
+
+const CommentInputSection = ({ preview, templateId }: CommentInputSectionPropsType) => {
+  const { comments, setComments } = useRollingPaperStore();
   const [inputValue, setInputValue] = useState("");
 
   async function handleSubmitButtonClick() {
@@ -288,17 +308,27 @@ const CommentInputSection = ({ preview }: { preview?: boolean }) => {
       return;
     }
 
-    /**
-     * 댓글 제출
-     * 1. 기존 댓글 상태 가져오기
-     * 2. 새로운 댓글 추가
-     * 3. DB에 댓글 추가
-     * */
-    
-    console.log(inputValue);
+    // 닉네임 생성
+    const randomNickname = generateRandomNickname({});
+
+    // 댓글 상태 객체
+    const newComment = {
+      templateId: templateId,
+      nickname: randomNickname,
+      comment: inputValue,
+    };
+
+    // 댓글 상태 업데이트
+    setComments([...comments, newComment]);
+
+    // 댓글 제출
+    await createComment(templateId, randomNickname, inputValue);
+
+    // 댓글 제출 후 입력 값 초기화
+    setInputValue("");
 
     return;
-  };
+  }
 
   return (
     <CommentInputSection_Container container spacing={1}>
@@ -494,13 +524,15 @@ const LetterLayer_RestartButton = styled(Button)`
 
 //////////////////// 공감 탭 ////////////////////
 type EmpathyTabPropsType = {
+  templateId: number;
   empathies: EmpathyType[] | [];
   preview?: boolean;
 };
 
-const EmpathyTab = ({ empathies, preview }: EmpathyTabPropsType) => {
+const EmpathyTab = ({ templateId, empathies }: EmpathyTabPropsType) => {
   const inViewRef = useRef(null);
   const isInView = useInView(inViewRef);
+
   return (
     <EmpathyTab_Container ref={inViewRef}>
       <EmpathyTab_EmpathySection>
@@ -518,7 +550,7 @@ const EmpathyTab = ({ empathies, preview }: EmpathyTabPropsType) => {
           </EmpathyTab_EmpathySection_Empty>
         )}
       </EmpathyTab_EmpathySection>
-      <EmpathyInputSection preview={preview} />
+      <EmpathyInputSection templateId={templateId} />
       {isInView && <BubbleLayer />}
     </EmpathyTab_Container>
   );
@@ -587,8 +619,8 @@ const EmpathyItem_Nickname = styled(CommentItem_Nickname)``;
 const EmpathyItem_Empathy = styled(CommentItem_Comment)``;
 
 //////////////////// 공감 입력 섹션 ////////////////////
-const EmpathyInputSection = ({ preview }: { preview?: boolean }) => {
-  console.log(preview);
+const EmpathyInputSection = ({ templateId }: { templateId: number }) => {
+  const { empathies, setEmpathies } = useRollingPaperStore();
 
   const emojiList = ["🎉", "🎊", "🔥", "👍🏻", "💕"];
 
@@ -603,21 +635,32 @@ const EmpathyInputSection = ({ preview }: { preview?: boolean }) => {
     }
   }, [inputValue]);
 
-  const handleEmojiButtonClick = (item: string) => {
+  async function handleEmojiButtonClick(item: string) {
     // 현재 입력한 이모지를 클릭했다면
     if (item === inputValue) {
       setInputValue("");
       return;
     } else {
+      // 이모지 상태 변경
       setInputValue(item);
-      /**
-       * 1. 기존 공감 목록 가져오기
-       * 2. 공감 목록에 이미 사용자의 동일한 이모지가 있다면 함수 종료
-       * 3. 공감 목록에 사용자의 동일한 이모지가 없다면 공감 상태에 추가
-       * 4. DB에 공감 추가
-       */
+
+      // 닉네임 생성
+      const randomNickname = generateRandomNickname({});
+
+      // 공감 상태 객체
+      const newEmpathy = {
+        templateId: templateId,
+        nickname: randomNickname,
+        emoji: item,
+      };
+
+      // 공감 상태 업데이트
+      setEmpathies([...empathies, newEmpathy]);
+
+      // 공감 제출
+      await createEmpathy(templateId, randomNickname, item);
     }
-  };
+  }
 
   return (
     <EmpathyInputSection_Container>
