@@ -24,4 +24,5 @@ const LoadingCircle = styled(CircularProgress)`
   top: 50%;
   left: 50%;
   translate: -50% -50%;
+  z-index: 1000;
 `;
