@@ -14,7 +14,7 @@ const BottomButtonList = ({ templateData }: { templateData: TemplateType }) => {
       <CopyLinkButton templateId={Number(templateData.id)} />
 
       {/* 카카오 공유 */}
-      <KakaoShareButton />
+      <KakaoShareButton templateData={templateData} />
     </Container>
   );
 };

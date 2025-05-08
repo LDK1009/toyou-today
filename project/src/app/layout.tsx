@@ -7,6 +7,7 @@ import CommonHeader from "@/components/common/CommonHeader";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { templateInfo } from "@/utils/templateInfo";
 import Loading from "@/components/common/Loading";
+import KakaoInitializer from "@/lib/KakaoInitializer";
 // SEO 메타데이터
 export const metadata: Metadata = {
   manifest: "/manifest.json",
@@ -56,6 +57,7 @@ export default function RootLayout({
             <CommonBottomNavigation />
           </ThemeProviderWrapper>
         </AppRouterCacheProvider>
+        <KakaoInitializer />
       </body>
     </html>
   );
