@@ -64,6 +64,8 @@ const Container = styled(Paper)`
   position: fixed;
   left: 0px;
   bottom: 0px;
+  z-index: 1000;
+
   & .MuiBottomNavigation-root {
     width: 100%;
     ${mixinFlex("row")};
