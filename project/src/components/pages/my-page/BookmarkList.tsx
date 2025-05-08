@@ -1,47 +1,50 @@
-import { Stack, styled, Typography } from "@mui/material";
-import { useEffect } from "react";
-import PageItem from "./PageItem";
-import { useMyPageListStore } from "@/store/my-page/myPageList";
+import { useBookmarkListStore } from "@/store/my-page/bookmarkList";
+import { Typography } from "@mui/material";
+import { Stack } from "@mui/material";
+import { styled } from "@mui/material";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
 import "swiper/css";
+import BookmarkItem from "./BookmarkItem";
 
-const PageList = () => {
-  // 페이지 리스트 상태
-  const { pageList, fetchPageList } = useMyPageListStore();
+const BookmarkList = () => {
+  const { bookmarkList, fetchBookmarkList } = useBookmarkListStore();
 
-  // 마운트 시 페이지 리스트 조회
+  // 북마크 목록 조회
   useEffect(() => {
-    fetchPageList();
+    fetchBookmarkList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(bookmarkList);
+
   return (
     <Container>
-      <Title variant="h6">내 페이지</Title>
-      <PageListContainer>
+      <Title variant="h6">저장한 템플릿</Title>
+      <BookmarkListContainer>
         <Swiper
           direction={"vertical"}
-          slidesPerView={3} // 한 번에 3개 아이템 보이기
+          slidesPerView={3}
           mousewheel={true}
           pagination={{
             clickable: true,
           }}
           modules={[Mousewheel]} // 필요한 모듈 추가
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: "100%" }}
         >
-          {pageList.map((el) => (
+          {bookmarkList.map((el) => (
             <SwiperSlide key={el.id}>
-              <PageItem pageData={el} />
+              <BookmarkItem templateData={el.templates} />
             </SwiperSlide>
           ))}
         </Swiper>
-      </PageListContainer>
+      </BookmarkListContainer>
     </Container>
   );
 };
 
-export default PageList;
+export default BookmarkList;
 
 const Container = styled(Stack)`
   width: 100%;
@@ -53,7 +56,7 @@ const Title = styled(Typography)`
   color: ${({ theme }) => theme.palette.primary.main};
 `;
 
-const PageListContainer = styled(Stack)`
+const BookmarkListContainer = styled(Stack)`
   width: 100%;
   row-gap: 8px;
   border-radius: 8px;

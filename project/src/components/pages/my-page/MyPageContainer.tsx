@@ -9,7 +9,7 @@ import { mixinContainer } from "@/styles/mixins";
 import MenuList from "./MenuList";
 import ButtonGroup from "./ButtonGroup";
 import PageList from "./PageList";
-
+import BookmarkList from "./BookmarkList";
 const MyPageContainer = () => {
   //////////////////////////////////////// State ////////////////////////////////////////
   const { user } = useAuthStore();
@@ -31,6 +31,7 @@ const MyPageContainer = () => {
     <Container>
       <Header />
       <PageList />
+      <BookmarkList />
       <MenuList />
       <ButtonGroup />
     </Container>

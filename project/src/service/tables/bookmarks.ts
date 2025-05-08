@@ -43,7 +43,15 @@ export async function deleteBookmark(templateId: number) {
 export async function readBookmarks() {
   const { data: uid } = await getCurrentUserUID();
 
-  const response = await supabase.from("bookmarks").select("*").eq("uid", uid);
+  const response = await supabase
+    .from("bookmarks")
+    .select(
+      `
+    *,
+    templates(*)
+    `
+    )
+    .eq("uid", uid);
 
   return response;
 }
