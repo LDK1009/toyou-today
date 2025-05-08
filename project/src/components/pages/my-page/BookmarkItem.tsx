@@ -6,18 +6,18 @@ import { DeleteOutlineRounded, FolderCopyOutlined } from "@mui/icons-material";
 import { Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material";
 import React from "react";
-import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
+import { useLoadingRouter } from "@/hooks/useLoadingRouter";
 
 const BookmarkItem = ({ templateData }: { templateData: TemplateType }) => {
   const { deleteBookmark } = useBookmarkListStore();
   const { setTemplate } = useMakeTemplateStore();
-  const router = useRouter();
-
+  const { navigateWithLoading } = useLoadingRouter();
+  
   function handleCopyTemplate(e: React.MouseEvent) {
     e.stopPropagation(); // 부모 컨테이너의 onClick 이벤트 전파 방지
     setTemplate(templateData);
-    router.push("/templates/make");
+    navigateWithLoading("/templates/make");
   }
 
   async function handleDeleteBookmark(e: React.MouseEvent) {
