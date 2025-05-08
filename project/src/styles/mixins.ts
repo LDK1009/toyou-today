@@ -238,7 +238,7 @@ export const mixinSwitch = (width: number, height: number, theme: Theme) => css`
 // 텍스트 입력 믹스인
 export const mixinTextInputBorder = (theme: Theme) => css`
   & .MuiInputBase-root {
-    border : none;
+    border: none;
   }
 
   & .MuiOutlinedInput-notchedOutline {
@@ -253,4 +253,14 @@ export const mixinMuiButtonNoShadow = () => css`
   &:hover {
     box-shadow: none;
   }
+`;
+
+// 원형 버튼 믹스인
+export const mixinMuiCircleShapeButton = (size: number = 32) => css`
+  border-radius: 50%;
+  padding: 0;
+  width: ${size}px;
+  height: ${size}px;
+  min-width: ${size}px;
+  min-height: ${size}px;
 `;

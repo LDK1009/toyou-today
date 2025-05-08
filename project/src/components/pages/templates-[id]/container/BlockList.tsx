@@ -46,7 +46,6 @@ export default BlockList;
 
 const Container = styled(Stack)`
   width: 100%;
-  padding-top: 16px;
   flex-direction: column;
   row-gap: 40px;
 `;
