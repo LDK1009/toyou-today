@@ -28,6 +28,7 @@ const PageList = () => {
             clickable: true,
           }}
           modules={[Mousewheel]} // 필요한 모듈 추가
+          style={{ width: "100%" }}
         >
           {pageList.map((el) => (
             <SwiperSlide key={el.id}>
