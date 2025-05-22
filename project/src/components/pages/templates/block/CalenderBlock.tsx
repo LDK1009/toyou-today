@@ -7,7 +7,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/L
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { CalendarBlockType } from "@/types/template/blockType";
 import "dayjs/locale/ko";
-import { styled } from "@mui/material";
+import { Stack, styled } from "@mui/material";
+import { mixinFlex } from "@/styles/mixins";
 
 const CalenderBlock = ({ blockData }: { blockData: CalendarBlockType }) => {
   const { date } = blockData;
@@ -15,7 +16,7 @@ const CalenderBlock = ({ blockData }: { blockData: CalendarBlockType }) => {
   const calenderDate = dayjs(date);
 
   return (
-    <>
+    <Container>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
         <DemoContainer components={["DateCalendar"]}>
           <DemoItem label="" sx={{ "& .Mui-selected": { color: "blue" } }}>
@@ -23,11 +24,17 @@ const CalenderBlock = ({ blockData }: { blockData: CalendarBlockType }) => {
           </DemoItem>
         </DemoContainer>
       </LocalizationProvider>
-    </>
+    </Container>
   );
 };
 
 export default CalenderBlock;
+
+const Container = styled(Stack)`
+  width: 100%;
+  height: 100%;
+  ${mixinFlex("row", "center", "center")}
+`;
 
 const StyledDateCalendar = styled(DateCalendar)`
   & .MuiButtonBase-root.MuiPickersDay-root.Mui-selected {
