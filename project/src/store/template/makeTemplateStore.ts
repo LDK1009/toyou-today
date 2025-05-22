@@ -40,9 +40,25 @@ const initialTemplate: MakeTemplateType = {
   name: "",
   makerId: "",
   pageAssets: {
-    particle: null,
-    rollingPaper: null,
-    backgroundMusic: null,
+    particle: {
+      isActive: true,
+      textConfettiProps: {
+        particle: {
+          text: "테스트",
+          size: [10, 10],
+          speed: [1, 1],
+        },
+        emitters: [],
+      },
+    },
+    rollingPaper: {
+      isActive: true,
+    },
+    backgroundMusic: {
+      isActive: true,
+      label: "테스트",
+      musicSrc: "/music/birthday-1.mp3",
+    },
   },
   blocks: [],
 };
