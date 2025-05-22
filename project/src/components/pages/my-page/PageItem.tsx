@@ -7,6 +7,8 @@ import React from "react";
 import { enqueueSnackbar } from "notistack";
 import { useMyPageListStore } from "@/store/my-page/myPageList";
 import { useLoadingRouter } from "@/hooks/useLoadingRouter";
+import Image from "next/image";
+import { shareMessage } from "@/utils/kakao";
 
 const PageItem = ({ pageData }: { pageData: TemplateType }) => {
   const { navigateWithLoading } = useLoadingRouter();
@@ -43,6 +45,20 @@ const PageItem = ({ pageData }: { pageData: TemplateType }) => {
       });
   }
 
+  const handleKakaoShare = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 부모 컨테이너의 onClick 이벤트 전파 방지
+    shareMessage(pageData);
+  };
+
+  // 카카오 버튼 컴포넌트
+  const KakaoShareButton = () => {
+    return (
+      <Stack alignItems="center" justifyContent="center" width={24} height={24} onClick={handleKakaoShare}>
+        <Image src="/svg/kakao-icon.svg" alt="카카오 아이콘" width={18} height={18} />
+      </Stack>
+    );
+  };
+
   return (
     <Container onClick={() => navigateWithLoading(`/templates/${pageData.id}`)}>
       <TextWrapper>
@@ -50,6 +66,7 @@ const PageItem = ({ pageData }: { pageData: TemplateType }) => {
         <PageName variant="body2">{pageData.name}</PageName>
       </TextWrapper>
       <ButtonWrapper>
+        <KakaoShareButton />
         <LinkButton onClick={handleLink} />
         <RemoveButton onClick={handleRemove} />
       </ButtonWrapper>
