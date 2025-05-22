@@ -11,7 +11,8 @@ const RollingPaperEditor = () => {
   // 롤링페이퍼 페이지 에셋 상태
   const rollingPaperAsset = useMakeTemplateStore((state) => state?.template?.pageAssets?.rollingPaper);
   // 롤링페이퍼 페이지 기존 활성화 상태 가져오기
-  const isRollingPaperAssetActive = rollingPaperAsset ? true : false;
+  const isRollingPaperAssetActive = rollingPaperAsset?.isActive === true ? true : false;
+
 
   // 페이지 에셋 상태 업데이트 액션
   const { setPageAsset } = useMakeTemplateStore();
