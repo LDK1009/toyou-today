@@ -16,6 +16,14 @@ interface StoreType {
   // 템플릿 초기화
   initTemplate: () => void;
 
+  ////////// 템플릿 이름 관련 액션
+  // 템플릿 이름 설정
+  setTemplateName: (name: string) => void;
+
+  ////////// 공개 여부 관련 액션
+  // 공개 여부 설정
+  setPublic: (isPublic: boolean) => void;
+
   ////////// 페이지 에셋 관련 액션
   // 페이지 에셋 설정
   setPageAsset: (name: PageAssetVariantType, content: PageAssetContentType) => void;
@@ -39,6 +47,7 @@ interface StoreType {
 const initialTemplate: MakeTemplateType = {
   name: "",
   makerId: "",
+  public: false,
   pageAssets: {
     particle: {
       isActive: true,
@@ -76,11 +85,22 @@ export const useMakeTemplateStore = create(
       // 템플릿 초기화
       initTemplate: () => set({ template: initialTemplate }),
 
+      ////////// 템플릿 이름 관련 액션
+      // 템플릿 이름 설정
+      setTemplateName: (name) => set((state) => ({ template: { ...state.template, name } })),
+
       ////////// 페이지 에셋 관련 액션
       // 페이지 에셋 설정
       setPageAsset: (name, content) =>
         set((state) => ({
           template: { ...state.template, pageAssets: { ...state.template.pageAssets, [name]: content } },
+        })),
+
+      ////////// 공개 여부 관련 액션
+      // 공개 여부 설정
+      setPublic: (isPublic) =>
+        set((state) => ({
+          template: { ...state.template, public: isPublic },
         })),
 
       ////////// 블록 관련 액션

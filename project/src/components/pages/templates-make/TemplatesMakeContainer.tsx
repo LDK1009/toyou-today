@@ -1,18 +1,11 @@
 "use client";
 
-import {
-  mixinContainer,
-  mixinFlex,
-  mixinHideScrollbar,
-  mixinMuiButtonNoShadow,
-  mixinTextInputBorder,
-} from "@/styles/mixins";
+import { mixinContainer, mixinFlex, mixinHideScrollbar } from "@/styles/mixins";
 import {
   AddCircleOutlineRounded,
   ArrowDownwardRounded,
   ArrowUpwardRounded,
   CalendarMonthRounded,
-  CardGiftcardRounded,
   CelebrationRounded,
   CloseRounded,
   DeleteOutlineRounded,
@@ -28,7 +21,7 @@ import {
   TextFormatRounded,
   VideocamRounded,
 } from "@mui/icons-material";
-import { Box, Button, Fade, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Fade, Stack, Tooltip, Typography } from "@mui/material";
 
 import { styled } from "@mui/material";
 import AddBlockDrawer from "./drawer/AddBlockDrawer";
@@ -51,11 +44,7 @@ import BackgroundMusicPageAsset from "../templates/page-asset/BackgroundMusicPag
 import RollingPaperPageAsset from "../templates/page-asset/rollingpaper/RollingPaperPageAsset";
 import { Reorder } from "motion/react";
 import { useHandleEditor } from "@/hooks/useHandleEditor";
-import { createTemplate } from "@/service/tables/templates";
-import { getCurrentUserUID } from "@/service/auth";
-import { useRouter } from "next/navigation";
-import { enqueueSnackbar } from "notistack";
-import Loading from "@/components/common/Loading";
+import MakeTemplateButton from "./container/MakeTemplateButton";
 
 const TemplatesMakeContainer = () => {
   ////////////////////////////////////////////////// State //////////////////////////////////////////////////
@@ -95,7 +84,7 @@ const TemplatesMakeContainer = () => {
       {/* 블록 추가 */}
       <ButtonWrapper>
         <AddBlockButton />
-        <CreateTemplateButton />
+        <MakeTemplateButton />
       </ButtonWrapper>
     </Container>
   );
@@ -438,173 +427,4 @@ const MenuButton = styled(Button)`
   & .MuiButton-icon {
     margin: 0;
   }
-`;
-
-////////////////////////////// 템플릿 제작 버튼 //////////////////////////////
-const CreateTemplateButton = () => {
-  const router = useRouter();
-  const { template, initTemplate } = useMakeTemplateStore();
-
-  // 템플릿 이름
-  const [templateName, setTemplateName] = useState("");
-  // 레이어 열림 여부
-  const [open, setOpen] = useState(false);
-  // 페이지 제작 완료 여부
-  const [isCreateLoading, setIsCreateLoading] = useState(false);
-
-  // 레이어 열림 버튼 클릭 시
-  async function handleOpenLayer() {
-    if (template.blocks.length < 5) {
-      enqueueSnackbar("최소 5개 이상의 블록을 추가해주세요.", { variant: "error" });
-      return;
-    }
-
-    const { data: uid } = await getCurrentUserUID();
-
-    if (!uid) {
-      enqueueSnackbar("로그인 후 이용 가능합니다.", { variant: "error" });
-      enqueueSnackbar("페이지 정보가 저장되었습니다.", { variant: "info" });
-
-      router.push("/auth/sign-in");
-      return;
-    }
-
-    setOpen(true);
-  }
-
-  // 템플릿 제작 버튼 클릭 시
-  async function handleButtonClick() {
-    setIsCreateLoading(true);
-
-    const { data: uid } = await getCurrentUserUID();
-
-    // 로그인 여부 확인
-    if (!uid) {
-      return { data: null, error: "로그인 후 이용 가능합니다." };
-    }
-
-    // 템플릿 생성
-    const { data, error } = await createTemplate({
-      name: templateName,
-      makerId: uid,
-      blocks: template.blocks,
-      pageAssets: template.pageAssets,
-    });
-
-    if (error) {
-      enqueueSnackbar("페이지 제작 실패", { variant: "error" });
-      return;
-    }
-
-    // 템플릿 초기화
-    initTemplate();
-
-    // 템플릿 제작 로딩 종료
-    setIsCreateLoading(false);
-
-    // 템플릿 제작 완료 후 템플릿 상세 페이지로 이동
-    router.push(`/templates/${data.id}`);
-  }
-
-  // 렌더링
-  return (
-    <CreateTemplateButton_Container>
-      {/* 페이지 제작 레이어 */}
-      <Fade in={open} timeout={300}>
-        {/* 페이지 제작 레이어 */}
-        <CreateTemplateButton_Layer>
-          <LetterLayer_CloseIcon onClick={() => setOpen(false)} />
-          <CreateTemplateButton_Layer_ContentContainer>
-            {isCreateLoading ? (
-              <Loading />
-            ) : (
-              <>
-                {/* 안내 문구 */}
-                <CreateTemplateButton_Layer_Title variant="h5">
-                  마지막이에요!
-                  <br />
-                  소중한 사람의 이름을 작성해주세요
-                </CreateTemplateButton_Layer_Title>
-                {/* 텍스트 입력 필드 */}
-                <CreateTemplateButton_Layer_TextInput
-                  placeholder="제작한 페이지 이름"
-                  value={templateName}
-                  onChange={(e) => setTemplateName(e.target.value)}
-                />
-                {/* 제작 완료 버튼 */}
-                <CreateTemplateButton_Layer_SubmitButton
-                  onClick={handleButtonClick}
-                  variant="contained"
-                  startIcon={<CardGiftcardRounded />}
-                >
-                  페이지 제작하기
-                </CreateTemplateButton_Layer_SubmitButton>
-              </>
-            )}
-          </CreateTemplateButton_Layer_ContentContainer>
-        </CreateTemplateButton_Layer>
-      </Fade>
-
-      {/* 페이지 제작 레이어 버튼 */}
-      <CreateTemplateButton_CreateButton
-        onClick={handleOpenLayer}
-        variant="contained"
-        startIcon={<CardGiftcardRounded />}
-      >
-        페이지 제작
-      </CreateTemplateButton_CreateButton>
-    </CreateTemplateButton_Container>
-  );
-};
-
-const CreateTemplateButton_CreateButton = styled(Button)`
-  width: 100%;
-  color: ${({ theme }) => theme.palette.text.white};
-  box-shadow: none;
-
-  &:hover {
-    box-shadow: none;
-  }
-`;
-
-const LetterLayer_CloseIcon = styled(CloseRounded)`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  color: ${({ theme }) => theme.palette.primary.main};
-`;
-
-const CreateTemplateButton_Container = styled(Box)``;
-
-const CreateTemplateButton_Layer = styled(Stack)`
-  width: 100vw;
-  height: 100vh;
-  padding: 40px;
-  ${mixinFlex("column", "center", "center")}
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: ${({ theme }) => theme.palette.background.default};
-  z-index: 9999;
-`;
-
-const CreateTemplateButton_Layer_ContentContainer = styled(Stack)`
-  row-gap: 16px;
-`;
-
-const CreateTemplateButton_Layer_Title = styled(Typography)`
-  text-align: center;
-  color: ${({ theme }) => theme.palette.primary.main};
-  font-weight: bold;
-`;
-
-const CreateTemplateButton_Layer_TextInput = styled(TextField)`
-  width: 100%;
-  ${({ theme }) => mixinTextInputBorder(theme)}
-`;
-
-const CreateTemplateButton_Layer_SubmitButton = styled(Button)`
-  width: 100%;
-  color: ${({ theme }) => theme.palette.text.white};
-  ${mixinMuiButtonNoShadow()}
 `;

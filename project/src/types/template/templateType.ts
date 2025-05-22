@@ -6,6 +6,7 @@ export type MakeTemplateType = {
   makerId: string;
   pageAssets: PageAssetObjectType;
   blocks: BlockType[];
+  public: boolean;
 }
 
 export type TemplateType = {

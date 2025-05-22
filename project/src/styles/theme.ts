@@ -40,7 +40,7 @@ declare module "@mui/material/styles" {
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: "#FFB6B9", // 딸기우유 핑크
+      main: "#FFB6B9", // 딸기우유 핑크(255, 182, 185)
       light: "#FFE0E2",
       dark: "#E58084",
     },
