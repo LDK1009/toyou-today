@@ -1,7 +1,7 @@
 import TemplatesContainer from "@/components/pages/templates/TemplatesContainer";
 import { Metadata } from "next";
 import { templateInfo } from "@/utils/templateInfo";
-import { readTemplates } from "@/service/tables/templates";
+import { readPublicTemplates, readTemplates } from "@/service/tables/templates";
 import { TemplateType } from "@/types/template/templateType";
 
 // 동적 메타데이터 설정
@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const TemplatesPage = async () => {
-  const { data } = await readTemplates();
+  const { data } = await readPublicTemplates();
 
   return <TemplatesContainer templates={data as TemplateType[]} />;
 };
