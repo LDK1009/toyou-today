@@ -42,7 +42,7 @@ const BackgroundMusicPageAsset = ({ pageAssetData }: { pageAssetData: Background
         </MusicIconWrapper>
       </Tooltip>
       {/* 배경음악 오디오 요소 */}
-      <audio ref={audioRef} src={musicSrc} autoPlay />
+      <audio ref={audioRef} src={musicSrc} autoPlay loop />
     </>
   );
 };
