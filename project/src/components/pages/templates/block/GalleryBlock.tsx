@@ -25,7 +25,9 @@ const GalleryBlock = ({ blockData }: { blockData: GalleryBlockType }) => {
             <SlideWrapper>
               <Box>
                 <AnimationBlock animationType="fadeInToBottom">
-                  <StyledImage src={el.imgSrc} alt="" width={200} height={200} />
+                  <ImageWrapper>
+                    <StyledImage src={el.imgSrc} alt="" width={200} height={200} />
+                  </ImageWrapper>
                 </AnimationBlock>
                 <AnimationBlock animationType="fadeInToTop">
                   <Typography variant="body1" align="center" color="primary.dark">
@@ -76,4 +78,12 @@ const SlideWrapper = styled(Stack)`
   justify-content: center;
   row-gap: 16px;
   padding: 16px;
+`;
+
+const ImageWrapper = styled(Stack)`
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
 `;
