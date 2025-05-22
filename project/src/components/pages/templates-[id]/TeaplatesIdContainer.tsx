@@ -37,7 +37,7 @@ const TeaplatesIdContainer = ({ templateData }: PropsType) => {
       {/* 상단 */}
       <Top>
         {/* 이 템플릿으로 시작하기 */}
-        <CopyButton template={templateData} />
+        {templateData.public && <CopyButton template={templateData} />}
       </Top>
 
       {/* 컨텐츠 */}
