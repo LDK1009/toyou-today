@@ -30,9 +30,9 @@ const MyPageContainer = () => {
   return (
     <Container>
       <Header />
+      <MenuList />
       <PageList />
       <BookmarkList />
-      <MenuList />
       <ButtonGroup />
     </Container>
   );
